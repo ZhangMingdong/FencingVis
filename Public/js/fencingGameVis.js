@@ -93,30 +93,22 @@ mainApp.directive('fencingGameVis', function () {
 
 
                 // 2.reset scale and axis
-            //    if(xMin==xMax) xMin--;
-            //    if(yMin==yMax) yMax++;
-                axisTick=xMax-xMin;
-                console.log(xMin)
-                console.log(xMax)
                 xTreeScale.domain([xMin,xMax]);
                 yTreeScale.domain([yMax,yMin]);
+                grids=[];
 
-            //    grids=[];
-            //    for(var i=xMin;i<=xMax;i+=2){
-            //        grids.push(i);
-            //    }
-            //    gridW=xTreeScale(xMax)-xTreeScale(xMax-1);
-
+                for(var i=xMin;i<=xMax;i=new Date(i.getTime()+120000)){
+            //        console.log(i);
+                    grids.push(i);
+                }
+                gridW=xTreeScale(xMax)-xTreeScale(new Date(xMax.getTime()-60000));
+            //    console.log(gridW);
+            //    console.log(grids);
+            //    console.log(grids.length);
                 return nodes;
             }
             // get all the edges of the tree
             tree.getEdges = function () {
-                if(scope.data.clustering==0||scope.data.operationMode==5) return this._getEdges();
-                else return this._getEdgesClustered();
-            }
-
-            // get all the edges of the tree
-            tree._getEdges = function () {
                 tree.references = [];
                 //console.log("GetEdges: the number of nodes is: "+tree.nodes.length);
                 var e = [];
@@ -445,6 +437,7 @@ mainApp.directive('fencingGameVis', function () {
 
             // redraw the svg
             function redraw(){
+                console.log("redraw")
                 _redraw(true);
             }
             // redraw the svg
@@ -508,7 +501,7 @@ mainApp.directive('fencingGameVis', function () {
             }
             // watch the change of the data
             scope.$watch('data', redraw);
-            scope.$watch('data.clustering', redraw);
+            scope.$watch('data.events', redraw);
             scope.$watch(function(){
                 return scope.data.nodes;
             }, redraw);

@@ -548,47 +548,48 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
             {time:new Date(2017,1,1,0,15,00,0),index: 16,player: 1,score:1},	{time:new Date(2017,1,1,0,15,00,0),index:16,player: 2,score:13},
             {time:new Date(2017,1,1,0,18,00,0),index: 17,player: 1,score:1},	{time:new Date(2017,1,1,0,18,00,0),index:17,player: 2,score:14},
             {time:new Date(2017,1,1,0,18,00,0),index: 18,player: 1,score:1},	{time:new Date(2017,1,1,0,18,00,0),index:18,player: 2,score:15},
-        ],
-        operationMode:0
-        ,clustering:0
-        //    , nodes: []
-        //    , allNodes:[]
-        //    , references: []
-        //    , selectedTopic: null
-//        , topicFilter:[]                        // the global filter state of topics
-//        , topicTree:[]                          // data used for the topic tree view
-//        , articleTpcs:[]
-        , selectedTopic:""
-        , noTopicOnly:false
-        , selectedNode:{}
-        , selectedReference:{}
-        , selectedReferenceInfo:{}
-        , availableReferenceType: [
-            {id:1
-                ,name: 'Contrast'
-                ,belong: false}
-            ,{id:2
-                ,name: 'Rely'
-                ,belong: false}
-            ,{id:4
-                ,name: 'Context'
-                ,belong: false}
         ]
-        , series:[]
-        , seriesSort:0          // 0:by Count,1:by Alphabetic
-        , authorsSort:0          // 0:by Count,1:by Alphabetic
-        , keywordsSort:0          // 0:by Count,1:by Alphabetic
-        , papersSort:0              //
-        , searchOpinion:0           // 0: show results in context;1:show results only
-        , authors:[]
-        , keywords:[]
+        , selectedNode:{}
         , selectedInfo:[]           // used for the selected node information display
-        , paperCount:0              // total paper count
-        , showReferenceType: false  // show the types of reference
-        , setSubTopicTo:false
-        , topicToMove:{}
+        , series:[]
     }
 
+    d3.csv("../data/female_half.csv", function(d) {
+        var arrTime=d.time.split(':');
+        var minute=arrTime[0];
+        var second=arrTime[1];
+        $scope.fencingData.series.push({
+            time: new Date(2017,1,1,0,minute,second,0),
+            event:d.event,
+            score:d.score
+        });
+    //    console.log(minute+":"+second);
+    //    console.log(d);
+    }, function(error, classes) {
+        $scope.fencingData.events=[];
+        var s1=0;
+        var s2=0;
+        var index=0;
+        $scope.fencingData.series.forEach(function(d){
+            if(d.score==1) s1++;
+            if(d.score==2) s2++;
+            $scope.fencingData.events.push({
+                time: d.time,
+                index: index,
+                player: 1,
+                score: s1
+            })
+            $scope.fencingData.events.push({
+                time: d.time,
+                index: index,
+                player: 2,
+                score: s2
+            })
+            index++;
+        });
+        console.log("updated data")
+        if (error) throw error;
+    });
     $scope.fencingData.onSelectedNode=function(node,callback){
         console.log("onSelectedNode");
         //console.log("onSelectedNode");
