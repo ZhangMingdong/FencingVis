@@ -13,8 +13,11 @@ mainApp.directive('fencingGameVis', function () {
     //console.log("myTree Initializing");
     function link(scope, el, attr) {
 
-        function getTime(d){
+        function getEnd(d){
             return d.time;
+        }
+        function getStart(d){
+            return d.start;
         }
         function getIndex(d){
             return d.index;
@@ -40,7 +43,6 @@ mainApp.directive('fencingGameVis', function () {
                 , to:{} };
             var xMin,xMax,indexMin,indexMax;                  // the min and max of the year, inited in reposite
             var margin = {top: 20, right: 40, bottom: 50, left: 30};
-            var orient='bottom';
 
             var grids=[];
             var gridW=0;        // the width of the grid, calculated in reposite()
@@ -66,7 +68,7 @@ mainApp.directive('fencingGameVis', function () {
 
             // axis
             var xTreeAxis=svgTree.append('g').attr('id','g_axis');
-
+            var yTreeAxis=svgTree.append('g').attr('id','g_axisY');
             // ==========Operations==========
 
             // get all the nodes of the tree
@@ -74,8 +76,8 @@ mainApp.directive('fencingGameVis', function () {
                 var nodes = scope.data.events;
 
                 // 1.Calculate x domain
-                xMin=d3.min(nodes,function(d){return getTime(d);});
-                xMax=d3.max(nodes,function(d){return getTime(d);});
+                xMin=d3.min(nodes,function(d){return getStart(d);});
+                xMax=d3.max(nodes,function(d){return getEnd(d);});
             //    console.log(nodes);
                 indexMin=d3.min(nodes,function(d){return getIndex(d);});
                 indexMax=d3.max(nodes,function(d){return getIndex(d);});
@@ -130,8 +132,8 @@ mainApp.directive('fencingGameVis', function () {
                             //    console.log(to);
                             e.push({
                                 id: d._id
-                                ,source: { y: xTreeScale(getTime(from))  ,x:yTreeScale(from.y),id:from.id }
-                                ,target: { y: xTreeScale(getTime(to))    ,x:yTreeScale(to.y),id:to.id }
+                                ,source: { y: xTreeScale(getEnd(from))  ,x:yTreeScale(from.y),id:from.id }
+                                ,target: { y: xTreeScale(getStart(to))    ,x:yTreeScale(to.y),id:to.id }
                                 ,citing: d.citing
                                 ,cited: d.cited
                                 ,referred: d.referred
@@ -184,15 +186,21 @@ mainApp.directive('fencingGameVis', function () {
                 redraw();
             }
 
-            function renderAxis(scale, orient){
+            function renderAxis(){
                 var axis = d3.svg.axis() // <-D
-                    .scale(scale) // <-E
-                    .orient(orient) // <-F
-
-                //    .ticks(axisTick); // <-G
+                    .scale(xTreeScale) // <-E
+                    .orient('bottom') // <-F
                 xTreeAxis
                     .attr("transform", "translate(0," + (svgTreeH+10) + ")")
-                    .call(axis.tickFormat(d3.time.format("%M:%S")))
+                    .call(axis
+                        .tickFormat(d3.time.format("%M:%S")))
+
+
+                var y_axis = d3.svg.axis() // <-D
+                    .scale(yTreeScale) // <-E
+                    .orient('left') // <-F
+                yTreeAxis
+                    .call(y_axis.ticks(15))
             }
 
             // redraw grid
@@ -244,27 +252,7 @@ mainApp.directive('fencingGameVis', function () {
 
                 var nodeGroup=svgNodes.enter().append('svg:g');
 
-                nodeGroup
-                    .append('rect')
-                    .classed('node',true)
-                    .attr("width",function(d){
-                        return d.citeCount;
-                    })
-                    .attr("height",6)
-                    .attr("x",function(d){
-                        return -d.citeCount/2;
-                    })
-                    .attr("y",-3)
-                    .attr("transform", function (d) {
-                        // This is where we use the index here to translate the pie chart and rendere it in the appropriate cell.
-                        // Normally, the chart would be squashed up against the top left of the cell, obscuring the text that shows the day of the month.
-                        // We use the gridXTranslation and gridYTranslation and multiply it by a factor to move it to the center of the cell. There is probably
-                        // a better way of doing this though.
-                        var currentDataIndex = d[1];
-                    //    console.log(getTime(d));
-                    //    console.log(xTreeScale(getTime(d)));
-                        return "translate(" +  xTreeScale(getTime(d)) + ", " +  yTreeScale(d.score) + ")";
-                    });
+
 
                 nodeGroup
                     .append('rect')
@@ -276,9 +264,12 @@ mainApp.directive('fencingGameVis', function () {
                         else return 'grey'
                     })
                     //.attr("stroke","blue")
-                    .attr("width",20)
+                    .attr("width",function(d){
+
+                        return xTreeScale(getEnd(d))-xTreeScale(getStart(d));
+                    })
                     .attr("height",6)
-                    .attr("x",-10)
+                    .attr("x",0)
                     .attr("y",-3)
                     .attr("transform", function (d) {
                         // This is where we use the index here to translate the pie chart and rendere it in the appropriate cell.
@@ -286,7 +277,7 @@ mainApp.directive('fencingGameVis', function () {
                         // We use the gridXTranslation and gridYTranslation and multiply it by a factor to move it to the center of the cell. There is probably
                         // a better way of doing this though.
                         var currentDataIndex = d[1];
-                        return "translate(" +  xTreeScale(getTime(d)) + ", " +  yTreeScale(d.score) + ")";
+                        return "translate(" +  xTreeScale(getStart(d)) + ", " +  yTreeScale(d.score) + ")";
                     })
                     .on('mouseenter', function (d) {
                         // console.log("mouse enter");
@@ -455,7 +446,7 @@ mainApp.directive('fencingGameVis', function () {
 
                _drawNodes(reload);
 
-               renderAxis(xTreeScale , orient);
+               renderAxis();
 
                 //console.log("=====redraw tree=====");
                 //console.log(scope.data);
@@ -501,10 +492,8 @@ mainApp.directive('fencingGameVis', function () {
             }
             // watch the change of the data
             scope.$watch('data', redraw);
-            scope.$watch('data.events', redraw);
-            scope.$watch(function(){
-                return scope.data.nodes;
-            }, redraw);
+            scope.$watchCollection('data.events', redraw);
+
         }
         fencingGameVis();
     }

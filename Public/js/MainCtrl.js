@@ -518,36 +518,30 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
         return arrCitedNodes;
     }
 
-    // do the search, triggered with searchText changed
-    $scope.doSearch=function(option){
-        var searchText=$scope.treeData.searchText;
-        if(searchText==undefined) return;
-        ArticleInfo.search(searchText);
-        //ArticleInfo.loadGroup(searchText);
-    }
+
 
     $scope.fencingData={
         events:[
-            {time:new Date(2017,1,1,0,00,00,0),index: 0 ,player: 1,score:0},	{time:new Date(2017,1,1,0,00,00,0),index: 0 ,player: 2,score:0},
-            {time:new Date(2017,1,1,0,00,00,0),index: 1 ,player: 1,score:0},	{time:new Date(2017,1,1,0,00,00,0),index: 1 ,player: 2,score:1},
-            {time:new Date(2017,1,1,0,01,00,0),index: 2 ,player: 1,score:0},	{time:new Date(2017,1,1,0,01,00,0),index: 2 ,player: 2,score:2},
-            {time:new Date(2017,1,1,0,01,00,0),index: 3 ,player: 1,score:0},	{time:new Date(2017,1,1,0,01,00,0),index: 3 ,player: 2,score:2},
-            {time:new Date(2017,1,1,0,03,00,0),index: 4 ,player: 1,score:1},	{time:new Date(2017,1,1,0,03,00,0),index: 4 ,player: 2,score:2},
-            {time:new Date(2017,1,1,0,03,00,0),index: 5 ,player: 1,score:1},	{time:new Date(2017,1,1,0,03,00,0),index: 5 ,player: 2,score:2},
-            {time:new Date(2017,1,1,0,04,00,0),index: 5,player: 1,score:1},		{time:new Date(2017,1,1,0,04,00,0),index: 5,player: 2,score:2},
-            {time:new Date(2017,1,1,0,04,00,0),index: 6,player: 1,score:1},		{time:new Date(2017,1,1,0,04,00,0),index: 6,player: 2,score:3},
-            {time:new Date(2017,1,1,0,06,00,0),index: 7,player: 1,score:1},		{time:new Date(2017,1,1,0,06,00,0),index: 7,player: 2,score:4},
-            {time:new Date(2017,1,1,0,06,00,0),index: 8,player: 1,score:1},		{time:new Date(2017,1,1,0,06,00,0),index: 8,player: 2,score:5},
-            {time:new Date(2017,1,1,0,10,00,0),index: 9,player: 1,score:1},		{time:new Date(2017,1,1,0,10,00,0),index: 9,player: 2,score:6},
-            {time:new Date(2017,1,1,0,10,00,0),index: 10,player: 1,score:1},	{time:new Date(2017,1,1,0,10,00,0),index:10,player: 2,score:7},
-            {time:new Date(2017,1,1,0,11,00,0),index: 11,player: 1,score:1},	{time:new Date(2017,1,1,0,11,00,0),index:11,player: 2,score:8},
-            {time:new Date(2017,1,1,0,11,00,0),index: 12,player: 1,score:1},	{time:new Date(2017,1,1,0,11,00,0),index:12,player: 2,score:9},
-            {time:new Date(2017,1,1,0,13,00,0),index: 13,player: 1,score:1},	{time:new Date(2017,1,1,0,13,00,0),index:13,player: 2,score:10},
-            {time:new Date(2017,1,1,0,13,00,0),index: 14,player: 1,score:1},	{time:new Date(2017,1,1,0,13,00,0),index:14,player: 2,score:11},
-            {time:new Date(2017,1,1,0,15,00,0),index: 15,player: 1,score:1},	{time:new Date(2017,1,1,0,15,00,0),index:15,player: 2,score:12},
-            {time:new Date(2017,1,1,0,15,00,0),index: 16,player: 1,score:1},	{time:new Date(2017,1,1,0,15,00,0),index:16,player: 2,score:13},
-            {time:new Date(2017,1,1,0,18,00,0),index: 17,player: 1,score:1},	{time:new Date(2017,1,1,0,18,00,0),index:17,player: 2,score:14},
-            {time:new Date(2017,1,1,0,18,00,0),index: 18,player: 1,score:1},	{time:new Date(2017,1,1,0,18,00,0),index:18,player: 2,score:15},
+            {start:new Date(2017,1,1,0,00,00,0),time:new Date(2017,1,1,0,00,10,0),index: 0 ,player: 1,score:0},	{start:new Date(2017,1,1,0,00,00,0),time:new Date(2017,1,1,0,00,10,0),index: 0 ,player: 2,score:0},
+            {start:new Date(2017,1,1,0,00,00,0),time:new Date(2017,1,1,0,00,10,0),index: 1 ,player: 1,score:0},	{start:new Date(2017,1,1,0,00,00,0),time:new Date(2017,1,1,0,00,10,0),index: 1 ,player: 2,score:1},
+            {start:new Date(2017,1,1,0,01,00,0),time:new Date(2017,1,1,0,01,10,0),index: 2 ,player: 1,score:0},	{start:new Date(2017,1,1,0,01,00,0),time:new Date(2017,1,1,0,01,10,0),index: 2 ,player: 2,score:2},
+            {start:new Date(2017,1,1,0,01,00,0),time:new Date(2017,1,1,0,01,10,0),index: 3 ,player: 1,score:0},	{start:new Date(2017,1,1,0,01,00,0),time:new Date(2017,1,1,0,01,10,0),index: 3 ,player: 2,score:2},
+            {start:new Date(2017,1,1,0,03,00,0),time:new Date(2017,1,1,0,03,10,0),index: 4 ,player: 1,score:1},	{start:new Date(2017,1,1,0,03,00,0),time:new Date(2017,1,1,0,03,10,0),index: 4 ,player: 2,score:2},
+            {start:new Date(2017,1,1,0,03,00,0),time:new Date(2017,1,1,0,03,10,0),index: 5 ,player: 1,score:1},	{start:new Date(2017,1,1,0,03,00,0),time:new Date(2017,1,1,0,03,10,0),index: 5 ,player: 2,score:2},
+            {start:new Date(2017,1,1,0,04,00,0),time:new Date(2017,1,1,0,04,10,0),index: 5,player: 1,score:1},	{start:new Date(2017,1,1,0,04,00,0),time:new Date(2017,1,1,0,04,10,0),index: 5,player: 2,score:2},
+            {start:new Date(2017,1,1,0,04,00,0),time:new Date(2017,1,1,0,04,10,0),index: 6,player: 1,score:1},	{start:new Date(2017,1,1,0,04,00,0),time:new Date(2017,1,1,0,04,10,0),index: 6,player: 2,score:3},
+            {start:new Date(2017,1,1,0,06,00,0),time:new Date(2017,1,1,0,06,10,0),index: 7,player: 1,score:1},	{start:new Date(2017,1,1,0,06,00,0),time:new Date(2017,1,1,0,06,10,0),index: 7,player: 2,score:4},
+            {start:new Date(2017,1,1,0,06,00,0),time:new Date(2017,1,1,0,06,10,0),index: 8,player: 1,score:1},	{start:new Date(2017,1,1,0,06,00,0),time:new Date(2017,1,1,0,06,10,0),index: 8,player: 2,score:5},
+            {start:new Date(2017,1,1,0,10,00,0),time:new Date(2017,1,1,0,10,10,0),index: 9,player: 1,score:1},	{start:new Date(2017,1,1,0,10,00,0),time:new Date(2017,1,1,0,10,10,0),index: 9,player: 2,score:6},
+            {start:new Date(2017,1,1,0,10,00,0),time:new Date(2017,1,1,0,10,10,0),index: 10,player: 1,score:1},	{start:new Date(2017,1,1,0,10,00,0),time:new Date(2017,1,1,0,10,10,0),index:10,player: 2,score:7},
+            {start:new Date(2017,1,1,0,11,00,0),time:new Date(2017,1,1,0,11,10,0),index: 11,player: 1,score:1},	{start:new Date(2017,1,1,0,11,00,0),time:new Date(2017,1,1,0,11,10,0),index:11,player: 2,score:8},
+            {start:new Date(2017,1,1,0,11,00,0),time:new Date(2017,1,1,0,11,10,0),index: 12,player: 1,score:1},	{start:new Date(2017,1,1,0,11,00,0),time:new Date(2017,1,1,0,11,10,0),index:12,player: 2,score:9},
+            {start:new Date(2017,1,1,0,13,00,0),time:new Date(2017,1,1,0,13,10,0),index: 13,player: 1,score:1},	{start:new Date(2017,1,1,0,13,00,0),time:new Date(2017,1,1,0,13,10,0),index:13,player: 2,score:10},
+            {start:new Date(2017,1,1,0,13,00,0),time:new Date(2017,1,1,0,13,10,0),index: 14,player: 1,score:1},	{start:new Date(2017,1,1,0,13,00,0),time:new Date(2017,1,1,0,13,10,0),index:14,player: 2,score:11},
+            {start:new Date(2017,1,1,0,15,00,0),time:new Date(2017,1,1,0,15,10,0),index: 15,player: 1,score:1},	{start:new Date(2017,1,1,0,15,00,0),time:new Date(2017,1,1,0,15,10,0),index:15,player: 2,score:12},
+            {start:new Date(2017,1,1,0,15,00,0),time:new Date(2017,1,1,0,15,10,0),index: 16,player: 1,score:1},	{start:new Date(2017,1,1,0,15,00,0),time:new Date(2017,1,1,0,15,10,0),index:16,player: 2,score:13},
+            {start:new Date(2017,1,1,0,18,00,0),time:new Date(2017,1,1,0,18,10,0),index: 17,player: 1,score:1},	{start:new Date(2017,1,1,0,18,00,0),time:new Date(2017,1,1,0,18,10,0),index:17,player: 2,score:14},
+            {start:new Date(2017,1,1,0,18,00,0),time:new Date(2017,1,1,0,18,10,0),index: 18,player: 1,score:1},	{start:new Date(2017,1,1,0,18,00,0),time:new Date(2017,1,1,0,18,10,0),index:18,player: 2,score:15},
         ]
         , selectedNode:{}
         , selectedInfo:[]           // used for the selected node information display
@@ -570,24 +564,73 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
         var s1=0;
         var s2=0;
         var index=0;
-        $scope.fencingData.series.forEach(function(d){
-            if(d.score==1) s1++;
-            if(d.score==2) s2++;
-            $scope.fencingData.events.push({
-                time: d.time,
-                index: index,
-                player: 1,
-                score: s1
-            })
-            $scope.fencingData.events.push({
-                time: d.time,
-                index: index,
-                player: 2,
-                score: s2
-            })
-            index++;
-        });
+        var lastE;
+        var bRemoveInvalid=true;    // whether remove the invalid time span
+        if(bRemoveInvalid)
+        {
+            var timeBias=0;
+            $scope.fencingData.series.forEach(function(d){
+                if(d.event=="start") {
+                    if (lastE){
+                        timeBias+=d.time.getTime()-lastE.time.getTime()-600;
+                    }
+                    else{
+                        timeBias=d.time.getTime()-(new Date(2017,1,1,0,0,0,0)).getTime();
+                    }
+                }
+                else{
+                    if(d.score==1) s1++;
+                    if(d.score==2) s2++;
+                    $scope.fencingData.events.push({
+                        start:new Date(lastE.time.getTime()-timeBias),
+                        time: new Date(d.time.getTime()-timeBias),
+                        index: index,
+                        player: 1,
+                        score: s1
+                    })
+                    $scope.fencingData.events.push({
+                        start:new Date(lastE.time.getTime()-timeBias),
+                        time: new Date(d.time.getTime()-timeBias),
+                        index: index,
+                        player: 2,
+                        score: s2
+                    })
+                    index++;
+                }
+                lastE=d;
+            });
+
+        }
+        else
+            $scope.fencingData.series.forEach(function(d){
+                if(d.event=="start"){
+                    lastE=d;
+                }
+                else{
+
+                    if(d.score==1) s1++;
+                    if(d.score==2) s2++;
+                    $scope.fencingData.events.push({
+                        start:lastE.time,
+                        time: d.time,
+                        index: index,
+                        player: 1,
+                        score: s1
+                    })
+                    $scope.fencingData.events.push({
+                        start:lastE.time,
+                        time: d.time,
+                        index: index,
+                        player: 2,
+                        score: s2
+                    })
+                    index++;
+                }
+            });
         console.log("updated data")
+
+        $scope.$apply();
+
         if (error) throw error;
     });
     $scope.fencingData.onSelectedNode=function(node,callback){
