@@ -140,9 +140,6 @@ mainApp.directive('barChart', function () {
 
         }
         barChart();
-
-
-
     }
     return {
         link: link,
