@@ -1,0 +1,39 @@
+\begin{thebibliography}{1}
+
+\bibitem{perin2016using}
+C.~Perin, J.~Boy, and F.~Vernier.
+\newblock Using gap charts to visualize the temporal evolution of ranks and
+  scores.
+\newblock {\em IEEE computer graphics and applications}, 36(5):38--49, 2016.
+
+\bibitem{perin2013soccerstories}
+C.~Perin, R.~Vuillemot, and J.-D. Fekete.
+\newblock Soccerstories: A kick-off for visual soccer analysis.
+\newblock {\em IEEE transactions on visualization and computer graphics},
+  19(12):2506--2515, 2013.
+
+\bibitem{polk2014tennivis}
+T.~Polk, J.~Yang, Y.~Hu, and Y.~Zhao.
+\newblock Tennivis: Visualization for tennis match analysis.
+\newblock {\em IEEE transactions on visualization and computer graphics},
+  20(12):2339--2348, 2014.
+
+\bibitem{sacha2014feature}
+D.~Sacha, M.~Stein, T.~Schreck, D.~A. Keim, O.~Deussen, et~al.
+\newblock Feature-driven visual analytics of soccer data.
+\newblock In {\em Visual Analytics Science and Technology (VAST), 2014 IEEE
+  Conference on}, pp. 13--22. IEEE, 2014.
+
+\bibitem{Wu2018iTTVis}
+Y.~Wu, J.~Lan, X.~Shu, C.~Ji, K.~Zhao, J.~Wang, and H.~Zhang.
+\newblock ittvis: Interactive visualization of table tennis data.
+\newblock {\em IEEE Transactions on Visualization and Computer Graphics},
+  24(1):709--718, Jan 2018. doi: {{%
+10\hspace{.1pt}\discretionary{.}{%
+}{.}\hspace{.4pt}1109\discretionary{/}{%
+}{/}TVCG\hspace{.1pt}\discretionary{.}{%
+}{.}\hspace{.4pt}2017\hspace{.1pt}\discretionary{.}{%
+}{.}\hspace{.4pt}2744218}}
+
+
+\end{thebibliography}
