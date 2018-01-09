@@ -482,6 +482,7 @@ mainApp.directive('fencingGameVis', function () {
             function redraw(){
                 console.log("redraw")
                 if (!scope.data) { return };
+                if(scope.data.rounds.length==0) return;
                 //var drawMode=1; // define the style of the glyph
 
                 // draw grids

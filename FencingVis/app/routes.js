@@ -6,6 +6,18 @@ module.exports = function(app) {
     app.get('/2',function(req,res){
         res.sendfile('./public/Hexagonal Binning.html');
     });
+    app.get('/stackedBarChart',function(req,res){
+        res.sendfile('./public/StackedBarChart.html');
+    });
+    app.get('/showReel',function(req,res){
+        res.sendfile('./public/showReel.html');
+    });
+    app.get('/treemap',function(req,res){
+        res.sendfile('./public/Treemap.html');
+    });
+    app.get('/HierarchicalPartitionLayout',function(req,res){
+        res.sendfile('./public/Hierarchical Partition Layout.html');
+    });
 	// application -------------------------------------------------------------
 	app.get('*', function (req, res) {
 	    console.log("-----get* from "+req.host+" at "+Date());

@@ -3,522 +3,10 @@ var mainApp = angular.module("myApp", ['ngRoute']);
 mainApp.controller('MainCtrl', function ($scope, $http,$window) {
     angular.element($window).on('resize', function () { $scope.$apply() })
 
-    // for workspace
-    $scope.newWorkspaceName="";
-
-
-
-
-
-    $scope.forceLayoutData={
-        nodes: []
-        ,labelAnchors: []
-        ,labelAnchorLinks: []
-        ,links: []
-    }
-    for(var i = 0; i < 30; i++) {
-        var node = {
-            label : "node " + i
-        };
-        $scope.forceLayoutData.nodes.push(node);
-        $scope.forceLayoutData.labelAnchors.push({
-            node : node
-        });
-        $scope.forceLayoutData.labelAnchors.push({
-            node : node
-        });
-    };
-//    $scope.forceLayoutData.nodes.forEach(function(d){
-//        console.log(d);
-//    })
-    for(var i = 0; i < $scope.forceLayoutData.nodes.length; i++) {
-        for(var j = 0; j < i; j++) {
-            if(Math.random() > .95)
-                $scope.forceLayoutData.links.push({
-                    source : i,
-                    target : j,
-                    weight : Math.random()
-                });
-        }
-        $scope.forceLayoutData.labelAnchorLinks.push({
-            source : i * 2,
-            target : i * 2 + 1,
-            weight : 1
-        });
-    };
-    //console.log("MainCtrl Initializing");
-    // 0.declare data
-    // $scope.selectedNode={
-//
-    // }
-    /* operation mode
-        0: no operation
-        1: Draw reference
-        2: Remove Article
-        3: Remove Reference
-        4: Navigation
-        5: Navigation 2
-
-     */
-    //console.log("==selectedNode=="+$scope.selectedNode.info);
-    $scope.treeData = {operationMode:0
-        ,clustering:0
-    //    , nodes: []
-    //    , allNodes:[]
-    //    , references: []
-    //    , selectedTopic: null
-//        , topicFilter:[]                        // the global filter state of topics
-//        , topicTree:[]                          // data used for the topic tree view
-//        , articleTpcs:[]
-        , selectedTopic:""
-        , noTopicOnly:false
-        , selectedNode:{}
-        , selectedReference:{}
-        , selectedReferenceInfo:{}
-        , availableReferenceType: [
-            {id:1
-                ,name: 'Contrast'
-                ,belong: false}
-            ,{id:2
-                ,name: 'Rely'
-                ,belong: false}
-            ,{id:4
-                ,name: 'Context'
-                ,belong: false}
-        ]
-        , series:[]
-        , seriesSort:0          // 0:by Count,1:by Alphabetic
-        , authorsSort:0          // 0:by Count,1:by Alphabetic
-        , keywordsSort:0          // 0:by Count,1:by Alphabetic
-        , papersSort:0              //
-        , searchOpinion:0           // 0: show results in context;1:show results only
-        , authors:[]
-        , keywords:[]
-        , selectedInfo:[]           // used for the selected node information display
-        , paperCount:0              // total paper count
-        , showReferenceType: false  // show the types of reference
-        , setSubTopicTo:false
-        , topicToMove:{}
-    };
-
-    // get the article list
-    $scope.treeData.getArticles=function(){
-        return ArticleInfo.getArticles();
-    }
-    // get the references
-    $scope.treeData.getReferences=function(){
-        return ArticleInfo.getReferences();
-    }
-    // page state
-    $scope.pageState={
-        topic:true
-        ,series:true
-        ,author:true
-        ,keywords:true
-        ,paperList:true
-    }
-
-
-    // 1.get nodes and reference
-    callForNodes();
-
-    // 2.get references
-    // transmitated into callFroNodes
-
-    // 3.get topics
-
-
-    function callForReference(){
-    //    console.log("call For Reference");
-        $http.get('/api/references')
-            .success(function (data) {
-            //    console.log("==getReference==");
-                updateReferences(data);
-            })
-            .error(function (data) {
-                console.log('Error: ' + data);
-            });
-    }
-
-
-
-
-    // call the server for nodes
-    function callForNodes(){
-
-    }
-    function ucFirst(string) {
-        return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
-    }
-    // update the nodes
-    // use the data to update tree.allNodes and tree.nodes
-    function updateNodes(data){
-        //console.log("update nodes");
-        var newAllNodes=[];
-        data.forEach(function (d) {
-            if (checkYearRange(d.year)){
-                var authorL=[];
-                if(d.authors){
-                    d.authors.split(";").forEach(function(str){
-                        authorL.push(str.trim());
-                    });
-                    //   console.log(authorL);
-                }
-                var keywordsL=[];
-                if(d.keywords){
-                    d.keywords.split(",").forEach(function(str){
-                        keywordsL.push(ucFirst(str.trim()));
-                    });
-                    //   console.log(authorL);
-                }
-                newAllNodes.push({
-                    id: d._id
-                    ,year: d.year
-                    ,name: d.name
-                    ,source: d.source
-                    ,abstract: d.abstract
-                    ,notes: d.notes
-                    ,type: d.type
-                    ,authors: d.authors
-                    ,authorList: authorL
-                    ,keywords: d.keywords
-                    ,keywordsList: keywordsL
-                    ,focused: d.root==1
-                    ,citeCount:0
-                    ,citeCountSameYear:0
-                    ,distance:0
-                });
-                var series=$scope.treeData.series.filter(function(s){return s.name== d.source});
-                if(series.length==0) $scope.treeData.series.push({
-                    name: d.source
-                    ,count:1                    // count of articles
-                    ,visCount:0                // count of visible articles
-                    ,hiddenRelatedCount:0    // count of hidden but related articles
-                    ,include:false              // included in this series
-                    ,exclude:false              // excluded in this series
-                });
-                else series.forEach(function(s){s.count++;});
-
-                if(authorL.length){
-                    authorL.forEach(function(author){
-                        //   console.log(author);
-                        var authors=$scope.treeData.authors.filter(function(a){return a.name==author;});
-                        if(authors.length==0) $scope.treeData.authors.push({
-                            name: author
-                            ,count:1                    // count of articles
-                            ,visCount:0                // count of visible articles
-                            ,hiddenRelatedCount:0    // count of hidden but related articles
-                            ,include:false              // included in this series
-                            ,exclude:false              // excluded in this series
-                        });
-                        else authors.forEach(function(s){s.count++;});
-                    });
-                }
-
-                if(keywordsL.length>0){
-                    keywordsL.forEach(function(kws){
-                        //   console.log(author);
-                        var kwsInGlobalData=$scope.treeData.keywords.filter(function(gkws){return gkws.name==kws;});
-                        if(kwsInGlobalData.length==0) $scope.treeData.keywords.push({
-                            name: kws
-                            ,count:1                    // count of articles
-                            ,visCount:0                // count of visible articles
-                            ,hiddenRelatedCount:0    // count of hidden but related articles
-                            ,include:false              // included in this series
-                            ,exclude:false              // excluded in this series
-                        });
-                        else kwsInGlobalData.forEach(function(s){s.count++;});
-                    });
-                }
-            }
-        });
-        //   $scope.treeData.authors.forEach(function(d){
-        //       console.log(d);
-        //   });
-
-        // reverse the array for display, this is temporately, a better method should be considered
-        //    newAllNodes.sort(function(a,b){
-        //        if(a.name> b.name) return -1;
-        //        else if(a.name< b.name) return 1;
-        //        else return 0;
-        //    });
-        $scope.treeData.paperCount=newAllNodes.length;
-    //    $scope.treeData.allNodes=newAllNodes;
-        ArticleInfo.load(newAllNodes);
-    //    $scope.onFilter();
-        redraw();
-    }
-    // sort by field count
-    function sortByCount(a,b){
-        if(a.count== b.count){
-            if(a.name> b.name) return 1;
-            else if (a.name< b.name) return -1;
-            else return 0;
-        }
-        return b.count- a.count;
-    }
-    function sortByCiteCount(a,b){
-        if(a.citeCount== b.citeCount){
-            if(a.name> b.name) return 1;
-            else if (a.name< b.name) return -1;
-            else return 0;
-        }
-        return b.citeCount- a.citeCount;
-    }
-
-    // sort by field visCount
-    function sortByVisCount(a,b){
-        if(a.visCount== b.visCount){
-            if(a.name> b.name) return 1;
-            else if (a.name< b.name) return -1;
-            else return 0;
-        }
-        return b.visCount- a.visCount;
-    }
-
-    function sortByAlphabetic(a,b){
-        if(a.name> b.name) return 1;
-        else if (a.name< b.name) return -1;
-        else return 0;
-    }
-    // update the reference
-    function updateReferences(data){
-        //    console.log("updateReference");
-        var newReferences=[];
-        data.forEach(function (d) {
-            var dType= d.type;
-            if (!dType) dType=0;
-            newReferences.push({
-                id: d._id
-                , from: d.from
-                , to: d.to
-                , citing: false
-                , cited: false
-                , selected:false
-                , referred: false
-                , focused: false
-                , type: dType
-            });
-        });
-        //    if(invalidReference.length>0){
-        //        invalidReference.forEach(function(d){
-        //            $http.delete('/api/reference/' + d._id);
-        //        });
-        //    }
-        $scope.treeData.references = newReferences;
-
-    }
-
-
-    // called when select a reference
-    var onSelectedReference_old=function(reference){
-        console.log("select reference");
-        // 1.clear the state of all the references
-        //$scope.treeData.references.forEach(function(d){
-        //    d.selected=false;
-        //});
-
-        // 2.get the according references in the treeData
-        var selectedReferences=$scope.treeData.references.filter(function(d){return d.id==reference.id});
-        if(selectedReferences.length==0) return;
-        $scope.treeData.selectedReference=selectedReferences[0];
-
-        $scope.treeData.selectedReference.selected=true;
-
-        // 3.get the related articles
-        var fromNode=$scope.treeData.allNodes.filter(function(d){return d.id==$scope.treeData.selectedReference.from;})[0].name;
-        var toNode=$scope.treeData.allNodes.filter(function(d){return d.id==$scope.treeData.selectedReference.to;})[0].name;
-
-        // 4.record the selected reference info
-        $scope.treeData.selectedReferenceInfo={
-            from:fromNode
-            ,to:toNode
-        }
-
-        // 5.update the reference type area
-        var type=reference.type;
-        //console.log(type);
-        for(var i=0;i<3;i++){
-            if (type%2) $scope.treeData.availableReferenceType[i].belong=true;
-            else $scope.treeData.availableReferenceType[i].belong=false;
-            type=Math.floor(type/2);
-        }
-
-        redraw();
-    }
-
-    var onSelectedReference=function(reference){
-        console.log("select reference");
-         //1.clear the state of all the references
-        $scope.treeData.getReferences().forEach(function(d){
-            d.selected=false;
-        });
-
-        // 2.get the according references in the treeData
-        var selectedReferences=$scope.treeData.getReferences().filter(function(d){
-            //console.log(d);
-            //console.log(reference);
-            return d._id==reference.id});
-        if(selectedReferences.length==0) return;
-        $scope.treeData.selectedReference=selectedReferences[0];
-        console.log($scope.treeData.selectedReference);
-
-        $scope.treeData.selectedReference.selected=true;
-        // 3.get the related articles
-        var fromNode=$scope.treeData.getArticles().filter(function(d){return d._id==$scope.treeData.selectedReference.from;})[0].name;
-        var toNode=$scope.treeData.getArticles().filter(function(d){return d._id==$scope.treeData.selectedReference.to;})[0].name;
-        // 4.record the selected reference info
-        $scope.treeData.selectedReferenceInfo={
-            from:fromNode
-            ,to:toNode
-        }
-        console.log(fromNode);
-        console.log(toNode);
-
-        // 5.update the reference type area
-        var type=reference.type;
-        //console.log(type);
-        for(var i=0;i<3;i++){
-            if (type%2) $scope.treeData.availableReferenceType[i].belong=true;
-            else $scope.treeData.availableReferenceType[i].belong=false;
-            type=Math.floor(type/2);
-        }
-
-        redraw();
-    }
-
-
-    var updateReferenceRefer=function(){
-        $scope.treeData.getReferences().forEach(function(r){
-            r.referred=false;
-        });
-        $scope.treeData.getArticles().filter(function(n){return n.focused;})
-            .forEach(function(n){
-                $scope.treeData.getReferences().filter(function(r){
-                    return r.to==n.id||r.from==n.id;
-                }).forEach(function(r){
-                    //console.log(d);
-                    r.referred=true;
-                });
-            });
-    }
-
-    // triggered when change the reference type checkbox
-    $scope.onReferenceType=function(){
-        console.log("update reference");
-        console.log($scope.treeData.selectedReference.id);
-        if($scope.treeData.selectedReference.id){
-            var type=0;
-            var index=1;
-            $scope.treeData.availableReferenceType.forEach(function(t){
-                if(t.belong){
-                    type+=index;
-                }
-                index*=2;
-            });
-            $scope.treeData.selectedReference.type=type;
-            console.log("update reference type: "+type);
-            $http.post('/api/updateReference', $scope.treeData.selectedReference)
-                .success(function(d){
-                    redraw();
-                })
-                .error(function(data) {
-                    console.log('Error: ' + data);
-                });
-        }
-    }
-
-
-    // clicked series sort opinion
-    $scope.onSeriesSort = function(){
-        if($scope.treeData.seriesSort==0) $scope.treeData.series.sort(sortByCount);
-        else  if($scope.treeData.seriesSort==1) $scope.treeData.series.sort(sortByVisCount);
-        else $scope.treeData.series.sort(sortByAlphabetic);
-    }
-    $scope.onAuthorsSort = function(){
-        if($scope.treeData.authorsSort==0) $scope.treeData.authors.sort(sortByCount);
-        else  if($scope.treeData.authorsSort==1) $scope.treeData.authors.sort(sortByVisCount);
-        else $scope.treeData.authors.sort(sortByAlphabetic);
-    }
-    $scope.onKeywordsSort = function(){
-        if($scope.treeData.keywordsSort==0) $scope.treeData.keywords.sort(sortByCount);
-        else  if($scope.treeData.keywordsSort==1) $scope.treeData.keywords.sort(sortByVisCount);
-        else $scope.treeData.keywords.sort(sortByAlphabetic);
-    }
-
-    $scope.onPapersSort = function(){
-        //console.log("paper sort:"+$scope.treeData.papersSort);
-        if($scope.treeData.papersSort==0) $scope.treeData.allNodes.sort(sortByCiteCount);
-        //    else  if($scope.treeData.papersSort==1) $scope.treeData.allNodes.sort(sortByVisCount);
-        else $scope.treeData.allNodes.sort(sortByAlphabetic);
-
-        redraw();
-    }
-
-    // triggered when the filter is changed
-    // update the nodes
-    $scope.onFilter=function() {
-
-    }
-
-    // clear Search text and results
-    $scope.clearSearch=function(){
-        $scope.treeData.searchText="";
-        $scope.treeData.searchResultCount=0;
-        $scope.treeData.allNodes.forEach(function(d){
-            d.focused=false;
-        });
-        redraw();
-    }
-
-    // triggered when changed the search opinion
-    //$scope.onSearchOpinionChanged=function(){
-    //    doSearch();
-    //}
-
-
-    // get the reference nodes of this node
-    var getReferenceNodes=function(node){
-        // get the reference from this root
-        var fromRL = $scope.treeData.references.filter(function(r){
-            return r.from==node.id;
-        });
-        var arrReferenceNodes=[];
-        fromRL.forEach(function(r){
-            ArticleInfo.get().forEach(function(node){
-                if(node.id==r.to) arrReferenceNodes.push(node);
-            });
-        });
-        return arrReferenceNodes;
-    }
-
-    // get nodes that cited this nodes
-    var getCitedNodes=function(node){
-        // get the reference from this root
-        var fromRL = $scope.treeData.references.filter(function(r){
-            return r.to==node.id;
-        });
-        var arrCitedNodes=[];
-        fromRL.forEach(function(r){
-            ArticleInfo.get().forEach(function(node){
-                if(node.id==r.from) arrCitedNodes.push(node);
-            });
-        });
-        return arrCitedNodes;
-
-    }
-
-    // get neighbors of a node
-    var getNeighbors = function(node){
-        var arrReferenceNodes=getReferenceNodes(node);
-        var arrCitedNodes=getCitedNodes(node);
-        arrReferenceNodes.forEach(function(d){
-            if($.inArray(d,arrCitedNodes)==-1) arrCitedNodes.push(d);
-        });
-        return arrCitedNodes;
-    }
-
-
+    // match selection
+    $scope.matchList=["men final","men semifinal 1","men semifinal 2"];
+    // selected Season
+    $scope.selectedMatch="men final";
 
     $scope.fencingData={
         events:[
@@ -548,19 +36,24 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
         , selectedInfo:[]           // used for the selected node information display
         , series:[]
     }
-    $scope.statisticData={
+    $scope.tacticsData={
         Data:[
-            {
-                name:'1'
-                ,all: 10
-                ,count: 5
-            }
-            ,
-            {
-                name:'2'
-                ,all: 10
-                ,count: 6
-            }
+            /*
+        {name:'1', tactic1: 'a', tactic2: 'a', score: 2}
+        ,{name:'2', tactic1: 'a', tactic2: 'a', score: 1}
+        ,{name:'3', tactic1: 'r', tactic2: 'r', score: 2}
+        ,{name:'4', tactic1: 'a', tactic2: 'a', score: 2}
+        ,{name:'5', tactic1: 'r', tactic2: 'r', score: 1}
+        ,{name:'6', tactic1: 'r', tactic2: 'r', score: 2}
+        ,{name:'7', tactic1: 'a', tactic2: 'a', score: 2}
+        */
+        ]
+        ,
+        Results:[
+            {count:1,player1:0,player2:0}
+            ,{count:1,player1:0,player2:0}
+            ,{count:1,player1:0,player2:0}
+            ,{count:1,player1:0,player2:0}
         ]
     }
 
@@ -667,8 +160,22 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
         });
     }
     // version 2 of readData, added the behavior of two players
+    var fileName="../data/men_final.csv";
     function readData(){
-        d3.csv("../data/male_final.csv", function(d) {
+        $scope.fencingData.series=[];
+        $scope.fencingData.events=[];
+        $scope.fencingData.rounds=[];
+        $scope.tacticsData={
+            Data:[ ]
+            ,
+            Results:[
+                {count:1,player1:0,player2:0}
+                ,{count:1,player1:0,player2:0}
+                ,{count:1,player1:0,player2:0}
+                ,{count:1,player1:0,player2:0}
+            ]
+        }
+        d3.csv(fileName, function(d) {
             var arrTime=d.time.split(':');
             var minute=arrTime[0];
             var second=arrTime[1];
@@ -682,8 +189,6 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
             //    console.log(minute+":"+second);
             //    console.log(d);
         }, function(error, classes) {
-            $scope.fencingData.events=[];
-            $scope.fencingData.rounds=[];
             var s1=0;
             var s2=0;
             var index=0;
@@ -771,7 +276,62 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
                 console.log(d);
             })
             */
+
+            // for tactics information
+            $scope.tacticsData.Data=[];
+            var state=-1;
+            var index=1;
+            var tactic1="";
+            var tactic2="";
+            var score=0
+            $scope.fencingData.series.forEach(function(d){
+                if(d.event=="s") {
+                    if(state>-1){
+                        $scope.tacticsData.Data.push({
+                            name:index
+                            ,tactic1:tactic1
+                            ,tactic2:tactic2
+                            ,score:score
+                        });
+                        index+=1;
+                    }
+                    state=1;
+                }
+                else{
+                    if(state==1){
+                        tactic1=d.player1[0]=="a"? "a":"r";
+                        tactic2=d.player2[0]=="a"? "a":"r";
+                        state=2;
+                    }
+                    score=d.score;
+                }
+            });
+            // add the last one
+            $scope.tacticsData.Data.push({
+                name:index
+                ,tactic1:tactic1
+                ,tactic2:tactic2
+                ,score:score
+            });
+
+            // the tactic result matrix
+            $scope.tacticsData.Data.forEach(function(d){
+                var index=-1;
+
+                if(d.tactic1=="a")
+                    if(d.tactic2=="a") index=0;
+                    else index=1;
+                else
+                    if(d.tactic2=="a") index=2;
+                    else index=3;
+
+                $scope.tacticsData.Results[index].count++;
+                if(d.score==1) $scope.tacticsData.Results[index].player1++;
+                if(d.score==2) $scope.tacticsData.Results[index].player2++;
+
+            })
             $scope.$apply();
+
 
             if (error) throw error;
         });
@@ -823,5 +383,22 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
 
         })
     }
+
+    $scope.$watch('selectedMatch', function() {
+        console.log("on selected Season")
+        if($scope.selectedMatch=="men final"){
+            fileName="../data/men_final.csv";
+        }
+        else if($scope.selectedMatch=="men semifinal 1"){
+            fileName="../data/men_semifinal_1.csv";
+
+        }
+        else if($scope.selectedMatch=="men semifinal 2"){
+            fileName="../data/men_semifinal_2.csv";
+        }
+        readData();
+    });
 });
+
+
 
