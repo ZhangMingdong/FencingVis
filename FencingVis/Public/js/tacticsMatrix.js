@@ -42,7 +42,7 @@ mainApp.directive('tacticsMatrix', function () {
             }
 
             function redraw(){
-                var data=scope.data.Results;
+                var data=scope.data.statistics;
                 // generate graphics from matrix data
                 function generateMatrix(data){
                     var result=[];
@@ -152,6 +152,7 @@ mainApp.directive('tacticsMatrix', function () {
 
                 // the score grid
 
+
                 var grid = vis.selectAll(".grid")
                     .data(generateGrid(data))
                     .enter().append("svg:rect")
@@ -166,7 +167,7 @@ mainApp.directive('tacticsMatrix', function () {
             redraw();
 
             scope.$watch('data', redraw);
-            scope.$watch('data.Data', redraw);
+            scope.$watch('data.statistics', redraw);
 
         }
         matrix();

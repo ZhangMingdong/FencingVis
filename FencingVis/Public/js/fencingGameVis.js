@@ -14,10 +14,10 @@ mainApp.directive('fencingGameVis', function () {
     function link(scope, el, attr) {
 
         function getEnd(d){
-            return d.time;
+            return d.time_end;
         }
         function getStart(d){
-            return d.start;
+            return d.time_start;
         }
         function getIndex(d){
             return d.index;
@@ -310,7 +310,7 @@ mainApp.directive('fencingGameVis', function () {
             function _drawEvents(){
                 svgEvents = svgEvents.data([]);
                 svgEvents.exit().remove();
-                svgEvents = svgEvents.data(scope.data.rounds);
+                svgEvents = svgEvents.data(scope.data.bouts);
                 var nodeEvent=svgEvents.enter().append('svg:g');
 
                 nodeEvent
@@ -482,7 +482,7 @@ mainApp.directive('fencingGameVis', function () {
             function redraw(){
                 console.log("redraw")
                 if (!scope.data) { return };
-                if(scope.data.rounds.length==0) return;
+                if(scope.data.bouts.length==0) return;
                 //var drawMode=1; // define the style of the glyph
 
                 // draw grids

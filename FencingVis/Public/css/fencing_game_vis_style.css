@@ -15,7 +15,7 @@ fencing-game-vis{
 /* basic tree style */
 fencing-game-vis {
     width: 100%;
-    height: 100%;
+    height: 300px;
     display: block;
     z-index: 0;
     overflow: hidden;

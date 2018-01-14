@@ -16,22 +16,11 @@
     <script src="js/tacticsMatrix.js"></script>
     <link rel="stylesheet" type="text/css" href="CSS/html_styles.css">
     <link rel="stylesheet" type="text/css" href="CSS/fencing_game_vis_style.css">
+    <link rel="stylesheet" type="text/css" href="CSS/tactics_chart_style.css">
     <link rel="stylesheet" type="text/css" href="CSS/sparkline_style.css">
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <style name="table style">
-        table, th , td {
-            border: 1px solid grey;
-            border-collapse: collapse;
-            padding: 5px;
-        }
-        table tr:nth-child(odd) {
-            background-color: #f2f2f2;
-        }
-        table tr:nth-child(even) {
-            background-color: #ffffff;
-        }
-    </style>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and
     media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page
@@ -46,81 +35,9 @@
     <!-- Include all compiled plugins (below), or include individual
     files as needed -->
     <script src="lib/bootstrap.min.js"></script>
-    <style>
 
-        body, html {
-            margin: 0;
-            font-family: helvetica;
-            margin: auto;
-            width: 100%;
-        }
-    </style>
-    <style name="tactics-chart style">
-        /* bar chart */
-        tactics-chart {
-            width: 100%;
-            height: 95%;
-            display: block;
-            z-index: 0;
-            overflow: hidden;
-            font-size: 10px;
-        }
-
-        /*
-        .bar {
-            fill: steelblue;
-        }
-
-        .bar:hover {
-            fill: brown;
-        }
-        */
-
-    </style>
-    <style name="tactics-matrix style">
-
-
-    </style>
-    <style name="html style">
-        /* body */
-        body, html {
-            margin: 0;
-            font-family: helvetica;
-            margin: auto;
-            width: 90%;
-        }
-
-        .header{
-            height:5%;
-            width:100%;
-            background-color: black;
-            color:white;
-        }
-        .quarter{
-            width:100%;
-            height:200px;
-        }
-        .row8{
-            float:left;
-            width:50%;
-            height:800px;
-        }
-        .innerVis{
-            width:100%;
-            height:100%;
-        }
-
-
-    </style>
-    <style>
-        .ldatopic:hover{
-            background-color: lime;
-        }
-        .ldatopic:hover{
-            background-color: lime;
-        }
-    </style>
 </head>
+
 <body ng-app="myApp" ng-controller="MainCtrl">
 
 
@@ -128,15 +45,13 @@
     <select ng-model="selectedMatch" ng-options="match for match in matchList" style="width:200px">
     </select>
     <h1>时间视图</h1>
-    <div style="float:left;height:100%;width:100%">
-        <fencing-game-vis data="fencingData" selected-point="selectedNode"></fencing-game-vis>
-    </div>
+    <fencing-game-vis data="fencingData" selected-point="selectedNode"></fencing-game-vis>
     <br>
     <h1>战术视图</h1>
-    <tactics-chart class="quarter" data="tacticsData"></tactics-chart>
+    <tactics-chart data="fencingData"></tactics-chart>
     <br>
     <h1>战术矩阵</h1>
-    <tactics-matrix class="quarter" data="tacticsData"></tactics-matrix>
+    <tactics-matrix data="fencingData"></tactics-matrix>
     <br>
     <br>
 </body>
