@@ -10,11 +10,11 @@ tactics-chart {
 }
 
 
-.bar {
+tactics-chart .bar {
     stroke-width: 1;
 }
 
-.bar:hover {
+tactics-chart .bar:hover {
     stroke-width: 3;
 }
 /*

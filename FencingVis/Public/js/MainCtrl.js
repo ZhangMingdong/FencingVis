@@ -20,6 +20,15 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
             ,{count:1,player1:0,player2:0}
             ,{count:1,player1:0,player2:0}
         ]                           // statistics of the tactic: 0-aa;1-ar;2-ra;3-rr
+        ,
+        tree:{                 // tree of the result
+            acronym:"player 1",
+            children_length: 2,
+            children:[
+                {acronym:"win",children_length:0},
+                {acronym:"lose",children_length:0}
+            ]
+        }
         , selectedNode:{}
         , selectedInfo:[]          // used for the selected node information display
     }
@@ -52,6 +61,7 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
             ,{count:1,player1:0,player2:0}
             ,{count:1,player1:0,player2:0}
         ]
+        var tree={};
         d3.csv(fileName, function(d) {
             var arrTime=d.time.split(':');
             var minute=arrTime[0];
@@ -198,6 +208,59 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
 
             })
 
+            // build the tree
+            tree={                 // tree of the result
+                acronym:"选手1",
+                children_length: 2,
+                children:[
+                    {acronym:"得分回合",children_length:0,children:[
+                            {acronym:"前进",children_length:0,children:[]},
+                            {acronym:"后退",children_length:0,children:[]}
+                        ]},
+                    {acronym:"失分回合",children_length:0,children:[
+                            {acronym:"前进",children_length:0,children:[]},
+                            {acronym:"后退",children_length:0,children:[]}
+                        ]},
+                    {acronym:"互不得分",children_length:0,children:[
+                            {acronym:"前进",children_length:0,children:[]},
+                            {acronym:"后退",children_length:0,children:[]}
+                        ]}
+                ]
+            }
+
+            tactics.forEach(function(d){
+                if(d.score==1){
+                    if(d.tactic1=='a'){
+                        tree.children[0].children[0].children_length++;
+                        tree.children[0].children[0].children.push({acronym:"",children_length:0,children:[]})
+                    }
+                    else{
+                        tree.children[0].children[1].children_length++;
+                        tree.children[0].children[1].children.push({acronym:"",children_length:0,children:[]})
+                    }
+                }
+                else if(d.score==2){
+                    if(d.tactic1=='a'){
+                        tree.children[1].children[0].children_length++;
+                        tree.children[1].children[0].children.push({acronym:"",children_length:0,children:[]})
+                    }
+                    else{
+                        tree.children[1].children[1].children_length++;
+                        tree.children[1].children[1].children.push({acronym:"",children_length:0,children:[]})
+                    }
+                }
+                else{
+                    if(d.tactic1=='a'){
+                        tree.children[2].children[0].children_length++;
+                        tree.children[2].children[0].children.push({acronym:"",children_length:0,children:[]})
+                    }
+                    else{
+                        tree.children[2].children[1].children_length++;
+                        tree.children[2].children[1].children.push({acronym:"",children_length:0,children:[]})
+                    }
+                }
+            })
+
 
 
             console.log(series);
@@ -206,6 +269,7 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
             $scope.fencingData.bouts=bouts;
             $scope.fencingData.tactics=tactics;
             $scope.fencingData.statistics=statistics;
+            $scope.fencingData.tree=tree;
 
             $scope.$apply();
 
