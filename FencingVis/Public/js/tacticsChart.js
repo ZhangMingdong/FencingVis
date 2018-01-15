@@ -149,6 +149,12 @@ mainApp.directive('tacticsChart', function () {
                     .attr("class", "bar")
                     .attr("id","player2")
 
+                bouts.selectAll('rect')
+                    .on('mouseover', tip.show)
+                    .on('mouseout', tip.hide)
+                    .on('click',function(d){
+                        scope.data.onClick(d.name);
+                    });
 
                 bouts.selectAll("#player1")
                     .attr("x", function(d) { return xScale(d.name); })
@@ -159,11 +165,6 @@ mainApp.directive('tacticsChart', function () {
                     .attr("fill",function(d){
                         return d.score==1? "red":"lightgray";
                     })
-                    .on('mouseover', tip.show)
-                    .on('mouseout', tip.hide)
-                    .on('click',function(d){
-                        scope.data.onClick(d.name);
-                    });
 
                 bouts.selectAll("#player2")
                     .attr("x", function(d) { return xScale(d.name); })
@@ -174,11 +175,6 @@ mainApp.directive('tacticsChart', function () {
                     .attr("fill",function(d){
                         return d.score==2? "blue":"lightgray";
                     })
-                    .on('mouseover', tip.show)
-                    .on('mouseout', tip.hide)
-                    .on('click',function(d){
-                        scope.data.onClick(d.name);
-                    });
 
                 bouts.exit()
                     .remove();

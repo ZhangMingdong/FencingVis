@@ -18,6 +18,9 @@ module.exports = function(app) {
     app.get('/HierarchicalPartitionLayout',function(req,res){
         res.sendfile('./public/Hierarchical Partition Layout.html');
     });
+    app.get('/SunBurst',function(req,res){
+        res.sendfile('./public/SunBurst.html');
+    });
 	// application -------------------------------------------------------------
 	app.get('*', function (req, res) {
 	    console.log("-----get* from "+req.host+" at "+Date());

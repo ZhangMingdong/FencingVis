@@ -9,33 +9,33 @@
 mainApp.directive('statisticChart', function () {
     function link(scope, el, attr) {
         function statisticChart(){
-            var svgWidth=400;
-            var svgHeight=400;
 
-            var w = 960,
-                h = 500,
-                x = d3.scale.linear().range([0, w]),
-                y = d3.scale.linear().range([0, h]);
+            var width = 600,
+                height = 400,
+                x = d3.scale.linear().range([0, width]),
+                y = d3.scale.linear().range([0, height]);
 
-            var vis = d3.select(el[0]).append("div")
+            var div = d3.select(el[0]).append("div")
                 .attr("class", "chart")
-                .style("width", w + "px")
-                .style("height", h + "px")
-                .append("svg:svg")
-                .attr("width", w)
-                .attr("height", h).selectAll("g");
+                .style("width", width + "px")
+                .style("height", height + "px")
+            var svg=div.append("svg:svg")
+                .attr("width", width)
+                .attr("height", height)
+            var vis = svg.selectAll("vis");
 
             var partition = d3.layout.partition()
                 .value(function(d) { return (d.children_length + 15) * 30; });
 
             scope.$watch(function () {
                 //    console.log("watching===============svgStreamBG")
-                svgWidth = el[0].clientWidth;
-                svgHeight = el[0].clientHeight;
-            //    if(svgWidth<600) svgWidth=600;
-            //    if(svgHeight<400) svgHeight=400;
-
-                return svgWidth + svgHeight;
+                width = el[0].clientWidth;
+                height = el[0].clientHeight;
+                if(width<600) width=700;
+                if(height<400) height=400;
+                console.log("w:"+width);
+                console.log("h:"+height);
+                return width+height;
             }, resize);
             // response the size-change
             function resize() {
@@ -48,33 +48,54 @@ mainApp.directive('statisticChart', function () {
 
             function redraw(){
                 console.log("redraw statistic chart");
+
+                div
+                    .style("width", width + "px")
+                    .style("height", height + "px")
+                svg
+                    .attr("width", width)
+                    .attr("height", height)
+
                 var root=scope.data.tree;
-                var g=vis
+                vis=vis.data(partition.nodes({}));
+                vis.exit().remove();
+
+
+
+                vis=vis
                     .data(partition.nodes(root))
+
+                var kx = width / root.dx,
+                    ky = height / 1;
+
+                var g=vis
                     .enter().append("g")
                     .attr("transform", function(d) { return "translate(" + x(d.y) + "," + y(d.x) + ")"; })
                     .on("click", click);
 
-                var kx = w / root.dx,
-                    ky = h / 1;
 
-                g.append("svg:rect")
+
+                g.append("rect")
                     .attr("width", root.dy * kx)
                     .attr("height", function(d) { return d.dx * ky; })
                     .attr("class", function(d) { return d.children ? "parent" : "child"; });
 
-                g.append("svg:text")
+                g.append("text")
                     .attr("transform", transform)
                     .attr("dy", ".35em")
                     .style("opacity", function(d) { return d.dx * ky > 12 ? 1 : 0; })
                     .text(function(d) { return d.acronym; })
-                //vis.exit().remove();
+
+
+
+                vis.exit().remove();
+
 
                 d3.select(window)
                     .on("click", function() { click(root); })
 
                 function click(d) {
-
+                    width-=10;
                     redraw();
 
                 }
