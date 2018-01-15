@@ -5,9 +5,10 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
 
     // match selection
     $scope.matchList=["men final","men semifinal 1","men semifinal 2"];
-    // selected Season
+    // selected match
     $scope.selectedMatch="men final";
 
+    // fencing data structure
     $scope.fencingData={
         series:[]                   // raw data: time, event, score, player1, player2, position
         , events:[]                 // events in the match: time_start, time_end, index, player, score
@@ -21,6 +22,21 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
         ]                           // statistics of the tactic: 0-aa;1-ar;2-ra;3-rr
         , selectedNode:{}
         , selectedInfo:[]          // used for the selected node information display
+    }
+
+    // check if the string is offensive
+    function checkOffensive(str){
+        var len=str.length;
+        var index=0;
+        while(index++<len){
+            if(str[index]!='f'&&str[index]!='a') return false;
+
+            if(str[index]=='a') return true;
+        }
+
+        return false;
+
+
     }
 
     // version 2 of readData, added the behavior of two players
@@ -150,8 +166,8 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
                 }
                 else{
                     if(state==1){
-                        tactic1=d.player1[0]=="a"? "a":"r";
-                        tactic2=d.player2[0]=="a"? "a":"r";
+                        tactic1=checkOffensive(d.player1)? "a":"r";
+                        tactic2=checkOffensive(d.player2)? "a":"r";
                         state=2;
                     }
                     score=d.score;
