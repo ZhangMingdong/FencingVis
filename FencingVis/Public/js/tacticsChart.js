@@ -21,18 +21,37 @@ mainApp.directive('tacticsChart', function () {
 
             var scoresSVG=svg.selectAll("score");
 
-            var tip = d3.tip()
+            var tip1 = d3.tip()
                 .attr('class', 'd3-tip')
                 .offset([-10, 0])
                 .html(function(d) {
-                    if(d.all==undefined)
-                        return "<strong>Score:</strong> <span style='color:red'>" + d.count+"</span>";
-                    else
-                        return "<strong>Frequency:</strong> <span style='color:red'>" + d.count+"/"+ d.all + "</span>";
+                    return "<strong>行动:</strong> <span style='color:red'>" + translateMotion(d.motion1)+"</span>";
                 });
-            svg.call(tip);
+            var tip2 = d3.tip()
+                .attr('class', 'd3-tip')
+                .offset([-10, 0])
+                .html(function(d) {
+                    return "<strong>行动:</strong> <span style='color:red'>" + translateMotion(d.motion2)+"</span>";
+                });
+            svg.call(tip1);
+            svg.call(tip2);
 
-
+            function translateMotion(str){
+                var len=str.length;
+                var result=""
+                for(var i=0;i<len;i++){
+                    if(str[i]=='a') result+="进攻";
+                    else if(str[i]=='p') result+="防守";
+                    else if(str[i]=='c') result+="抢攻";
+                    else if(str[i]=='r') result+="还击";
+                    else if(str[i]=='f') result+="前进";
+                    else if(str[i]=='b') result+="后退";
+                    else if(str[i]=='-') result+="持续";
+                    else if(str[i]=='+') result+="错误动作";
+                    else if(str[i]=='h') result+="停顿";
+                }
+                return result;
+            }
             scope.$watch(function () {
                 //    console.log("watching===============svgStreamBG")
                 svgWidth = el[0].clientWidth;
@@ -75,7 +94,7 @@ mainApp.directive('tacticsChart', function () {
             }
 
             function redraw(){
-                console.log("===redraw tactics chart===")
+            //    console.log("===redraw tactics chart===")
                 var data=scope.data.tactics;
 
                 var width = svgWidth - margin.left - margin.right;
@@ -135,8 +154,8 @@ mainApp.directive('tacticsChart', function () {
                     bouts.exit()
                         .remove();
                 }
-                console.log(data);
-                console.log(xScale.rangeBand());
+                //console.log(data);
+                //console.log(xScale.rangeBand());
 
                 bouts=bouts.data(data);
 
@@ -150,8 +169,6 @@ mainApp.directive('tacticsChart', function () {
                     .attr("id","player2")
 
                 bouts.selectAll('rect')
-                    .on('mouseover', tip.show)
-                    .on('mouseout', tip.hide)
                     .on('click',function(d){
                         scope.data.onClick(d.name);
                     });
@@ -165,6 +182,8 @@ mainApp.directive('tacticsChart', function () {
                     .attr("fill",function(d){
                         return d.score==1? "red":"lightgray";
                     })
+                    .on('mouseover', tip1.show)
+                    .on('mouseout', tip1.hide)
 
                 bouts.selectAll("#player2")
                     .attr("x", function(d) { return xScale(d.name); })
@@ -175,6 +194,8 @@ mainApp.directive('tacticsChart', function () {
                     .attr("fill",function(d){
                         return d.score==2? "blue":"lightgray";
                     })
+                    .on('mouseover', tip2.show)
+                    .on('mouseout', tip2.hide)
 
                 bouts.exit()
                     .remove();

@@ -120,7 +120,7 @@ mainApp.directive('tacticsMatrix', function () {
                         // player 2
                         x=0;
                         y=0;
-                        console.log(data[i].player2);
+                    //    console.log(data[i].player2);
                         for(var j=0;j<data[i].player2;j++){
                             result.push({
                                 x:(coordinate[i].x+coordinate[i].w-x-1)/sum,

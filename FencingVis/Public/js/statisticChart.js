@@ -9,19 +9,22 @@
 mainApp.directive('statisticChart', function () {
     function link(scope, el, attr) {
         function statisticChart(){
-
             var width = 600,
                 height = 400,
                 x = d3.scale.linear().range([0, width]),
                 y = d3.scale.linear().range([0, height]);
 
+            // L1
             var div = d3.select(el[0]).append("div")
                 .attr("class", "chart")
                 .style("width", width + "px")
                 .style("height", height + "px")
+            // L2
             var svg=div.append("svg:svg")
                 .attr("width", width)
                 .attr("height", height)
+
+            // L3
             var vis = svg.selectAll("vis");
 
             var partition = d3.layout.partition()
@@ -33,8 +36,8 @@ mainApp.directive('statisticChart', function () {
                 height = el[0].clientHeight;
                 if(width<600) width=700;
                 if(height<400) height=400;
-                console.log("w:"+width);
-                console.log("h:"+height);
+            //    console.log("w:"+width);
+            //    console.log("h:"+height);
                 return width+height;
             }, resize);
             // response the size-change
@@ -47,7 +50,7 @@ mainApp.directive('statisticChart', function () {
 
 
             function redraw(){
-                console.log("redraw statistic chart");
+            //    console.log("redraw statistic chart");
 
                 div
                     .style("width", width + "px")
@@ -56,18 +59,25 @@ mainApp.directive('statisticChart', function () {
                     .attr("width", width)
                     .attr("height", height)
 
+                x.range([0,width]);
+                y.range([0,height]);
+
+
                 var root=scope.data.tree;
-                vis=vis.data(partition.nodes({}));
+                vis=vis.data({});
                 vis.exit().remove();
 
 
 
+                console.log(root);
                 vis=vis
                     .data(partition.nodes(root))
+                console.log(root);
 
                 var kx = width / root.dx,
                     ky = height / 1;
 
+                // L4
                 var g=vis
                     .enter().append("g")
                     .attr("transform", function(d) { return "translate(" + x(d.y) + "," + y(d.x) + ")"; })
@@ -84,7 +94,7 @@ mainApp.directive('statisticChart', function () {
                     .attr("transform", transform)
                     .attr("dy", ".35em")
                     .style("opacity", function(d) { return d.dx * ky > 12 ? 1 : 0; })
-                    .text(function(d) { return d.acronym; })
+                    .text(function(d) { return d.acronym+"("+d.count+")"; })
 
 
 
@@ -95,7 +105,6 @@ mainApp.directive('statisticChart', function () {
                     .on("click", function() { click(root); })
 
                 function click(d) {
-                    width-=10;
                     redraw();
 
                 }
@@ -111,7 +120,7 @@ mainApp.directive('statisticChart', function () {
             redraw();
 
             scope.$watch('data', redraw);
-            scope.$watch('data.Data', redraw);
+            scope.$watch('data.tree', redraw);
 
         }
         statisticChart();
@@ -122,3 +131,6 @@ mainApp.directive('statisticChart', function () {
         scope: { data: '=' }
     };
 });
+
+
+

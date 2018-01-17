@@ -48,6 +48,15 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
 
     }
 
+    function addElem(tree,i1,i2,i3){
+        tree.children[i1].children[i2].children[i3].children.push({acronym:"",children_length:0,children:[]})
+        tree.children[i1].children[i2].children[i3].children_length++;
+        tree.children[i1].children[i2].children[i3].count++;
+        tree.children[i1].children[i2].count++;
+        tree.children[i1].count++;
+        tree.count++;
+    }
+
     // version 2 of readData, added the behavior of two players
     var fileName="../data/men_final.csv";
     function readData(){
@@ -160,7 +169,9 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
             var index=1;
             var tactic1="";
             var tactic2="";
-            var score=0
+            var score=0;
+            var motion1="";
+            var motion2="";
             series.forEach(function(d){
                 if(d.event=="s") {
                     if(state>-1){
@@ -168,8 +179,12 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
                             name:index
                             ,tactic1:tactic1
                             ,tactic2:tactic2
+                            ,motion1:motion1
+                            ,motion2:motion2
                             ,score:score
                         });
+                        motion1="";
+                        motion2="";
                         index+=1;
                     }
                     state=1;
@@ -178,6 +193,8 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
                     if(state==1){
                         tactic1=checkOffensive(d.player1)? "a":"r";
                         tactic2=checkOffensive(d.player2)? "a":"r";
+                        motion1+=d.player1;
+                        motion2+=d.player2;
                         state=2;
                     }
                     score=d.score;
@@ -188,6 +205,8 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
                 name:index
                 ,tactic1:tactic1
                 ,tactic2:tactic2
+                ,motion1:motion1
+                ,motion2:motion2
                 ,score:score
             });
 
@@ -210,60 +229,98 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
 
             // build the tree
             tree={                 // tree of the result
-                acronym:"选手1",
+                acronym:"比赛统计",
                 children_length: 2,
+                count: 0,
                 children:[
-                    {acronym:"得分回合",children_length:0,children:[
-                            {acronym:"前进",children_length:0,children:[]},
-                            {acronym:"后退",children_length:0,children:[]}
-                        ]},
-                    {acronym:"失分回合",children_length:0,children:[
-                            {acronym:"前进",children_length:0,children:[]},
-                            {acronym:"后退",children_length:0,children:[]}
-                        ]},
-                    {acronym:"互不得分",children_length:0,children:[
-                            {acronym:"前进",children_length:0,children:[]},
-                            {acronym:"后退",children_length:0,children:[]}
-                        ]}
+                    {                 // tree of the result
+                        acronym:"选手1",
+                        children_length: 3,
+                        count: 0,
+                        children:[
+                            {acronym:"得分回合",children_length:0,count: 0,children:[
+                                    {acronym:"前进",children_length:0,count: 0,children:[]},
+                                    {acronym:"后退",children_length:0,count: 0,children:[]}
+                                ]},
+                            {acronym:"失分回合",children_length:0,count: 0,children:[
+                                    {acronym:"前进",children_length:0,count: 0,children:[]},
+                                    {acronym:"后退",children_length:0,count: 0,children:[]}
+                                ]},
+                            {acronym:"互不得分",children_length:0,count: 0,children:[
+                                    {acronym:"前进",children_length:0,count: 0,children:[]},
+                                    {acronym:"后退",children_length:0,count: 0,children:[]}
+                                ]}
+                        ]
+                    },{                 // tree of the result
+                        acronym:"选手2",
+                        children_length: 3,
+                        count: 0,
+                        children:[
+                            {acronym:"得分回合",children_length:0,count: 0,children:[
+                                    {acronym:"前进",children_length:0,count: 0,children:[]},
+                                    {acronym:"后退",children_length:0,count: 0,children:[]}
+                                ]},
+                            {acronym:"失分回合",children_length:0,count: 0,children:[
+                                    {acronym:"前进",children_length:0,count: 0,children:[]},
+                                    {acronym:"后退",children_length:0,count: 0,children:[]}
+                                ]},
+                            {acronym:"互不得分",children_length:0,count: 0,children:[
+                                    {acronym:"前进",children_length:0,count: 0,children:[]},
+                                    {acronym:"后退",children_length:0,count: 0,children:[]}
+                                ]}
+                        ]
+                    }
                 ]
             }
 
             tactics.forEach(function(d){
                 if(d.score==1){
                     if(d.tactic1=='a'){
-                        tree.children[0].children[0].children_length++;
-                        tree.children[0].children[0].children.push({acronym:"",children_length:0,children:[]})
+                        addElem(tree,0,0,0);
                     }
                     else{
-                        tree.children[0].children[1].children_length++;
-                        tree.children[0].children[1].children.push({acronym:"",children_length:0,children:[]})
+                        addElem(tree,0,0,1);
+                    }
+                    if(d.tactic2=='a'){
+                        addElem(tree,1,1,0);
+                    }
+                    else{
+                        addElem(tree,1,1,1);
                     }
                 }
                 else if(d.score==2){
                     if(d.tactic1=='a'){
-                        tree.children[1].children[0].children_length++;
-                        tree.children[1].children[0].children.push({acronym:"",children_length:0,children:[]})
+                        addElem(tree,0,1,0);
                     }
                     else{
-                        tree.children[1].children[1].children_length++;
-                        tree.children[1].children[1].children.push({acronym:"",children_length:0,children:[]})
+                        addElem(tree,0,1,1);
+                    }
+                    if(d.tactic2=='a'){
+                        addElem(tree,1,0,0);
+                    }
+                    else{
+                        addElem(tree,1,0,1);
                     }
                 }
                 else{
                     if(d.tactic1=='a'){
-                        tree.children[2].children[0].children_length++;
-                        tree.children[2].children[0].children.push({acronym:"",children_length:0,children:[]})
+                        addElem(tree,0,2,0);
                     }
                     else{
-                        tree.children[2].children[1].children_length++;
-                        tree.children[2].children[1].children.push({acronym:"",children_length:0,children:[]})
+                        addElem(tree,0,2,1);
+                    }
+                    if(d.tactic2=='a'){
+                        addElem(tree,1,2,0);
+                    }
+                    else{
+                        addElem(tree,1,2,1);
                     }
                 }
             })
 
 
 
-            console.log(series);
+        //    console.log(series);
             $scope.fencingData.series=series;
             $scope.fencingData.events=events;
             $scope.fencingData.bouts=bouts;
