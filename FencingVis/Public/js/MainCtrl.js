@@ -19,16 +19,9 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
             ,{count:1,player1:0,player2:0}
             ,{count:1,player1:0,player2:0}
             ,{count:1,player1:0,player2:0}
-        ]                           // statistics of the tactic: 0-aa;1-ar;2-ra;3-rr
-        ,
-        tree:{                 // tree of the result
-            acronym:"player 1",
-            children_length: 2,
-            children:[
-                {acronym:"win",children_length:0},
-                {acronym:"lose",children_length:0}
-            ]
-        }
+        ]         // statistics of the tactic: 0-aa;1-ar;2-ra;3-rr
+        , statistics_tree:{}       // tree of the statistics
+        , motion_tree:{}          // tree of motion
         , selectedNode:{}
         , selectedInfo:[]          // used for the selected node information display
     }
@@ -56,6 +49,17 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
         tree.children[i1].count++;
         tree.count++;
     }
+    function addElem4(tree,i1,i2,i3,i4){
+        console.log("addElem")
+        console.log(tree);
+        tree.children[i1].children[i2].children[i3].children[i4].children.push({acronym:"",children_length:0,children:[]})
+        tree.children[i1].children[i2].children[i3].children[i4].children_length++;
+        tree.children[i1].children[i2].children[i3].children[i4].count++;
+        tree.children[i1].children[i2].children[i3].count++;
+        tree.children[i1].children[i2].count++;
+        tree.children[i1].count++;
+        tree.count++;
+    }
 
     // version 2 of readData, added the behavior of two players
     var fileName="../data/men_final.csv";
@@ -70,7 +74,6 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
             ,{count:1,player1:0,player2:0}
             ,{count:1,player1:0,player2:0}
         ]
-        var tree={};
         d3.csv(fileName, function(d) {
             var arrTime=d.time.split(':');
             var minute=arrTime[0];
@@ -227,13 +230,13 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
 
             })
 
-            // build the tree
-            tree={                 // tree of the result
+            // build the statistics tree
+            var statistics_tree={                 // tree of the result
                 acronym:"比赛统计",
                 children_length: 2,
                 count: 0,
                 children:[
-                    {                 // tree of the result
+                    {
                         acronym:"选手1",
                         children_length: 3,
                         count: 0,
@@ -251,7 +254,7 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
                                     {acronym:"后退",children_length:0,count: 0,children:[]}
                                 ]}
                         ]
-                    },{                 // tree of the result
+                    },{
                         acronym:"选手2",
                         children_length: 3,
                         count: 0,
@@ -276,47 +279,151 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
             tactics.forEach(function(d){
                 if(d.score==1){
                     if(d.tactic1=='a'){
-                        addElem(tree,0,0,0);
+                        addElem(statistics_tree,0,0,0);
                     }
                     else{
-                        addElem(tree,0,0,1);
+                        addElem(statistics_tree,0,0,1);
                     }
                     if(d.tactic2=='a'){
-                        addElem(tree,1,1,0);
+                        addElem(statistics_tree,1,1,0);
                     }
                     else{
-                        addElem(tree,1,1,1);
+                        addElem(statistics_tree,1,1,1);
                     }
                 }
                 else if(d.score==2){
                     if(d.tactic1=='a'){
-                        addElem(tree,0,1,0);
+                        addElem(statistics_tree,0,1,0);
                     }
                     else{
-                        addElem(tree,0,1,1);
+                        addElem(statistics_tree,0,1,1);
                     }
                     if(d.tactic2=='a'){
-                        addElem(tree,1,0,0);
+                        addElem(statistics_tree,1,0,0);
                     }
                     else{
-                        addElem(tree,1,0,1);
+                        addElem(statistics_tree,1,0,1);
                     }
                 }
                 else{
                     if(d.tactic1=='a'){
-                        addElem(tree,0,2,0);
+                        addElem(statistics_tree,0,2,0);
                     }
                     else{
-                        addElem(tree,0,2,1);
+                        addElem(statistics_tree,0,2,1);
                     }
                     if(d.tactic2=='a'){
-                        addElem(tree,1,2,0);
+                        addElem(statistics_tree,1,2,0);
                     }
                     else{
-                        addElem(tree,1,2,1);
+                        addElem(statistics_tree,1,2,1);
                     }
                 }
             })
+
+
+            // build the motion tree
+            var motion_tree={                 // tree of the motion
+                acronym:"行动统计",
+                children_length: 2,
+                count: 0,
+                children:[
+                    {
+                        acronym:"选手1",
+                        children_length: 2,
+                        count: 0,
+                        children:[
+                            {acronym:"前进",children_length:3,count: 0,children:[
+                                    {acronym:"得分",children_length:2,count: 0,children:[
+                                            {acronym:"前进得分",children_length:0,count: 0,children:[]},
+                                            {acronym:"后退得分",children_length:0,count: 0,children:[]}
+                                        ]},
+                                    {acronym:"失分",children_length:2,count: 0,children:[
+                                            {acronym:"前进失分",children_length:0,count: 0,children:[]},
+                                            {acronym:"后退失分",children_length:0,count: 0,children:[]}
+                                        ]},
+                                    {acronym:"互中",children_length:0,count: 0,children:[]}
+                                ]},
+                            {acronym:"后退",children_length:0,count: 0,children:[
+                                    {acronym:"得分",children_length:2,count: 0,children:[
+                                            {acronym:"前进得分",children_length:0,count: 0,children:[]},
+                                            {acronym:"后退得分",children_length:0,count: 0,children:[]}
+                                        ]},
+                                    {acronym:"失分",children_length:2,count: 0,children:[
+                                            {acronym:"前进失分",children_length:0,count: 0,children:[]},
+                                            {acronym:"后退失分",children_length:0,count: 0,children:[]}
+                                        ]},
+                                    {acronym:"互中",children_length:0,count: 0,children:[]}
+                                ]}
+                        ]
+                    },{
+                        acronym:"选手1",
+                        children_length: 2,
+                        count: 0,
+                        children:[
+                            {acronym:"前进",children_length:3,count: 0,children:[
+                                    {acronym:"得分",children_length:2,count: 0,children:[
+                                            {acronym:"前进得分",children_length:0,count: 0,children:[]},
+                                            {acronym:"后退得分",children_length:0,count: 0,children:[]}
+                                        ]},
+                                    {acronym:"失分",children_length:2,count: 0,children:[
+                                            {acronym:"前进失分",children_length:0,count: 0,children:[]},
+                                            {acronym:"后退失分",children_length:0,count: 0,children:[]}
+                                        ]},
+                                    {acronym:"互中",children_length:0,count: 0,children:[]}
+                                ]},
+                            {acronym:"后退",children_length:0,count: 0,children:[
+                                    {acronym:"得分",children_length:2,count: 0,children:[
+                                            {acronym:"前进得分",children_length:0,count: 0,children:[]},
+                                            {acronym:"后退得分",children_length:0,count: 0,children:[]}
+                                        ]},
+                                    {acronym:"失分",children_length:2,count: 0,children:[
+                                            {acronym:"前进失分",children_length:0,count: 0,children:[]},
+                                            {acronym:"后退失分",children_length:0,count: 0,children:[]}
+                                        ]},
+                                    {acronym:"互中",children_length:0,count: 0,children:[]}
+                                ]}
+                        ]
+                    }
+                ]
+            }
+            var first=true;
+            var lastMotion;
+            tactics.forEach(function(d){
+                if(!first){
+                    var i1_2=d.tactic1=='a'? 0:1;
+                    var i2_2=d.tactic2=='a'? 0:1;
+                    var i1_3,i2_3;
+                    if(lastMotion.score==0){
+                        i1_3=2;
+                        i2_3=2;
+                    }
+                    else if(lastMotion.score==1){
+                        i1_3=0;
+                        i2_3=1;
+
+                    }
+                    else if(lastMotion.score==2){
+                        i1_3=1;
+                        i2_3=0;
+                    }
+                    var i1_4=lastMotion.tactic1=='a'? 0:1;
+                    var i2_4=lastMotion.tactic2=='a'? 0:1;
+                    if(i1_3==2){
+                        addElem(motion_tree,0,i1_2,i1_3);           // for player 1
+                        addElem(motion_tree,1,i2_2,i2_3);           // for player 2
+                    }
+                    else{
+                        addElem4(motion_tree,0,i1_2,i1_3,i1_4);           // for player 1
+                        addElem4(motion_tree,1,i2_2,i2_3,i2_4);           // for player 2
+                    }
+                }
+                else{
+                    first=false;
+                }
+                lastMotion=d;
+            })
+
 
 
 
@@ -326,8 +433,8 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
             $scope.fencingData.bouts=bouts;
             $scope.fencingData.tactics=tactics;
             $scope.fencingData.statistics=statistics;
-            $scope.fencingData.tree=tree;
-
+            $scope.fencingData.statistics_tree=statistics_tree
+            $scope.fencingData.motion_tree=motion_tree
             $scope.$apply();
 
 

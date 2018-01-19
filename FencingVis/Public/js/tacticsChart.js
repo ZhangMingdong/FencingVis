@@ -180,7 +180,9 @@ mainApp.directive('tacticsChart', function () {
                     .attr("height", function(d) { return height - yScale(getField1(d)); })
                     .attr("stroke","red")
                     .attr("fill",function(d){
-                        return d.score==1? "red":"lightgray";
+                        if(d.score==1) return "red"
+                        else if(d.score==2) return "gray"
+                        return "lightgray";
                     })
                     .on('mouseover', tip1.show)
                     .on('mouseout', tip1.hide)
@@ -192,7 +194,9 @@ mainApp.directive('tacticsChart', function () {
                     .attr("height", function(d) { return height - yScale(getField2(d)); })
                     .attr("stroke","blue")
                     .attr("fill",function(d){
-                        return d.score==2? "blue":"lightgray";
+                        if(d.score==1) return "gray"
+                        else if(d.score==2) return "blue"
+                        return "lightgray";
                     })
                     .on('mouseover', tip2.show)
                     .on('mouseout', tip2.hide)

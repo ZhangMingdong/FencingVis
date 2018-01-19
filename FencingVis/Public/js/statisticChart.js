@@ -63,7 +63,7 @@ mainApp.directive('statisticChart', function () {
                 y.range([0,height]);
 
 
-                var root=scope.data.tree;
+                var root=scope.data;
                 vis=vis.data({});
                 vis.exit().remove();
 
@@ -120,7 +120,6 @@ mainApp.directive('statisticChart', function () {
             redraw();
 
             scope.$watch('data', redraw);
-            scope.$watch('data.tree', redraw);
 
         }
         statisticChart();
