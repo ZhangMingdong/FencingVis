@@ -11,8 +11,8 @@ mainApp.directive('statisticChart', function () {
         function statisticChart(){
             var width = 600,
                 height = 400,
-                x = d3.scale.linear().range([0, width]),
-                y = d3.scale.linear().range([0, height]);
+                x = d3.scaleLinear().range([0, width]),
+                y = d3.scaleLinear().range([0, height]);
 
             // L1
             var div = d3.select(el[0]).append("div")

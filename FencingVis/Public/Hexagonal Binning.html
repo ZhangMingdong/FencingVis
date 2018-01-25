@@ -8,8 +8,8 @@
 
 </style>
 <svg width="960" height="500"></svg>
-<script src="https://d3js.org/d3.v4.min.js"></script>
-<script src="https://d3js.org/d3-hexbin.v0.2.min.js"></script>
+<script src="lib/d3.v4.js"></script>
+<script src="lib/d3-hexbin.v0.2.js"></script>
 <script>
 
     var svg = d3.select("svg"),
@@ -62,4 +62,6 @@
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x).tickSizeOuter(-height));
 
+    console.log(svg);
+    console.log(svg.attr("width"));
 </script>

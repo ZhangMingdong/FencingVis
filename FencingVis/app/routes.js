@@ -1,9 +1,9 @@
 
 module.exports = function(app) {
-	app.get('/1',function(req,res){
+	app.get('/ContourPlot',function(req,res){
         res.sendfile('./public/Contour Plot.html');
     });
-    app.get('/2',function(req,res){
+    app.get('/HexagonalBinning',function(req,res){
         res.sendfile('./public/Hexagonal Binning.html');
     });
     app.get('/stackedBarChart',function(req,res){
@@ -20,6 +20,15 @@ module.exports = function(app) {
     });
     app.get('/SunBurst',function(req,res){
         res.sendfile('./public/SunBurst.html');
+    });
+    app.get('/SimpleBarChartWithInteraction',function(req,res){
+        res.sendfile('./public/SimpleBarChartWithInteraction.html');
+    });
+    app.get('/simpleToolTip',function(req,res){
+        res.sendfile('./public/simpleToolTip.html');
+    });
+    app.get('/HorizontalStackedBarChart',function(req,res){
+        res.sendfile('./public/HorizontalStackedBarChart.html');
     });
 	// application -------------------------------------------------------------
 	app.get('*', function (req, res) {

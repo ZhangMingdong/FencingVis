@@ -7,14 +7,14 @@
     <title>Fencing Vis</title>
     <script src="lib/angular.min.js"></script>
     <script src="lib/angular-route.min.js"></script>
-    <script src="lib/d3.v3.js" charset="utf-8"></script>
-    <script src="lib/d3.tip.v0.6.3.js"></script>
+    <script src="lib/d3.v4.js" charset="utf-8"></script>
     <script type="text/javascript" src="lib/jquery-2.2.3.js"></script>
     <script src="js/mainCtrl.js"></script>
     <script src="js/fencingGameVis.js"></script>
     <script src="js/tacticsChart.js"></script>
     <script src="js/tacticsMatrix.js"></script>
     <script src="js/statisticChart.js"></script>
+    <script src="js/motionChart.js"></script>
     <link rel="stylesheet" type="text/css" href="CSS/html_styles.css">
     <link rel="stylesheet" type="text/css" href="CSS/fencing_game_vis_style.css">
     <link rel="stylesheet" type="text/css" href="CSS/tactics_chart_style.css">
@@ -46,6 +46,8 @@
     <h2>选择比赛</h2>
     <select ng-model="selectedMatch" ng-options="match for match in matchList" style="width:200px">
     </select>
+    <h1>行动视图</h1>
+    <motion-chart data="fencingData"></motion-chart>
     <h1>时间视图</h1>
     <fencing-game-vis data="fencingData" selected-point="selectedNode"></fencing-game-vis>
     <br>
@@ -53,15 +55,18 @@
     <tactics-chart data="fencingData"></tactics-chart>
     <br>
 
+
+    <!--
     <h1>统计视图</h1>
     <statistic-chart data="fencingData.statistics_tree"></statistic-chart>
+    <h1>战术矩阵</h1>
+    <tactics-matrix data="fencingData"></tactics-matrix>
     <h1>行为视图</h1>
     <statistic-chart data="fencingData.motion_tree"></statistic-chart>
     <br>
-    <h1>战术矩阵</h1>
-    <tactics-matrix data="fencingData"></tactics-matrix>
     <br>
     <br>
+    -->
 </body>
 </html>
 

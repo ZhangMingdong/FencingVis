@@ -50,8 +50,8 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
         tree.count++;
     }
     function addElem4(tree,i1,i2,i3,i4){
-        console.log("addElem")
-        console.log(tree);
+    //    console.log("addElem")
+    //    console.log(tree);
         tree.children[i1].children[i2].children[i3].children[i4].children.push({acronym:"",children_length:0,children:[]})
         tree.children[i1].children[i2].children[i3].children[i4].children_length++;
         tree.children[i1].children[i2].children[i3].children[i4].count++;

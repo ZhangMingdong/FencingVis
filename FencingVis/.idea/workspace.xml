@@ -23,145 +23,90 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="statisticChart.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Public/js/statisticChart.js">
+      <file leaf-file-name="fencingGameVis.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Public/js/fencingGameVis.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="121" column="41" lean-forward="false" selection-start-line="121" selection-start-column="41" selection-end-line="121" selection-end-column="41" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tactics_chart_style.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Public/css/tactics_chart_style.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainCtrl.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Public/js/MainCtrl.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1309">
-              <caret line="417" column="32" lean-forward="false" selection-start-line="417" selection-start-column="32" selection-end-line="417" selection-end-column="32" />
-              <folding>
-                <element signature="e#404#1281#0" expanded="false" />
-                <element signature="e#812#994#0" expanded="false" />
-                <element signature="e#1355#1583#0" expanded="false" />
-                <element signature="e#1432#1552#0" expanded="false" />
-                <element signature="e#2774#2956#0" expanded="false" />
-                <element signature="e#3133#3377#0" expanded="false" />
-                <element signature="e#3633#5569#0" expanded="false" />
-                <element signature="e#3709#5552#0" expanded="false" />
-                <element signature="e#3786#4102#0" expanded="false" />
-                <element signature="e#3822#3930#0" expanded="false" />
-                <element signature="e#3959#4080#0" expanded="false" />
-                <element signature="e#4127#5505#0" expanded="false" />
-                <element signature="e#4212#4317#0" expanded="false" />
-                <element signature="e#4357#4462#0" expanded="false" />
-                <element signature="e#4499#4800#0" expanded="false" />
-                <element signature="e#4838#5139#0" expanded="false" />
-                <element signature="e#5176#5449#0" expanded="false" />
-                <element signature="e#5629#6475#0" expanded="false" />
-                <element signature="e#5667#5723#0" expanded="false" />
-                <element signature="e#5748#6457#0" expanded="false" />
-                <element signature="e#5877#6120#0" expanded="false" />
-                <element signature="e#6158#6401#0" expanded="false" />
-                <element signature="e#6743#7717#0" expanded="false" />
-                <element signature="e#6778#7315#0" expanded="false" />
-                <element signature="e#6812#7268#0" expanded="false" />
-                <element signature="e#6851#7138#0" expanded="false" />
-                <element signature="e#7336#7703#0" expanded="false" />
-                <element signature="e#7370#7650#0" expanded="false" />
-                <element signature="e#7777#7980#0" expanded="false" />
-                <element signature="e#8063#8494#0" expanded="false" />
-                <element signature="e#8570#10978#0" expanded="false" />
-                <element signature="e#8729#10964#0" expanded="false" />
-                <element signature="e#8751#9848#0" expanded="false" />
-                <element signature="e#8903#9826#0" expanded="false" />
-                <element signature="e#8933#9202#0" expanded="false" />
-                <element signature="e#8985#9201#0" expanded="false" />
-                <element signature="e#9232#9501#0" expanded="false" />
-                <element signature="e#9284#9500#0" expanded="false" />
-                <element signature="e#9531#9800#0" expanded="false" />
-                <element signature="e#9583#9799#0" expanded="false" />
-                <element signature="e#9849#10946#0" expanded="false" />
-                <element signature="e#10001#10924#0" expanded="false" />
-                <element signature="e#10031#10300#0" expanded="false" />
-                <element signature="e#10083#10299#0" expanded="false" />
-                <element signature="e#10330#10599#0" expanded="false" />
-                <element signature="e#10382#10598#0" expanded="false" />
-                <element signature="e#10629#10898#0" expanded="false" />
-                <element signature="e#10681#10897#0" expanded="false" />
-                <element signature="e#11195#11274#0" expanded="false" />
-                <element signature="e#11417#11496#0" expanded="false" />
-                <element signature="e#11550#12013#0" expanded="false" />
-                <element signature="e#11590#11669#0" expanded="false" />
-                <element signature="e#11694#11773#0" expanded="false" />
-                <element signature="e#11812#11891#0" expanded="false" />
-                <element signature="e#11916#11995#0" expanded="false" />
-                <element signature="e#12074#12153#0" expanded="false" />
-                <element signature="e#12178#12257#0" expanded="false" />
-                <element signature="e#12296#12375#0" expanded="false" />
-                <element signature="e#12400#12479#0" expanded="false" />
-                <element signature="e#12580#16682#0" expanded="false" />
-                <element signature="e#13081#13325#0" expanded="false" />
-                <element signature="e#13414#13658#0" expanded="false" />
-                <element signature="e#13865#14656#0" expanded="false" />
-                <element signature="e#14858#16628#0" expanded="false" />
-                <element signature="e#16986#17073#0" expanded="false" />
-                <element signature="e#17122#17210#0" expanded="false" />
-                <element signature="e#17259#17346#0" expanded="false" />
-                <element signature="e#18610#19557#0" expanded="false" />
-                <element signature="e#18659#18691#0" expanded="false" />
-                <element signature="e#19017#19108#0" expanded="false" />
-                <element signature="e#19180#19551#0" expanded="false" />
-                <element signature="e#19609#19658#0" expanded="false" />
-                <element signature="e#19702#19775#0" expanded="false" />
-                <element signature="e#19756#19768#0" expanded="false" />
-                <element signature="e#19823#20236#0" expanded="false" />
-                <element signature="e#19912#19969#0" expanded="false" />
-                <element signature="e#20026#20090#0" expanded="false" />
-                <element signature="e#20147#20210#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="statistic_chart_style.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Public/css/statistic_chart_style.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="4" column="17" lean-forward="false" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tacticsChart.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Public/js/tacticsChart.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="183" column="56" lean-forward="false" selection-start-line="183" selection-start-column="56" selection-end-line="183" selection-end-column="56" />
+            <state relative-caret-position="308">
+              <caret line="49" column="45" lean-forward="true" selection-start-line="47" selection-start-column="31" selection-end-line="49" selection-end-column="45" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-                <marker date="1516199675158" expanded="true" signature="1028:1037" ph="..." />
-                <marker date="1516199675158" expanded="true" signature="1306:1315" ph="..." />
+                <element signature="e#312#354#0" expanded="false" />
+                <element signature="e#383#427#0" expanded="false" />
+                <element signature="e#456#495#0" expanded="false" />
+                <element signature="e#1006#1027#0" expanded="false" />
+                <element signature="e#1479#1492#0" expanded="false" />
+                <element signature="e#1581#3194#0" expanded="false" />
+                <element signature="e#2281#2359#0" expanded="false" />
+                <element signature="e#2791#3088#0" expanded="false" />
+                <element signature="e#2834#3070#0" expanded="false" />
+                <element signature="e#3270#3854#0" expanded="false" />
+                <element signature="e#3920#4373#0" expanded="false" />
+                <element signature="e#4438#5333#0" expanded="false" />
+                <element signature="e#5398#5947#0" expanded="false" />
+                <element signature="e#6017#10635#0" expanded="false" />
+                <element signature="e#6344#6530#0" expanded="false" />
+                <element signature="e#6625#6729#0" expanded="false" />
+                <element signature="e#6891#7579#0" expanded="false" />
+                <element signature="e#6917#7022#0" expanded="false" />
+                <element signature="e#7632#7710#0" expanded="false" />
+                <element signature="e#7763#7841#0" expanded="false" />
+                <element signature="e#7893#8116#0" expanded="false" />
+                <element signature="e#7998#8091#0" expanded="false" />
+                <element signature="e#8169#8336#0" expanded="false" />
+                <element signature="e#8505#8691#0" expanded="false" />
+                <element signature="e#8786#8890#0" expanded="false" />
+                <element signature="e#9052#9740#0" expanded="false" />
+                <element signature="e#9078#9183#0" expanded="false" />
+                <element signature="e#9793#9871#0" expanded="false" />
+                <element signature="e#9924#10002#0" expanded="false" />
+                <element signature="e#10054#10277#0" expanded="false" />
+                <element signature="e#10159#10252#0" expanded="false" />
+                <element signature="e#10330#10497#0" expanded="false" />
+                <element signature="e#11034#11214#0" expanded="false" />
+                <element signature="e#11306#11408#0" expanded="false" />
+                <element signature="e#11568#12247#0" expanded="false" />
+                <element signature="e#11594#11699#0" expanded="false" />
+                <element signature="e#12300#12378#0" expanded="false" />
+                <element signature="e#12431#12509#0" expanded="false" />
+                <element signature="e#12561#12783#0" expanded="false" />
+                <element signature="e#12666#12758#0" expanded="false" />
+                <element signature="e#12836#13003#0" expanded="false" />
+                <element signature="e#13168#13348#0" expanded="false" />
+                <element signature="e#13440#13542#0" expanded="false" />
+                <element signature="e#13702#14381#0" expanded="false" />
+                <element signature="e#13728#13833#0" expanded="false" />
+                <element signature="e#14434#14512#0" expanded="false" />
+                <element signature="e#14565#14643#0" expanded="false" />
+                <element signature="e#14695#14917#0" expanded="false" />
+                <element signature="e#14800#14892#0" expanded="false" />
+                <element signature="e#14970#15137#0" expanded="false" />
+                <element signature="e#15341#15767#0" expanded="false" />
+                <element signature="e#15840#17280#0" expanded="false" />
+                <element signature="e#15929#16524#0" expanded="false" />
+                <element signature="e#16055#16420#0" expanded="false" />
+                <element signature="e#16082#16396#0" expanded="false" />
+                <element signature="e#16108#16126#0" expanded="false" />
+                <element signature="e#16251#16372#0" expanded="false" />
+                <element signature="e#16426#16505#0" expanded="false" />
+                <element signature="e#16577#16646#0" expanded="false" />
+                <element signature="e#16699#16769#0" expanded="false" />
+                <element signature="e#16790#17266#0" expanded="false" />
+                <element signature="e#16898#17248#0" expanded="false" />
+                <element signature="e#17363#17689#0" expanded="false" />
+                <element signature="e#17900#17999#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="mainFencing.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Public/mainFencing.html">
+      <file leaf-file-name="motionChart.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Public/js/motionChart.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1440">
-              <caret line="57" column="12" lean-forward="false" selection-start-line="57" selection-start-column="12" selection-end-line="57" selection-end-column="12" />
-              <folding />
+            <state relative-caret-position="131">
+              <caret line="15" column="33" lean-forward="false" selection-start-line="15" selection-start-column="33" selection-end-line="15" selection-end-column="33" />
+              <folding>
+                <element signature="e#929#1300#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -179,37 +124,40 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>xAxisSVG</find>
-      <find>yAxisSVG</find>
-      <find>yAxis</find>
-      <find>bars</find>
-      <find>getField</find>
-      <find>stocks</find>
-      <find>bar</find>
-      <find>treemap(</find>
-      <find>xAxis</find>
-      <find>update</find>
-      <find>events</find>
-      <find>start</find>
-      <find>time</find>
-      <find>series</find>
-      <find>Results</find>
-      <find>Data</find>
-      <find>.Data</find>
-      <find>rounds</find>
-      <find>Add</find>
-      <find>html style</find>
-      <find>updateDa</find>
-      <find>tactics-chart</find>
-      <find>bouts</find>
+      <find>laytou</find>
+      <find>d3.time</find>
+      <find>svgGrids</find>
+      <find>_drawGrid</find>
+      <find>svgGame</find>
+      <find>svgGameBG</find>
+      <find>onSelect</find>
+      <find>svgInfo</find>
+      <find>_drawInfo</find>
+      <find>rangeBand</find>
       <find>xScale</find>
-      <find>exit</find>
-      <find>svg</find>
-      <find>bout</find>
-      <find>console.log</find>
-      <find>tip</find>
+      <find>xScale.rangeBand</find>
+      <find>scoresSVG</find>
+      <find>getIndex</find>
       <find>tree</find>
+      <find>grids</find>
+      <find>xMin</find>
+      <find>xMax</find>
+      <find>_drawEvents</find>
+      <find>svgWidth</find>
+      <find>svgHeight</find>
+      <find>height</find>
+      <find>scale</find>
+      <find>_drawNodes</find>
+      <find>scoreH</find>
+      <find>svg</find>
+      <find>layout</find>
+      <find>width</find>
+      <find>xTreeAxis</find>
+      <find>yScale</find>
     </findStrings>
+    <replaceStrings>
+      <replace />
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="ROOT_SYNC" value="DONT_SYNC" />
@@ -220,10 +168,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Public/css/tree_styles.css" />
-        <option value="$PROJECT_DIR$/Public/js/Sparkline.js" />
-        <option value="$PROJECT_DIR$/Public/css/sparkline_style.css" />
-        <option value="$PROJECT_DIR$/app/models/topic.js" />
         <option value="$PROJECT_DIR$/app/models/reference.js" />
         <option value="$PROJECT_DIR$/Public/HTML/ReferenceInfoList.html" />
         <option value="$PROJECT_DIR$/Public/HTML/KeywordsWidget.html" />
@@ -249,11 +193,8 @@
         <option value="$PROJECT_DIR$/config/database.js" />
         <option value="$PROJECT_DIR$/Public/js/Workspace.js" />
         <option value="$PROJECT_DIR$/server.js" />
-        <option value="$PROJECT_DIR$/Public/Hexagonal Binning.html" />
-        <option value="$PROJECT_DIR$/Public/Contour Plot.html" />
         <option value="$PROJECT_DIR$/Public/volcano.json" />
         <option value="$PROJECT_DIR$/Public/js/barChart.js" />
-        <option value="$PROJECT_DIR$/Public/stackedBarChart.html" />
         <option value="$PROJECT_DIR$/Public/showReel.html" />
         <option value="$PROJECT_DIR$/Public/Treemap.html" />
         <option value="$PROJECT_DIR$/Public/style.css" />
@@ -261,16 +202,23 @@
         <option value="$PROJECT_DIR$/Public/css/fencing_game_vis_style.css" />
         <option value="$PROJECT_DIR$/Public/Hierarchical Partition Layout.html" />
         <option value="$PROJECT_DIR$/Public/css/statistic_chart.css" />
-        <option value="$PROJECT_DIR$/Public/css/tactics_chart_style.css" />
         <option value="$PROJECT_DIR$/Public/SunBurst.html" />
-        <option value="$PROJECT_DIR$/app/routes.js" />
         <option value="$PROJECT_DIR$/Public/js/tacticsMatrix.js" />
-        <option value="$PROJECT_DIR$/Public/js/fencingGameVis.js" />
         <option value="$PROJECT_DIR$/Public/css/statistic_chart_style.css" />
+        <option value="$PROJECT_DIR$/Public/stackedBarChart.html" />
+        <option value="$PROJECT_DIR$/Public/js/MainCtrl.js" />
+        <option value="$PROJECT_DIR$/Public/Contour Plot.html" />
+        <option value="$PROJECT_DIR$/Public/Hexagonal Binning.html" />
+        <option value="$PROJECT_DIR$/Public/simpleToolTip.html" />
+        <option value="$PROJECT_DIR$/Public/SimpleBarChartWithInteraction.html" />
+        <option value="$PROJECT_DIR$/Public/css/tactics_chart_style.css" />
+        <option value="$PROJECT_DIR$/Public/js/tacticsChart.js" />
         <option value="$PROJECT_DIR$/Public/js/statisticChart.js" />
         <option value="$PROJECT_DIR$/Public/mainFencing.html" />
-        <option value="$PROJECT_DIR$/Public/js/MainCtrl.js" />
-        <option value="$PROJECT_DIR$/Public/js/tacticsChart.js" />
+        <option value="$PROJECT_DIR$/app/routes.js" />
+        <option value="$PROJECT_DIR$/Public/HorizontalStackedBarChart.html" />
+        <option value="$PROJECT_DIR$/Public/js/fencingGameVis.js" />
+        <option value="$PROJECT_DIR$/Public/js/motionChart.js" />
       </list>
     </option>
   </component>
@@ -312,8 +260,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane" />
+      <pane id="Scratches" />
       <pane id="Scope">
         <subPane subId="Project Files">
           <expand>
@@ -387,11 +335,11 @@
       <recent name="E:\SurveyVis\Jetbrains" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\FencingVis\FencingVis\FencingVis\Public" />
+      <recent name="E:\FencingVis\FencingVis\FencingVis\Public\css" />
+      <recent name="E:\FencingVis\FencingVis\FencingVis\Public\js" />
       <recent name="C:\ZMD\Project\FencingVis\FencingVis\Public" />
       <recent name="E:\FencingVis\Git\FencingVis\FencingVis\Public\css" />
-      <recent name="E:\FencingVis\Git\FencingVis\FencingVis\Public\js" />
-      <recent name="E:\FencingVis\Public\css" />
-      <recent name="E:\FencingVis\Public\js" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -524,18 +472,20 @@
       <workItem from="1516012385575" duration="93000" />
       <workItem from="1516012781299" duration="6652000" />
       <workItem from="1516086166146" duration="278000" />
-      <workItem from="1516152383722" duration="10777000" />
+      <workItem from="1516152383722" duration="25554000" />
+      <workItem from="1516848029126" duration="4552000" />
+      <workItem from="1516853331101" duration="8477000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="146131000" />
+    <option name="totallyTimeSpent" value="173937000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1828125" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18020834" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -586,15 +536,11 @@
           <option name="timeStamp" value="70" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="84" />
+      <option name="time" value="86" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/models/similarity.js" />
-    <entry file="file://$PROJECT_DIR$/app/models/workspace.js" />
-    <entry file="file://$PROJECT_DIR$/app/models/LDATopic.js" />
-    <entry file="file://$PROJECT_DIR$/Public/js/authorsCtrl.js" />
     <entry file="file://$PROJECT_DIR$/Public/css/paper_vis_bar_style.css" />
     <entry file="file://$PROJECT_DIR$/Public/js/paperVisBar.js" />
     <entry file="file://$PROJECT_DIR$/Public/css/tree_styles.css" />
@@ -644,34 +590,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Public/Hexagonal Binning.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="833">
-          <caret line="64" column="9" lean-forward="false" selection-start-line="64" selection-start-column="9" selection-end-line="64" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Public/Contour Plot.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="870">
-          <caret line="29" column="9" lean-forward="false" selection-start-line="29" selection-start-column="9" selection-end-line="29" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Public/volcano.json" />
-    <entry file="file://$PROJECT_DIR$/Public/showReel.html" />
-    <entry file="file://$PROJECT_DIR$/Public/stackedBarChart.html" />
     <entry file="file://$PROJECT_DIR$/Public/style.css" />
     <entry file="file://$PROJECT_DIR$/Public/lib/d3.v4.js" />
-    <entry file="file://$PROJECT_DIR$/Public/Treemap.html" />
     <entry file="file://$PROJECT_DIR$/Public/Hierarchical Partition Layout.css" />
-    <entry file="file://$PROJECT_DIR$/Public/js/barChart.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-450">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Public/css/html_styles.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="713">
@@ -687,45 +609,17 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Public/css/statistic_chart.css" />
-    <entry file="file://$PROJECT_DIR$/app/routes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="20" column="22" lean-forward="false" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Public/SunBurst.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="19" column="19" lean-forward="false" selection-start-line="19" selection-start-column="19" selection-end-line="19" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Public/Hierarchical Partition Layout.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1980">
-          <caret line="66" column="13" lean-forward="false" selection-start-line="66" selection-start-column="12" selection-end-line="66" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Public/js/tacticsMatrix.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="278">
           <caret line="122" column="37" lean-forward="false" selection-start-line="122" selection-start-column="26" selection-end-line="122" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Public/js/fencingGameVis.js">
+    <entry file="file://$PROJECT_DIR$/Public/js/barChart.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="482" column="14" lean-forward="false" selection-start-line="482" selection-start-column="14" selection-end-line="482" selection-end-column="14" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
+        <state relative-caret-position="720">
+          <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -733,129 +627,229 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="4" column="17" lean-forward="false" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Public/Contour Plot.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="16" column="22" lean-forward="false" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Public/Hexagonal Binning.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="744">
+          <caret line="65" column="35" lean-forward="false" selection-start-line="64" selection-start-column="21" selection-end-line="65" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Public/js/MainCtrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="452" column="39" lean-forward="false" selection-start-line="452" selection-start-column="8" selection-end-line="452" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Public/Hierarchical Partition Layout.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Public/showReel.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Public/SunBurst.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Public/Treemap.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Public/css/tactics_chart_style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="16" column="18" lean-forward="false" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Public/js/statisticChart.js">
+    <entry file="file://$PROJECT_DIR$/Public/simpleToolTip.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="121" column="41" lean-forward="false" selection-start-line="121" selection-start-column="41" selection-end-line="121" selection-end-column="41" />
+        <state relative-caret-position="420">
+          <caret line="89" column="0" lean-forward="false" selection-start-line="89" selection-start-column="0" selection-end-line="101" selection-end-column="15" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Public/mainFencing.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1440">
-          <caret line="57" column="12" lean-forward="false" selection-start-line="57" selection-start-column="12" selection-end-line="57" selection-end-column="12" />
+        <state relative-caret-position="420">
+          <caret line="49" column="52" lean-forward="false" selection-start-line="49" selection-start-column="52" selection-end-line="49" selection-end-column="52" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Public/js/MainCtrl.js">
+    <entry file="file://$PROJECT_DIR$/app/routes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1309">
-          <caret line="417" column="32" lean-forward="false" selection-start-line="417" selection-start-column="32" selection-end-line="417" selection-end-column="32" />
+        <state relative-caret-position="420">
+          <caret line="29" column="39" lean-forward="false" selection-start-line="29" selection-start-column="14" selection-end-line="29" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Public/SimpleBarChartWithInteraction.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#404#1281#0" expanded="false" />
-            <element signature="e#812#994#0" expanded="false" />
-            <element signature="e#1355#1583#0" expanded="false" />
-            <element signature="e#1432#1552#0" expanded="false" />
-            <element signature="e#2774#2956#0" expanded="false" />
-            <element signature="e#3133#3377#0" expanded="false" />
-            <element signature="e#3633#5569#0" expanded="false" />
-            <element signature="e#3709#5552#0" expanded="false" />
-            <element signature="e#3786#4102#0" expanded="false" />
-            <element signature="e#3822#3930#0" expanded="false" />
-            <element signature="e#3959#4080#0" expanded="false" />
-            <element signature="e#4127#5505#0" expanded="false" />
-            <element signature="e#4212#4317#0" expanded="false" />
-            <element signature="e#4357#4462#0" expanded="false" />
-            <element signature="e#4499#4800#0" expanded="false" />
-            <element signature="e#4838#5139#0" expanded="false" />
-            <element signature="e#5176#5449#0" expanded="false" />
-            <element signature="e#5629#6475#0" expanded="false" />
-            <element signature="e#5667#5723#0" expanded="false" />
-            <element signature="e#5748#6457#0" expanded="false" />
-            <element signature="e#5877#6120#0" expanded="false" />
-            <element signature="e#6158#6401#0" expanded="false" />
-            <element signature="e#6743#7717#0" expanded="false" />
-            <element signature="e#6778#7315#0" expanded="false" />
-            <element signature="e#6812#7268#0" expanded="false" />
-            <element signature="e#6851#7138#0" expanded="false" />
-            <element signature="e#7336#7703#0" expanded="false" />
-            <element signature="e#7370#7650#0" expanded="false" />
-            <element signature="e#7777#7980#0" expanded="false" />
-            <element signature="e#8063#8494#0" expanded="false" />
-            <element signature="e#8570#10978#0" expanded="false" />
-            <element signature="e#8729#10964#0" expanded="false" />
-            <element signature="e#8751#9848#0" expanded="false" />
-            <element signature="e#8903#9826#0" expanded="false" />
-            <element signature="e#8933#9202#0" expanded="false" />
-            <element signature="e#8985#9201#0" expanded="false" />
-            <element signature="e#9232#9501#0" expanded="false" />
-            <element signature="e#9284#9500#0" expanded="false" />
-            <element signature="e#9531#9800#0" expanded="false" />
-            <element signature="e#9583#9799#0" expanded="false" />
-            <element signature="e#9849#10946#0" expanded="false" />
-            <element signature="e#10001#10924#0" expanded="false" />
-            <element signature="e#10031#10300#0" expanded="false" />
-            <element signature="e#10083#10299#0" expanded="false" />
-            <element signature="e#10330#10599#0" expanded="false" />
-            <element signature="e#10382#10598#0" expanded="false" />
-            <element signature="e#10629#10898#0" expanded="false" />
-            <element signature="e#10681#10897#0" expanded="false" />
-            <element signature="e#11195#11274#0" expanded="false" />
-            <element signature="e#11417#11496#0" expanded="false" />
-            <element signature="e#11550#12013#0" expanded="false" />
-            <element signature="e#11590#11669#0" expanded="false" />
-            <element signature="e#11694#11773#0" expanded="false" />
-            <element signature="e#11812#11891#0" expanded="false" />
-            <element signature="e#11916#11995#0" expanded="false" />
-            <element signature="e#12074#12153#0" expanded="false" />
-            <element signature="e#12178#12257#0" expanded="false" />
-            <element signature="e#12296#12375#0" expanded="false" />
-            <element signature="e#12400#12479#0" expanded="false" />
-            <element signature="e#12580#16682#0" expanded="false" />
-            <element signature="e#13081#13325#0" expanded="false" />
-            <element signature="e#13414#13658#0" expanded="false" />
-            <element signature="e#13865#14656#0" expanded="false" />
-            <element signature="e#14858#16628#0" expanded="false" />
-            <element signature="e#16986#17073#0" expanded="false" />
-            <element signature="e#17122#17210#0" expanded="false" />
-            <element signature="e#17259#17346#0" expanded="false" />
-            <element signature="e#18610#19557#0" expanded="false" />
-            <element signature="e#18659#18691#0" expanded="false" />
-            <element signature="e#19017#19108#0" expanded="false" />
-            <element signature="e#19180#19551#0" expanded="false" />
-            <element signature="e#19609#19658#0" expanded="false" />
-            <element signature="e#19702#19775#0" expanded="false" />
-            <element signature="e#19756#19768#0" expanded="false" />
-            <element signature="e#19823#20236#0" expanded="false" />
-            <element signature="e#19912#19969#0" expanded="false" />
-            <element signature="e#20026#20090#0" expanded="false" />
-            <element signature="e#20147#20210#0" expanded="false" />
+            <element signature="e#2280#2559#0" expanded="false" />
+            <element signature="e#2604#2970#0" expanded="false" />
+            <element signature="e#3255#3534#0" expanded="false" />
+            <element signature="e#3579#3945#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Public/css/tactics_chart_style.css">
+    <entry file="file://$PROJECT_DIR$/Public/stackedBarChart.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="30">
+          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="23" selection-end-column="28" />
+          <folding>
+            <element signature="n#style#0;n#!!top" expanded="false" />
+            <element signature="n#script#1;n#body#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Public/HorizontalStackedBarChart.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="88" selection-end-column="7" />
+          <folding>
+            <element signature="e#564#3034#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Public/js/statisticChart.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="870">
+          <caret line="29" column="37" lean-forward="false" selection-start-line="29" selection-start-column="31" selection-end-line="29" selection-end-column="37" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Public/js/tacticsChart.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="183" column="56" lean-forward="false" selection-start-line="183" selection-start-column="56" selection-end-line="183" selection-end-column="56" />
+        <state relative-caret-position="571">
+          <caret line="300" column="49" lean-forward="true" selection-start-line="10" selection-start-column="2" selection-end-line="300" selection-end-column="49" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <marker date="1516199675158" expanded="true" signature="1028:1037" ph="..." />
-            <marker date="1516199675158" expanded="true" signature="1306:1315" ph="..." />
+            <element signature="e#1804#2466#0" expanded="false" />
+            <element signature="e#2504#2867#0" expanded="false" />
+            <element signature="e#2948#3509#0" expanded="false" />
+            <marker date="1516856799599" expanded="true" signature="1340:1349" ph="..." />
+            <marker date="1516856799599" expanded="true" signature="1618:1627" ph="..." />
+            <marker date="1516856799599" expanded="true" signature="7585:7594" ph="..." />
+            <marker date="1516856799599" expanded="true" signature="8854:8863" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Public/js/fencingGameVis.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="49" column="45" lean-forward="true" selection-start-line="47" selection-start-column="31" selection-end-line="49" selection-end-column="45" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#312#354#0" expanded="false" />
+            <element signature="e#383#427#0" expanded="false" />
+            <element signature="e#456#495#0" expanded="false" />
+            <element signature="e#1006#1027#0" expanded="false" />
+            <element signature="e#1479#1492#0" expanded="false" />
+            <element signature="e#1581#3194#0" expanded="false" />
+            <element signature="e#2281#2359#0" expanded="false" />
+            <element signature="e#2791#3088#0" expanded="false" />
+            <element signature="e#2834#3070#0" expanded="false" />
+            <element signature="e#3270#3854#0" expanded="false" />
+            <element signature="e#3920#4373#0" expanded="false" />
+            <element signature="e#4438#5333#0" expanded="false" />
+            <element signature="e#5398#5947#0" expanded="false" />
+            <element signature="e#6017#10635#0" expanded="false" />
+            <element signature="e#6344#6530#0" expanded="false" />
+            <element signature="e#6625#6729#0" expanded="false" />
+            <element signature="e#6891#7579#0" expanded="false" />
+            <element signature="e#6917#7022#0" expanded="false" />
+            <element signature="e#7632#7710#0" expanded="false" />
+            <element signature="e#7763#7841#0" expanded="false" />
+            <element signature="e#7893#8116#0" expanded="false" />
+            <element signature="e#7998#8091#0" expanded="false" />
+            <element signature="e#8169#8336#0" expanded="false" />
+            <element signature="e#8505#8691#0" expanded="false" />
+            <element signature="e#8786#8890#0" expanded="false" />
+            <element signature="e#9052#9740#0" expanded="false" />
+            <element signature="e#9078#9183#0" expanded="false" />
+            <element signature="e#9793#9871#0" expanded="false" />
+            <element signature="e#9924#10002#0" expanded="false" />
+            <element signature="e#10054#10277#0" expanded="false" />
+            <element signature="e#10159#10252#0" expanded="false" />
+            <element signature="e#10330#10497#0" expanded="false" />
+            <element signature="e#11034#11214#0" expanded="false" />
+            <element signature="e#11306#11408#0" expanded="false" />
+            <element signature="e#11568#12247#0" expanded="false" />
+            <element signature="e#11594#11699#0" expanded="false" />
+            <element signature="e#12300#12378#0" expanded="false" />
+            <element signature="e#12431#12509#0" expanded="false" />
+            <element signature="e#12561#12783#0" expanded="false" />
+            <element signature="e#12666#12758#0" expanded="false" />
+            <element signature="e#12836#13003#0" expanded="false" />
+            <element signature="e#13168#13348#0" expanded="false" />
+            <element signature="e#13440#13542#0" expanded="false" />
+            <element signature="e#13702#14381#0" expanded="false" />
+            <element signature="e#13728#13833#0" expanded="false" />
+            <element signature="e#14434#14512#0" expanded="false" />
+            <element signature="e#14565#14643#0" expanded="false" />
+            <element signature="e#14695#14917#0" expanded="false" />
+            <element signature="e#14800#14892#0" expanded="false" />
+            <element signature="e#14970#15137#0" expanded="false" />
+            <element signature="e#15341#15767#0" expanded="false" />
+            <element signature="e#15840#17280#0" expanded="false" />
+            <element signature="e#15929#16524#0" expanded="false" />
+            <element signature="e#16055#16420#0" expanded="false" />
+            <element signature="e#16082#16396#0" expanded="false" />
+            <element signature="e#16108#16126#0" expanded="false" />
+            <element signature="e#16251#16372#0" expanded="false" />
+            <element signature="e#16426#16505#0" expanded="false" />
+            <element signature="e#16577#16646#0" expanded="false" />
+            <element signature="e#16699#16769#0" expanded="false" />
+            <element signature="e#16790#17266#0" expanded="false" />
+            <element signature="e#16898#17248#0" expanded="false" />
+            <element signature="e#17363#17689#0" expanded="false" />
+            <element signature="e#17900#17999#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Public/js/motionChart.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="131">
+          <caret line="15" column="33" lean-forward="false" selection-start-line="15" selection-start-column="33" selection-end-line="15" selection-end-column="33" />
+          <folding>
+            <element signature="e#929#1300#0" expanded="false" />
           </folding>
         </state>
       </provider>
