@@ -53,7 +53,7 @@ mainApp.directive('fencingGameVis', function () {
             // 2.1.get all the nodes of the tree
             var getNodes = function () {
                 var nodes = scope.data.events;
-                console.log(nodes)
+            //    console.log(nodes)
                 // 1.Calculate x domain
                 var xMin=d3.min(nodes,function(d){return getStart(d);});
                 var xMax=d3.max(nodes,function(d){return getEnd(d);});
@@ -357,7 +357,7 @@ mainApp.directive('fencingGameVis', function () {
 
             // 2.8.redraw the svg
             function redraw(){
-                console.log("redraw")
+            //    console.log("redraw")
                 if (!scope.data) { return };
                 if(scope.data.bouts.length==0) return;
 

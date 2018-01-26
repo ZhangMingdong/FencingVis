@@ -30,6 +30,9 @@ module.exports = function(app) {
     app.get('/HorizontalStackedBarChart',function(req,res){
         res.sendfile('./public/HorizontalStackedBarChart.html');
     });
+    app.get('/dynamicStackedBarChart',function(req,res){
+        res.sendfile('./public/dynamicStackedBarChart.html');
+    });
 	// application -------------------------------------------------------------
 	app.get('*', function (req, res) {
 	    console.log("-----get* from "+req.host+" at "+Date());

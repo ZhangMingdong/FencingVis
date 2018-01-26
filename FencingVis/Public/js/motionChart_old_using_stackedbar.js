@@ -64,54 +64,57 @@ mainApp.directive('motionChart', function () {
             }
             function redraw(){
             //    console.log("redraw motion chart");
-            //    var data=scope.data.motion;
-                var data = [{"salesperson":"Bob","sales":33},{"salesperson":"Robin","sales":12},{"salesperson":"Anne","sales":41},{"salesperson":"Mark","sales":16},{"salesperson":"Joe","sales":59},{"salesperson":"Eve","sales":38},{"salesperson":"Karen","sales":21},{"salesperson":"Kirsty","sales":25},{"salesperson":"Chris","sales":30},{"salesperson":"Lisa","sales":47},{"salesperson":"Tom","sales":5},{"salesperson":"Stacy","sales":20},{"salesperson":"Charles","sales":13},{"salesperson":"Mary","sales":29}];
-
-// set the dimensions and margins of the graph
-                var margin = {top: 20, right: 20, bottom: 30, left: 40},
-                    width = 960 - margin.left - margin.right,
-                    height = 500 - margin.top - margin.bottom;
-
-// set the ranges
-                var y = d3.scaleBand()
-                    .range([height, 0])
-                    .padding(0.1);
-
-                var x = d3.scaleLinear()
-                    .range([0, width]);
+                var data=scope.data.motion;
+                var stackKey = ["wounds", "other", "disease"];
+            //    data.sort(function(a, b) { return b.total - a.total; });
+                var stack = d3.stack()
+                    .keys(stackKey)
+                    /*.order(d3.stackOrder)*/
+                    .offset(d3.stackOffsetNone);
 
 
+                var layers= stack(data);
 
-                // format the data
-                data.forEach(function(d) {
-                    d.sales = +d.sales;
-                });
+                var xScale = d3.scaleLinear()
+                    .rangeRound([0, svgMotionW])
+                    .domain([0, d3.max(layers[layers.length - 1], function(d) { return d[0] + d[1]; }) ]).nice();
+                var yScale = d3.scaleBand()
+                    .rangeRound([svgMotionH, 0]).padding(0.1)
+                    .domain(data.map(function(d) { return parseDate(d.date); }));
 
-                // Scale the range of the data in the domains
-                x.domain([0, d3.max(data, function(d){ return d.sales; })])
-                y.domain(data.map(function(d) { return d.salesperson; }));
-                //y.domain([0, d3.max(data, function(d) { return d.sales; })]);
 
-                // append the rectangles for the bar chart
-                svg.selectAll(".bar")
-                    .data(data)
+                var xAxis = d3.axisBottom(xScale)
+                var yAxis =  d3.axisLeft(yScale).tickFormat(d3.timeFormat("%b"));
+
+                gAxisX
+                    .attr("transform", "translate(0," + (svgMotionH+5) + ")")
+                    .call(xAxis);
+
+                gAxisY
+                    .attr("transform", "translate(0,0)")
+                    .call(yAxis);
+
+                // this line used to remove the old data
+                svg.selectAll(".layer")
+                    .data({}).exit().remove();
+
+                var layer = svg.selectAll(".layer")
+                    .data(layers)
+                    .enter().append("g")
+                    .attr("class", "layer")
+                    .style("fill", function(d, i) { return color(i); });
+
+                layer.selectAll("rect")
+                    .data(function(d) { return d; })
                     .enter().append("rect")
-                    .attr("class", "bar")
-                    //.attr("x", function(d) { return x(d.sales); })
-                    .attr("width", function(d) {return x(d.sales); } )
-                    .attr("fill",function(d){return color(0)})
-                    .attr("y", function(d) { return y(d.salesperson); })
-                    .attr("height", y.bandwidth());
+                    .attr("y", function(d) { return yScale(parseDate(d.data.date)); })
+                    .attr("x", function(d) { return xScale(d[0]); })
+                    .attr("height", yScale.bandwidth())
+                    .attr("width", function(d) { return xScale(d[1]) - xScale(d[0]) });
 
 
-                // add the x Axis
-                svg.append("g")
-                    .attr("transform", "translate(0," + height + ")")
-                    .call(d3.axisBottom(x));
 
-                // add the y Axis
-                svg.append("g")
-                    .call(d3.axisLeft(y));
+
             }
             redraw();
 

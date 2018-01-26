@@ -31,22 +31,6 @@ mainApp.directive('tacticsChart', function () {
             var div = d3.select("body").append("div")
                 .attr("class", "tooltip")
                 .style("opacity", 0);
-            /*
-            var tip1 = d3.tip()
-                .attr('class', 'd3-tip')
-                .offset([-10, 0])
-                .html(function(d) {
-                    return "<strong>行动:</strong> <span style='color:red'>" + translateMotion(d.motion1)+"</span>";
-                });
-            var tip2 = d3.tip()
-                .attr('class', 'd3-tip')
-                .offset([-10, 0])
-                .html(function(d) {
-                    return "<strong>行动:</strong> <span style='color:red'>" + translateMotion(d.motion2)+"</span>";
-                });
-            svg.call(tip1);
-            svg.call(tip2);
-            */
 
             function translateMotion(str){
                 var len=str.length;
@@ -116,7 +100,7 @@ mainApp.directive('tacticsChart', function () {
             }
 
             function redraw(){
-                console.log("===redraw tactics chart===")
+            //    console.log("===redraw tactics chart===")
                 var data=scope.data.tactics;
 
                 var xScale = d3.scaleBand().rangeRound([0, svgTacticsW]).padding(.05)
