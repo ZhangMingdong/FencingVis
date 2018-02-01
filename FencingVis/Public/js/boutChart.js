@@ -61,12 +61,13 @@ mainApp.directive('boutChart', function () {
             // 1.Add DOM elements
             var svgBG = d3.select(el[0]).append("svg").attr("width",svgBoutBGW).attr("height",svgBoutBGH);
             var svg=svgBG.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-            var svgFencer1=svg.append("circle")
+            var svgFencer1=svg.append("g");
+            var svgFencer2=svg.append("g")
+            svgFencer1.append("circle")
                 .attr("fill", "red")   // fill the circle with 'blue'
                 .attr("r", 20)          // set the radius to 10 pixels
                 .style("opacity", 0)
-            var svgFencer2=svg.append("circle")
+            svgFencer2.append("circle")
                 .attr("fill", "blue")   // fill the circle with 'blue'
                 .attr("r", 20)          // set the radius to 10 pixels
                 .style("opacity", 0)
