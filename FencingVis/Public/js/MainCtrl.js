@@ -3,10 +3,26 @@ var mainApp = angular.module("myApp", ['ngRoute']);
 mainApp.controller('MainCtrl', function ($scope, $http,$window) {
     angular.element($window).on('resize', function () { $scope.$apply() })
 
+    function parseFrame(str){
+        var arrTime=str.split(':');
+        if(arrTime.length<3) return -1;
+        var minute=arrTime[0];
+        var second=arrTime[1];
+        var ms=arrTime[2];
+        var frame=30*((+second)+60*(+minute))+(+ms);
+        return frame;
+
+    }
+
     // match selection
     $scope.matchList=["men final","men semifinal 1","men semifinal 2"];
     // selected match
     $scope.selectedMatch="men final";
+
+    // fliter selection
+    $scope.filterList=["no filter","3 second"];
+    // selected filter
+    $scope.selectedFilter="no filter";
 
     // fencing data structure
     $scope.fencingData={
@@ -21,10 +37,14 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
             ,{count:1,player1:0,player2:0}
         ]         // statistics of the tactic: 0-aa;1-ar;2-ra;3-rr
         , statistics_tree:{}       // tree of the statistics
-        , motion_tree:{}          // tree of motion
-        , motion:[{"date":"4/1854","total":8571,"disease":1,"wounds":0,"other":5},{"date":"5/1854","total":23333,"disease":12,"wounds":0,"other":9},{"date":"6/1854","total":28333,"disease":11,"wounds":0,"other":6},{"date":"7/1854","total":28772,"disease":359,"wounds":0,"other":23},{"date":"8/1854","total":30246,"disease":828,"wounds":1,"other":30},{"date":"9/1854","total":30290,"disease":788,"wounds":81,"other":70},{"date":"10/1854","total":30643,"disease":503,"wounds":132,"other":128},{"date":"11/1854","total":29736,"disease":844,"wounds":287,"other":106},{"date":"12/1854","total":32779,"disease":1725,"wounds":114,"other":131},{"date":"1/1855","total":32393,"disease":2761,"wounds":83,"other":324},{"date":"2/1855","total":30919,"disease":2120,"wounds":42,"other":361},{"date":"3/1855","total":30107,"disease":1205,"wounds":32,"other":172},{"date":"4/1855","total":32252,"disease":477,"wounds":48,"other":57},{"date":"5/1855","total":35473,"disease":508,"wounds":49,"other":37},{"date":"6/1855","total":38863,"disease":802,"wounds":209,"other":31},{"date":"7/1855","total":42647,"disease":382,"wounds":134,"other":33},{"date":"8/1855","total":44614,"disease":483,"wounds":164,"other":25},{"date":"9/1855","total":47751,"disease":189,"wounds":276,"other":20},{"date":"10/1855","total":46852,"disease":128,"wounds":53,"other":18},{"date":"11/1855","total":37853,"disease":178,"wounds":33,"other":32},{"date":"12/1855","total":43217,"disease":91,"wounds":18,"other":28},{"date":"1/1856","total":44212,"disease":42,"wounds":2,"other":48},{"date":"2/1856","total":43485,"disease":24,"wounds":0,"other":19},{"date":"3/1856","total":46140,"disease":15,"wounds":0,"other":35}]
+        , motion_tree:{}           // tree of motion
+        , motion: [
+            ]            // motions of feet
+        , motion_hands:[]          // motions of hands
         , selectedNode:{}
         , selectedInfo:[]          // used for the selected node information display
+        , filter:"no filter"               // "no filter","3 sceond"
+        , selected_bout:-1
     }
 
     // check if the string is offensive
@@ -64,6 +84,7 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
 
     // version 2 of readData, added the behavior of two players
     var fileName="../data/men_final.csv";
+    var fileNameV2="../data/men_final_v2.csv";
     function readData(){
         var series=[];
         var events=[];
@@ -444,6 +465,311 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
     }
     readData();
 
+
+    function readDataV2(){
+        var series=[];
+        var motion=[];
+        var motion_hands=[]
+        d3.csv(fileNameV2, function(d) {
+            var frame=parseFrame(d.time);
+            series.push({
+                frame:frame
+                ,foot1:d.foot1
+                ,foot2:d.foot2
+                ,hand1:d.hand1
+                ,hand2:d.hand2
+                ,pos1:d.pos1
+                ,pos2:d.pos2
+                ,result:d.result
+                ,score:d.score
+                ,bout:d.bout
+            });
+        }, function(error, classes) {
+            var bout=-1;
+            var seq1=0;
+            var seq2=0;
+            var frame_start1=-1;
+            var frame_start2=-1;
+            var frame_last=-1;
+            var frame_end=-1;
+            var type1="";
+            var type2="";
+
+            // hands
+            var frame_start_hand_1=-1;
+            var frame_start_hand_2=-1;
+            var type_hand_1="";
+            var type_hand_2="";
+
+            // create the motion data
+            series.forEach(function(d){
+                if(d.bout.length>0){            // net bout
+                    bout=+d.bout;    // record this bout
+                    seq1=seq2=0;          // reset sequence
+                    frame_start1=frame_start2=-1; // reset start frame
+                }
+                else if(d.result.length>0){
+                    // set the last segment as a motion
+                    /*
+                    if(bout>0){
+                        frame_end=frame_last;
+                        motion.push({
+                            bout:+bout,
+                            player:1,
+                            seq:+seq1,
+                            frame_start:frame_start1,
+                            frame_end:frame_end,
+                            type:type1
+                        });
+                        motion.push({
+                            bout:+bout,
+                            player:2,
+                            seq:+seq2,
+                            frame_start:frame_start2,
+                            frame_end:frame_end,
+                            type:type2
+                        });
+                    }
+                    */
+                }
+                else{
+                    if(d.foot1.length==2){
+                        if(d.foot1=="fs"){
+                            seq1=(++seq1);
+                            frame_start1=d.frame;
+                            type1="f"
+                        }
+                        else if(d.foot1=="ff"){
+
+                            frame_end=d.frame;
+                            motion.push({
+                                bout:+bout,
+                                player:1,
+                                seq:+seq1,
+                                frame_start:frame_start1,
+                                frame_end:frame_end,
+                                type:type1
+                            });
+                        }
+                        else if(d.foot1=="as"){
+                            seq1=(++seq1);
+                            frame_start1=d.frame;
+                            type1="a"
+                        }
+                        else if(d.foot1=="af"){
+                            frame_end=d.frame;
+                            motion.push({
+                                bout:+bout,
+                                player:1,
+                                seq:+seq1,
+                                frame_start:frame_start1,
+                                frame_end:frame_end,
+                                type:type1
+                            });
+                        }
+                        else if(d.foot1=="bs"){
+                            seq1=(++seq1);
+                            frame_start1=d.frame;
+                            type1="b"
+
+                        }
+                        else if(d.foot1=="bf"){
+                            frame_end=d.frame;
+                            motion.push({
+                                bout:+bout,
+                                player:1,
+                                seq:+seq1,
+                                frame_start:frame_start1,
+                                frame_end:frame_end,
+                                type:type1
+                            });
+                        }
+                        else{
+                            console.log("unexpected foot");
+                        }
+                    }
+                    if(d.foot2.length==2){
+                        if(d.foot2=="fs"){
+                            seq2=(++seq2);
+                            frame_start2=d.frame;
+                            type2="f"
+                        }
+                        else if(d.foot2=="ff"){
+
+                            frame_end=d.frame;
+                            motion.push({
+                                bout:+bout,
+                                player:2,
+                                seq:+seq2,
+                                frame_start:frame_start2,
+                                frame_end:frame_end,
+                                type:type2
+                            });
+                        }
+                        else if(d.foot2=="as"){
+                            seq2=(++seq2);
+                            frame_start2=d.frame;
+                            type2="a"
+                        }
+                        else if(d.foot2=="af"){
+                            frame_end=d.frame;
+                            motion.push({
+                                bout:+bout,
+                                player:2,
+                                seq:+seq2,
+                                frame_start:frame_start2,
+                                frame_end:frame_end,
+                                type:type2
+                            });
+                        }
+                        else if(d.foot2=="bs"){
+                            seq2=(++seq2);
+                            frame_start2=d.frame;
+                            type2="b"
+
+                        }
+                        else if(d.foot2=="bf"){
+                            frame_end=d.frame;
+                            motion.push({
+                                bout:+bout,
+                                player:2,
+                                seq:+seq2,
+                                frame_start:frame_start2,
+                                frame_end:frame_end,
+                                type:type2
+                            });
+                        }
+                        else{
+                            console.log("unexpected foot");
+                        }
+                    }
+                    if(d.hand1.length>0){
+                        if(d.hand1=="as"){
+                            frame_start_hand_1=d.frame;
+                            type_hand_1="ha";
+                        }
+                        else if(d.hand1=="ps"){
+                            frame_start_hand_1=d.frame;
+                            type_hand_1="hp";
+                        }
+                        else if(d.hand1=="cs"){
+                            frame_start_hand_1=d.frame;
+                            type_hand_1="hc";
+                        }
+                        else if(d.hand1=="rs"){
+                            frame_start_hand_1=d.frame;
+                            type_hand_1="hr";
+                        }
+                        else if(d.hand1=="h"            // hit
+                            ||d.hand1=="af"             // attack finished
+                            ||d.hand1=="ap"             // attack been parried
+                            ||d.hand1=="cf"             // counter attack finished
+                            ||d.hand1=="p"              // parry
+                            ||d.hand1=="pf"             // parry miss
+                            ||d.hand1=="hp"             // hit be parried
+                        ){
+                            motion_hands.push({
+                                bout:bout,
+                                player:1,
+                                seq:0,
+                                frame_start:frame_start_hand_1,
+                                frame_end:d.frame,
+                                type:type_hand_1
+                            });
+                        }
+                    }
+                    if(d.hand2.length>0){
+                        if(d.hand2=="as"){
+                            frame_start_hand_2=d.frame;
+                            type_hand_2="ha";
+                        }
+                        else if(d.hand2=="ps"){
+                            frame_start_hand_2=d.frame;
+                            type_hand_2="hp";
+                        }
+                        else if(d.hand2=="cs"){
+                            frame_start_hand_2=d.frame;
+                            type_hand_2="hc";
+                        }
+                        else if(d.hand2=="rs"){
+                            frame_start_hand_2=d.frame;
+                            type_hand_2="hr";
+                        }
+                        else if(d.hand2=="h"            // hit
+                            ||d.hand2=="af"             // attack finished
+                            ||d.hand2=="ap"             // attack been parried
+                            ||d.hand2=="cf"             // counter attack finished
+                            ||d.hand2=="p"              // parry
+                            ||d.hand2=="pf"             // parry miss
+                            ||d.hand2=="hp"             // hit be parried
+                        ){
+                            motion_hands.push({
+                                bout:bout,
+                                player:2,
+                                seq:0,
+                                frame_start:frame_start_hand_2,
+                                frame_end:d.frame,
+                                type:type_hand_2
+                            });
+                        }
+                    }
+                }
+                if(d.frame>-1)
+                    frame_last=d.frame;
+            });
+
+            // let each motion start from frame 0
+            var start_frames=[];
+            var frame_start1;
+            var frame_start2;
+            motion.forEach(function(d,i){
+                if(d.seq==1){
+                    start_frames.push(d.frame_start);
+                    if(d.player==1)
+                        frame_start1=d.frame_start;
+                    else
+                        frame_start2=d.frame_start;
+                }
+                if(d.player==1){
+                    motion[i].frame_start-=frame_start1;
+                    motion[i].frame_end-=frame_start1;
+                }
+                else{
+                    motion[i].frame_start-=frame_start2;
+                    motion[i].frame_end-=frame_start2;
+                }
+            })
+            motion.sort(function(a,b){
+                if(a.bout<b.bout) return false;
+                else return a.player>b.player;
+            })
+            motion_hands.forEach(function(d,i) {
+                motion_hands[i].frame_start-=start_frames[(d.bout-1)*2];
+                motion_hands[i].frame_end-=start_frames[(d.bout-1)*2];
+
+            })
+
+
+            motion.sort(function(a,b){
+                var bout=a.bout-b.bout;
+                if(bout!=0) return bout;
+                else{
+                    var player=a.player-b.player;
+                    if(player!=0) return player;
+                    else return a.seq-b.seq;
+                }
+            })
+
+            $scope.fencingData.motion_hands=motion_hands;
+            $scope.fencingData.motion=motion;
+            $scope.fencingData.series=series;
+            $scope.$apply();
+
+
+            if (error) throw error;
+        });
+    }
+    readDataV2();
     $scope.fencingData.onSelectedNode=function(node,callback){
         console.log("onSelectedNode");
         //console.log("onSelectedNode");
@@ -494,15 +820,23 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
         console.log("on selected Season")
         if($scope.selectedMatch=="men final"){
             fileName="../data/men_final.csv";
+            fileNameV2="../data/men_final_v2.csv";
         }
         else if($scope.selectedMatch=="men semifinal 1"){
             fileName="../data/men_semifinal_1.csv";
+            fileNameV2="../data/men_semifinal_1_v2.csv";
 
         }
         else if($scope.selectedMatch=="men semifinal 2"){
             fileName="../data/men_semifinal_2.csv";
         }
         readData();
+        readDataV2();
+    });
+
+    $scope.$watch('selectedFilter', function() {
+        console.log("on selected Filter")
+        $scope.fencingData.filter=$scope.selectedFilter;
     });
 });
 

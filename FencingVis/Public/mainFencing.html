@@ -15,7 +15,9 @@
     <script src="js/tacticsMatrix.js"></script>
     <script src="js/statisticChart.js"></script>
     <script src="js/motionChart.js"></script>
+    <script src="js/boutChart.js"></script>
     <link rel="stylesheet" type="text/css" href="CSS/motion_chart_style.css">
+    <link rel="stylesheet" type="text/css" href="CSS/bout_chart_style.css">
     <link rel="stylesheet" type="text/css" href="CSS/html_styles.css">
     <link rel="stylesheet" type="text/css" href="CSS/fencing_game_vis_style.css">
     <link rel="stylesheet" type="text/css" href="CSS/tactics_chart_style.css">
@@ -43,16 +45,20 @@
 
 <body ng-app="myApp" ng-controller="MainCtrl">
 
-
-    <h2>选择比赛</h2>
+    <h2>Select Game</h2>
     <select ng-model="selectedMatch" ng-options="match for match in matchList" style="width:200px">
     </select>
-    <h1>行动视图</h1>
+    <h2>Select Filter</h2>
+    <select ng-model="selectedFilter" ng-options="filter for filter in filterList" style="width:200px">
+    </select>
+    <h1>Motion View</h1>
     <motion-chart data="fencingData"></motion-chart>
-    <h1>时间视图</h1>
+    <h1>Bout View</h1>
+    <bout-chart data="fencingData"></bout-chart>
+    <h1>Time View</h1>
     <fencing-game-vis data="fencingData" selected-point="selectedNode"></fencing-game-vis>
     <br>
-    <h1>战术视图</h1>
+    <h1>Tactics View</h1>
     <tactics-chart data="fencingData"></tactics-chart>
     <br>
 

@@ -30,8 +30,11 @@ module.exports = function(app) {
     app.get('/HorizontalStackedBarChart',function(req,res){
         res.sendfile('./public/HorizontalStackedBarChart.html');
     });
-    app.get('/dynamicStackedBarChart',function(req,res){
-        res.sendfile('./public/dynamicStackedBarChart.html');
+    app.get('/simpleAnimation',function(req,res){
+        res.sendfile('./public/simpleAnimation.html');
+    });
+    app.get('/chainTransition',function(req,res){
+        res.sendfile('./public/chainTransition.html');
     });
 	// application -------------------------------------------------------------
 	app.get('*', function (req, res) {
