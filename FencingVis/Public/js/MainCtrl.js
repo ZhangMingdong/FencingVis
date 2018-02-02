@@ -45,6 +45,7 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
         , selectedInfo:[]          // used for the selected node information display
         , filter:"no filter"               // "no filter","3 sceond"
         , selected_bout:-1
+        , bouts_data:[]
     }
 
     // check if the string is offensive
@@ -760,6 +761,8 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
                 }
             })
 
+            generateBoutData(series);
+
             $scope.fencingData.motion_hands=motion_hands;
             $scope.fencingData.motion=motion;
             $scope.fencingData.series=series;
@@ -770,6 +773,25 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
         });
     }
     readDataV2();
+
+    // generate the data of the bouts
+    function generateBoutData(series){
+        // generate bout data
+        var boutsData=[]
+        var boutIndex=1;
+        series.forEach(function(d){
+            if(d.result.length>0){
+                boutsData.push({
+                    bout:boutIndex++,
+                    player:1,
+                    score: d.score,
+                    result:d.result
+                })
+            }
+        })
+        $scope.fencingData.bouts_data=boutsData;
+
+    }
     $scope.fencingData.onSelectedNode=function(node,callback){
         console.log("onSelectedNode");
         //console.log("onSelectedNode");

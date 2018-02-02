@@ -104,18 +104,7 @@ mainApp.directive('motionChart', function () {
                 var data_hands=scope.data.motion_hands;
 
                 // generate bout data
-                var boutsData=[]
-                var boutIndex=1;
-                scope.data.series.forEach(function(d){
-                    if(d.result.length>0){
-                        boutsData.push({
-                            bout:boutIndex++,
-                            player:1,
-                            score: d.score,
-                            result:d.result
-                        })
-                    }
-                })
+                var boutsData=scope.data.bouts_data;
                 if(scope.data.filter=="3 second"){
                     var duration =[];
                     for(var i=0;i<boutsData.length;i++) duration.push(0);

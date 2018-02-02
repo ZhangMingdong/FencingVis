@@ -10,3 +10,11 @@ motion-chart {
     overflow: hidden;
     font-size: 10px;
 }
+
+motion-chart rect {
+    stroke-width: 1;
+}
+
+motion-chart rect:hover {
+    stroke-width: 2;
+}
