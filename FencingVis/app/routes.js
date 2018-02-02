@@ -36,6 +36,9 @@ module.exports = function(app) {
     app.get('/chainTransition',function(req,res){
         res.sendfile('./public/chainTransition.html');
     });
+    app.get('/basicTactics',function(req,res){
+        res.sendfile('./public/basicTactics.html');
+    });
 	// application -------------------------------------------------------------
 	app.get('*', function (req, res) {
 	    console.log("-----get* from "+req.host+" at "+Date());
