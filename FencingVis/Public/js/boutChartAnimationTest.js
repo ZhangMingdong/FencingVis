@@ -5,7 +5,7 @@
         created
         2018/02/01
  */
-mainApp.directive('boutChart', function () {
+mainApp.directive('boutChartAnimationTest', function () {
     function link(scope, el, attr) {
         function boutChart(){
             // 0.definition
@@ -282,7 +282,7 @@ mainApp.directive('boutChart', function () {
             // response the size-change
             function resize() {
 
-                //    console.log("====================resize motion chart=================");
+            //    console.log("====================resize motion chart=================");
 
 
                 svgBoutW = svgBoutBGW - margin.left - margin.right;

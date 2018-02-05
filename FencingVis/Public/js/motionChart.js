@@ -109,10 +109,10 @@ mainApp.directive('motionChart', function () {
                     var duration =[];
                     for(var i=0;i<boutsData.length;i++) duration.push(0);
                     data_feet.forEach(function(d){
-                        if(d.frame_end>90) duration[d.bout]=1;
+                        if(d.bias_end>90) duration[d.bout]=1;
                     })
                     data_hands.forEach(function(d){
-                        if(d.frame_end>90) duration[d.bout]=1;
+                        if(d.bias_end>90) duration[d.bout]=1;
                     })
                     boutsData=boutsData.filter(function(d){return duration[d.bout]==0})
                     data_feet=data_feet.filter(function(d){return duration[d.bout]==0})
@@ -125,7 +125,7 @@ mainApp.directive('motionChart', function () {
                     .padding(0.1);
 
                 var xScale = d3.scaleLinear()
-                    .domain([0, Math.max(d3.max(data_feet, function(d){ return d.frame_end; }),d3.max(data_hands, function(d){ return d.frame_end; }))])
+                    .domain([0, Math.max(d3.max(data_feet, function(d){ return d.bias_end; }),d3.max(data_hands, function(d){ return d.bias_end; }))])
                     .range([0, svgMotionW]);
 
                 // update axes
@@ -202,14 +202,14 @@ mainApp.directive('motionChart', function () {
                 feet
                     .enter().append("rect")
                     .attr("class", "foot")
-                    .attr("x", function(d) { return xScale(d.frame_start); })
-                    .attr("width", function(d) {return xScale(d.frame_end-d.frame_start); } )
+                    .attr("x", function(d) { return xScale(d.bias_start); })
+                    .attr("width", function(d) {return xScale(d.bias_end-d.bias_start); } )
                     .attr("fill",function(d){return type2color(d.type)})
                     .attr("y", function(d) { return yScale(getY(d)); })
                     .attr("height", yScale.bandwidth()*.8);
                 feet
-                    .attr("x", function(d) { return xScale(d.frame_start); })
-                    .attr("width", function(d) {return xScale(d.frame_end-d.frame_start); } )
+                    .attr("x", function(d) { return xScale(d.bias_start); })
+                    .attr("width", function(d) {return xScale(d.bias_end-d.bias_start); } )
                     .attr("fill",function(d){return type2color(d.type)})
                     .attr("y", function(d) {return yScale(getY(d)); })
                     .attr("height", yScale.bandwidth()*.8);
@@ -225,14 +225,14 @@ mainApp.directive('motionChart', function () {
                 hands
                     .enter().append("rect")
                     .attr("class", "hand")
-                    .attr("x", function(d) { return xScale(d.frame_start); })
-                    .attr("width", function(d) {return xScale(d.frame_end-d.frame_start); } )
+                    .attr("x", function(d) { return xScale(d.bias_start); })
+                    .attr("width", function(d) {return xScale(d.bias_end-d.bias_start); } )
                     .attr("fill",function(d){return type2color_hand(d.type)})
                     .attr("y", function(d) { return yScale(getY(d)); })
                     .attr("height", yScale.bandwidth()*.4);
                 hands
-                    .attr("x", function(d) { return xScale(d.frame_start); })
-                    .attr("width", function(d) {return xScale(d.frame_end-d.frame_start); } )
+                    .attr("x", function(d) { return xScale(d.bias_start); })
+                    .attr("width", function(d) {return xScale(d.bias_end-d.bias_start); } )
                     .attr("fill",function(d){return type2color_hand(d.type)})
                     .attr("y", function(d) { return yScale(getY(d)); })
                     .attr("height", yScale.bandwidth()*.4);

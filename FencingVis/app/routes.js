@@ -39,6 +39,9 @@ module.exports = function(app) {
     app.get('/basicTactics',function(req,res){
         res.sendfile('./public/basicTactics.html');
     });
+    app.get('/boutChartAnimationTest',function(req,res){
+        res.sendfile('./public/boutChartAnimationTest.html');
+    });
 	// application -------------------------------------------------------------
 	app.get('*', function (req, res) {
 	    console.log("-----get* from "+req.host+" at "+Date());

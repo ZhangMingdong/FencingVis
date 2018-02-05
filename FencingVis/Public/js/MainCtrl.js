@@ -38,14 +38,13 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
         ]         // statistics of the tactic: 0-aa;1-ar;2-ra;3-rr
         , statistics_tree:{}       // tree of the statistics
         , motion_tree:{}           // tree of motion
-        , motion: [
-            ]            // motions of feet
+        , motion: []               // motions of feet
         , motion_hands:[]          // motions of hands
         , selectedNode:{}
         , selectedInfo:[]          // used for the selected node information display
-        , filter:"no filter"               // "no filter","3 sceond"
-        , selected_bout:-1
-        , bouts_data:[]
+        , filter:"no filter"      // "no filter","3 sceond"
+        , selected_bout:-1         // index of selected bout
+        , bouts_data:[]            // data of each bouts
     }
 
     // check if the string is offensive
@@ -451,7 +450,6 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
 
 
         //    console.log(series);
-            $scope.fencingData.series=series;
             $scope.fencingData.events=events;
             $scope.fencingData.bouts=bouts;
             $scope.fencingData.tactics=tactics;
@@ -469,8 +467,6 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
 
     function readDataV2(){
         var series=[];
-        var motion=[];
-        var motion_hands=[]
         d3.csv(fileNameV2, function(d) {
             var frame=parseFrame(d.time);
             series.push({
@@ -486,285 +482,13 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
                 ,bout:d.bout
             });
         }, function(error, classes) {
-            var bout=-1;
-            var seq1=0;
-            var seq2=0;
-            var frame_start1=-1;
-            var frame_start2=-1;
-            var frame_last=-1;
-            var frame_end=-1;
-            var type1="";
-            var type2="";
 
-            // hands
-            var frame_start_hand_1=-1;
-            var frame_start_hand_2=-1;
-            var type_hand_1="";
-            var type_hand_2="";
-
-            // create the motion data
-            series.forEach(function(d){
-                if(d.bout.length>0){            // net bout
-                    bout=+d.bout;    // record this bout
-                    seq1=seq2=0;          // reset sequence
-                    frame_start1=frame_start2=-1; // reset start frame
-                }
-                else if(d.result.length>0){
-                    // set the last segment as a motion
-                    /*
-                    if(bout>0){
-                        frame_end=frame_last;
-                        motion.push({
-                            bout:+bout,
-                            player:1,
-                            seq:+seq1,
-                            frame_start:frame_start1,
-                            frame_end:frame_end,
-                            type:type1
-                        });
-                        motion.push({
-                            bout:+bout,
-                            player:2,
-                            seq:+seq2,
-                            frame_start:frame_start2,
-                            frame_end:frame_end,
-                            type:type2
-                        });
-                    }
-                    */
-                }
-                else{
-                    if(d.foot1.length==2){
-                        if(d.foot1=="fs"){
-                            seq1=(++seq1);
-                            frame_start1=d.frame;
-                            type1="f"
-                        }
-                        else if(d.foot1=="ff"){
-
-                            frame_end=d.frame;
-                            motion.push({
-                                bout:+bout,
-                                player:1,
-                                seq:+seq1,
-                                frame_start:frame_start1,
-                                frame_end:frame_end,
-                                type:type1
-                            });
-                        }
-                        else if(d.foot1=="as"){
-                            seq1=(++seq1);
-                            frame_start1=d.frame;
-                            type1="a"
-                        }
-                        else if(d.foot1=="af"){
-                            frame_end=d.frame;
-                            motion.push({
-                                bout:+bout,
-                                player:1,
-                                seq:+seq1,
-                                frame_start:frame_start1,
-                                frame_end:frame_end,
-                                type:type1
-                            });
-                        }
-                        else if(d.foot1=="bs"){
-                            seq1=(++seq1);
-                            frame_start1=d.frame;
-                            type1="b"
-
-                        }
-                        else if(d.foot1=="bf"){
-                            frame_end=d.frame;
-                            motion.push({
-                                bout:+bout,
-                                player:1,
-                                seq:+seq1,
-                                frame_start:frame_start1,
-                                frame_end:frame_end,
-                                type:type1
-                            });
-                        }
-                        else{
-                            console.log("unexpected foot");
-                        }
-                    }
-                    if(d.foot2.length==2){
-                        if(d.foot2=="fs"){
-                            seq2=(++seq2);
-                            frame_start2=d.frame;
-                            type2="f"
-                        }
-                        else if(d.foot2=="ff"){
-
-                            frame_end=d.frame;
-                            motion.push({
-                                bout:+bout,
-                                player:2,
-                                seq:+seq2,
-                                frame_start:frame_start2,
-                                frame_end:frame_end,
-                                type:type2
-                            });
-                        }
-                        else if(d.foot2=="as"){
-                            seq2=(++seq2);
-                            frame_start2=d.frame;
-                            type2="a"
-                        }
-                        else if(d.foot2=="af"){
-                            frame_end=d.frame;
-                            motion.push({
-                                bout:+bout,
-                                player:2,
-                                seq:+seq2,
-                                frame_start:frame_start2,
-                                frame_end:frame_end,
-                                type:type2
-                            });
-                        }
-                        else if(d.foot2=="bs"){
-                            seq2=(++seq2);
-                            frame_start2=d.frame;
-                            type2="b"
-
-                        }
-                        else if(d.foot2=="bf"){
-                            frame_end=d.frame;
-                            motion.push({
-                                bout:+bout,
-                                player:2,
-                                seq:+seq2,
-                                frame_start:frame_start2,
-                                frame_end:frame_end,
-                                type:type2
-                            });
-                        }
-                        else{
-                            console.log("unexpected foot");
-                        }
-                    }
-                    if(d.hand1.length>0){
-                        if(d.hand1=="as"){
-                            frame_start_hand_1=d.frame;
-                            type_hand_1="ha";
-                        }
-                        else if(d.hand1=="ps"){
-                            frame_start_hand_1=d.frame;
-                            type_hand_1="hp";
-                        }
-                        else if(d.hand1=="cs"){
-                            frame_start_hand_1=d.frame;
-                            type_hand_1="hc";
-                        }
-                        else if(d.hand1=="rs"){
-                            frame_start_hand_1=d.frame;
-                            type_hand_1="hr";
-                        }
-                        else if(d.hand1=="h"            // hit
-                            ||d.hand1=="af"             // attack finished
-                            ||d.hand1=="ap"             // attack been parried
-                            ||d.hand1=="cf"             // counter attack finished
-                            ||d.hand1=="p"              // parry
-                            ||d.hand1=="pf"             // parry miss
-                            ||d.hand1=="hp"             // hit be parried
-                        ){
-                            motion_hands.push({
-                                bout:bout,
-                                player:1,
-                                seq:0,
-                                frame_start:frame_start_hand_1,
-                                frame_end:d.frame,
-                                type:type_hand_1
-                            });
-                        }
-                    }
-                    if(d.hand2.length>0){
-                        if(d.hand2=="as"){
-                            frame_start_hand_2=d.frame;
-                            type_hand_2="ha";
-                        }
-                        else if(d.hand2=="ps"){
-                            frame_start_hand_2=d.frame;
-                            type_hand_2="hp";
-                        }
-                        else if(d.hand2=="cs"){
-                            frame_start_hand_2=d.frame;
-                            type_hand_2="hc";
-                        }
-                        else if(d.hand2=="rs"){
-                            frame_start_hand_2=d.frame;
-                            type_hand_2="hr";
-                        }
-                        else if(d.hand2=="h"            // hit
-                            ||d.hand2=="af"             // attack finished
-                            ||d.hand2=="ap"             // attack been parried
-                            ||d.hand2=="cf"             // counter attack finished
-                            ||d.hand2=="p"              // parry
-                            ||d.hand2=="pf"             // parry miss
-                            ||d.hand2=="hp"             // hit be parried
-                        ){
-                            motion_hands.push({
-                                bout:bout,
-                                player:2,
-                                seq:0,
-                                frame_start:frame_start_hand_2,
-                                frame_end:d.frame,
-                                type:type_hand_2
-                            });
-                        }
-                    }
-                }
-                if(d.frame>-1)
-                    frame_last=d.frame;
-            });
-
-            // let each motion start from frame 0
-            var start_frames=[];
-            var frame_start1;
-            var frame_start2;
-            motion.forEach(function(d,i){
-                if(d.seq==1){
-                    start_frames.push(d.frame_start);
-                    if(d.player==1)
-                        frame_start1=d.frame_start;
-                    else
-                        frame_start2=d.frame_start;
-                }
-                if(d.player==1){
-                    motion[i].frame_start-=frame_start1;
-                    motion[i].frame_end-=frame_start1;
-                }
-                else{
-                    motion[i].frame_start-=frame_start2;
-                    motion[i].frame_end-=frame_start2;
-                }
-            })
-            motion.sort(function(a,b){
-                if(a.bout<b.bout) return false;
-                else return a.player>b.player;
-            })
-            motion_hands.forEach(function(d,i) {
-                motion_hands[i].frame_start-=start_frames[(d.bout-1)*2];
-                motion_hands[i].frame_end-=start_frames[(d.bout-1)*2];
-
-            })
-
-
-            motion.sort(function(a,b){
-                var bout=a.bout-b.bout;
-                if(bout!=0) return bout;
-                else{
-                    var player=a.player-b.player;
-                    if(player!=0) return player;
-                    else return a.seq-b.seq;
-                }
-            })
-
+            // generate motion data of hands and feet
+            generateMotionData(series);
+            // generate bout data
             generateBoutData(series);
 
-            $scope.fencingData.motion_hands=motion_hands;
-            $scope.fencingData.motion=motion;
+
             $scope.fencingData.series=series;
             $scope.$apply();
 
@@ -773,25 +497,295 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
         });
     }
     readDataV2();
+    function addMotion(motion,bout,seq,player,start,end,type){
+        motion.push({
+            bout:+bout,
+            player:player,
+            seq:+seq,
+            frame_start:start,
+            frame_end:end,
+            bias_start:start,
+            bias_end:end,
+            type:type
+        });
 
+    }
+    function generateMotionData(series){
+        var motion=[];
+        var motion_hands=[]
+
+        var bout=-1;
+        var seq1=0;
+        var seq2=0;
+        var frame_last=-1;
+        var frame_end=-1;
+
+        // feet
+        var frame_start1=-1;
+        var frame_start2=-1;
+        var type1="";
+        var type2="";
+
+        // hands
+        var frame_start_hand_1=-1;
+        var frame_start_hand_2=-1;
+        var type_hand_1="";
+        var type_hand_2="";
+
+        // create the motion data
+        series.forEach(function(d){
+            if(d.bout.length>0){            // net bout
+                bout=+d.bout;               // record this bout
+                seq1=0;                // reset sequence
+                seq2=0
+                frame_start1=-1; // reset start frame
+                frame_start2=-1
+            }
+            else{
+                if(d.foot1.length>0){
+                    if(d.foot1=="fs"){
+                        seq1=(++seq1);
+                        frame_start1=d.frame;
+                        type1="f"
+                    }
+                    else if(d.foot1=="ff"){
+
+                        frame_end=d.frame;
+                        addMotion(motion,+bout,+seq1,1,frame_start1,frame_end,type1);
+                    }
+                    else if(d.foot1=="as"){
+                        seq1=(++seq1);
+                        frame_start1=d.frame;
+                        type1="a"
+                    }
+                    else if(d.foot1=="af"){
+                        frame_end=d.frame;
+                        addMotion(motion,+bout,+seq1,1,frame_start1,frame_end,type1);
+                    //    motion.push({
+                    //        bout:+bout,
+                    //        player:1,
+                    //        seq:+seq1,
+                    //        frame_start:frame_start1,
+                    //        frame_end:frame_end,
+                    //        type:type1
+                    //    });
+                    }
+                    else if(d.foot1=="bs"){
+                        seq1=(++seq1);
+                        frame_start1=d.frame;
+                        type1="b"
+
+                    }
+                    else if(d.foot1=="bf"){
+                        frame_end=d.frame;
+                        addMotion(motion,+bout,+seq1,1,frame_start1,frame_end,type1);
+                    }
+                    else{
+                        console.log("unexpected foot");
+                    }
+                }
+                if(d.foot2.length>0){
+                    if(d.foot2=="fs"){
+                        seq2=(++seq2);
+                        frame_start2=d.frame;
+                        type2="f"
+                    }
+                    else if(d.foot2=="ff"){
+
+                        frame_end=d.frame;
+                        addMotion(motion,+bout,+seq2,2,frame_start2,frame_end,type2);
+                    //    motion.push({
+                    //        bout:+bout,
+                    //        player:2,
+                    //        seq:+seq2,
+                    //        frame_start:frame_start2,
+                    //        frame_end:frame_end,
+                    //        type:type2
+                    //    });
+                    }
+                    else if(d.foot2=="as"){
+                        seq2=(++seq2);
+                        frame_start2=d.frame;
+                        type2="a"
+                    }
+                    else if(d.foot2=="af"){
+                        frame_end=d.frame;
+                        addMotion(motion,+bout,+seq2,2,frame_start2,frame_end,type2);
+                    }
+                    else if(d.foot2=="bs"){
+                        seq2=(++seq2);
+                        frame_start2=d.frame;
+                        type2="b"
+
+                    }
+                    else if(d.foot2=="bf"){
+                        frame_end=d.frame;
+                        addMotion(motion,+bout,+seq2,2,frame_start2,frame_end,type2);
+                    }
+                    else{
+                        console.log("unexpected foot");
+                    }
+                }
+                if(d.hand1.length>0){
+                    if(d.hand1=="as"){
+                        frame_start_hand_1=d.frame;
+                        type_hand_1="ha";
+                    }
+                    else if(d.hand1=="ps"){
+                        frame_start_hand_1=d.frame;
+                        type_hand_1="hp";
+                    }
+                    else if(d.hand1=="cs"){
+                        frame_start_hand_1=d.frame;
+                        type_hand_1="hc";
+                    }
+                    else if(d.hand1=="rs"){
+                        frame_start_hand_1=d.frame;
+                        type_hand_1="hr";
+                    }
+                    else if(d.hand1=="h"            // hit
+                        ||d.hand1=="af"             // attack finished
+                        ||d.hand1=="ap"             // attack been parried
+                        ||d.hand1=="cf"             // counter attack finished
+                        ||d.hand1=="p"              // parry
+                        ||d.hand1=="pf"             // parry miss
+                        ||d.hand1=="hp"             // hit be parried
+                    ){
+                        addMotion(motion_hands,+bout,0,1,frame_start_hand_1,d.frame,type_hand_1);
+                    //    motion_hands.push({
+                    //        bout:bout,
+                    //        player:1,
+                    //        seq:0,
+                    //        frame_start:frame_start_hand_1,
+                    //        frame_end:d.frame,
+                    //        type:type_hand_1
+                    //    });
+                    }
+                }
+                if(d.hand2.length>0){
+                    if(d.hand2=="as"){
+                        frame_start_hand_2=d.frame;
+                        type_hand_2="ha";
+                    }
+                    else if(d.hand2=="ps"){
+                        frame_start_hand_2=d.frame;
+                        type_hand_2="hp";
+                    }
+                    else if(d.hand2=="cs"){
+                        frame_start_hand_2=d.frame;
+                        type_hand_2="hc";
+                    }
+                    else if(d.hand2=="rs"){
+                        frame_start_hand_2=d.frame;
+                        type_hand_2="hr";
+                    }
+                    else if(d.hand2=="h"            // hit
+                        ||d.hand2=="af"             // attack finished
+                        ||d.hand2=="ap"             // attack been parried
+                        ||d.hand2=="cf"             // counter attack finished
+                        ||d.hand2=="p"              // parry
+                        ||d.hand2=="pf"             // parry miss
+                        ||d.hand2=="hp"             // hit be parried
+                    ){
+                        addMotion(motion_hands,+bout,0,2,frame_start_hand_2,d.frame,type_hand_2);
+                    //    motion_hands.push({
+                    //        bout:bout,
+                    //        player:2,
+                    //        seq:0,
+                    //        frame_start:frame_start_hand_2,
+                    //        frame_end:d.frame,
+                    //        type:type_hand_2
+                    //    });
+                    }
+                }
+            }
+            if(d.frame>-1)
+                frame_last=d.frame;
+        });
+
+        // make each motion start from frame 0
+        var start_frames=[];
+        var frame_start1;
+        var frame_start2;
+        motion.forEach(function(d,i){
+            if(d.seq==1){
+                start_frames.push(d.frame_start);
+                if(d.player==1)
+                    frame_start1=d.frame_start;
+                else
+                    frame_start2=d.frame_start;
+            }
+            if(d.player==1){
+                motion[i].bias_start-=frame_start1;
+                motion[i].bias_end-=frame_start1;
+            }
+            else{
+                motion[i].bias_start-=frame_start2;
+                motion[i].bias_end-=frame_start2;
+            }
+        })
+        motion_hands.forEach(function(d,i) {
+            motion_hands[i].bias_start-=start_frames[(d.bout-1)*2];
+            motion_hands[i].bias_end-=start_frames[(d.bout-1)*2];
+
+        })
+        // sort the data
+        motion.sort(function(a,b){
+            var bout=a.bout-b.bout;
+            if(bout!=0) return bout;
+            else{
+                var player=a.player-b.player;
+                if(player!=0) return player;
+                else return a.seq-b.seq;
+            }
+        })
+
+        $scope.fencingData.motion_hands=motion_hands;
+        $scope.fencingData.motion=motion;
+    }
     // generate the data of the bouts
     function generateBoutData(series){
         // generate bout data
         var boutsData=[]
         var boutIndex=1;
+        var frame_start=-1;
         series.forEach(function(d){
+            if(frame_start==-1) frame_start=d.frame_start;
             if(d.result.length>0){
                 boutsData.push({
+                    frame_start:frame_start,
+                    frame_end:d.frame,
                     bout:boutIndex++,
                     player:1,
                     score: d.score,
-                    result:d.result
+                    result:d.result,
+                    hands1:[],
+                    hands2:[],
+                    feet1:[],
+                    feet2:[],
                 })
+                frame_start=-1;
             }
         })
+        // bind motion data to bouts data
+        $scope.fencingData.motion.forEach(function(d){
+            if(d.player==1)
+                boutsData[d.bout-1].feet1.push(d);
+            else
+                boutsData[d.bout-1].feet2.push(d);
+        })
+        $scope.fencingData.motion_hands.forEach(function(d){
+            if(d.player==1)
+                boutsData[d.bout-1].hands1.push(d);
+            else
+                boutsData[d.bout-1].hands2.push(d);
+        })
+        boutsData.forEach(function(d){
+            console.log(d);
+        })
         $scope.fencingData.bouts_data=boutsData;
-
     }
+
     $scope.fencingData.onSelectedNode=function(node,callback){
         console.log("onSelectedNode");
         //console.log("onSelectedNode");
@@ -829,13 +823,6 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
     $scope.fencingData.onUnSelectedNode=function(){
         console.log("onUnSelectedNode");
 
-    }
-
-    $scope.fencingData.getLinks=function(){
-        links=[];
-        events.forEach(function(d){
-
-        })
     }
 
     $scope.$watch('selectedMatch', function() {
