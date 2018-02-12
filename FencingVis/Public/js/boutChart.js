@@ -300,7 +300,7 @@ mainApp.directive('boutChart', function () {
                 redraw();
             }
             function redraw(){
-                console.log("redraw motion chart");
+            //    console.log("redraw bout chart");
 
                 yScale
                     .range([0,svgBoutH])
@@ -360,21 +360,36 @@ mainApp.directive('boutChart', function () {
                 var arrPos2=[];
                 var arrMotion1=[];
                 var arrMotion2=[];
+                var arrTime1=[500,500,500,500,500,500,500,500,500,500];
+                var arrTime2=[500,500,500,500,500,500,500,500,500,500];
                 var resultText=""
                 var bout=scope.data.bouts_data[scope.data.selected_bout-1];
                 if(bout.result=="b"){
-                    arrPos1=[4.5,5,5.5,6.5];
-                    arrPos2=[9.5,9,8.5,7.5];
-                    arrMotion1=[0,0,0,1];
-                    arrMotion2=[0,0,0,1];
+                    arrPos1=[
+                        4.5
+                        ,5
+                        ,5.5
+                        ,6.5
+                    ];
+                    arrPos2=[
+                        9.5
+                        ,9
+                        ,8.5
+                        ,7.5
+                    ];
+                    arrMotion1=[
+                        0
+                        ,0
+                        ,0
+                        ,1
+                    ];
+                    arrMotion2=[
+                        0
+                        ,0
+                        ,0
+                        ,1
+                    ];
                     resultText="同时互中"
-                }
-                else if(bout.result=="a"){
-                    arrPos1=[4.5,5,5.5,6.5];
-                    arrPos2=[9.5,9,8.5,7.5];
-                    arrMotion1=[0,0,0,1];
-                    arrMotion2=[0,0,0,1];
-                    resultText="进攻反攻"
                 }
                 else if(bout.result=="r"){
                     arrPos1=[4.5,5,5.5,6.5,6.5];
@@ -405,9 +420,47 @@ mainApp.directive('boutChart', function () {
                     arrMotion2=[0,0,0,0,0,0,2];
                     resultText="进攻反攻"
                 }
+                else if(bout.result=="a"){
+                    arrPos1=[
+                        4.5
+                        ,5
+                        ,5.5
+                        ,6.5
+                    ];
+                    arrPos2=[
+                        9.5
+                        ,9
+                        ,8.5
+                        ,7.5
+                    ];
+                    arrMotion1=[
+                        0
+                        ,0
+                        ,0
+                        ,1
+                    ];
+                    arrMotion2=[
+                        0
+                        ,0
+                        ,0
+                        ,1
+                    ];
+                    resultText="进攻反攻"
+                }
+                else if(bout.result=="ra"){
+                    arrPos1=[4.5,5,5.5,6,7,8,9.5,9,8];
+                    arrPos2=[9.5,9,8.5,8.2,8.5,9.5,11,10.8,9];
+                    arrMotion1=[0,0,0,0,0,0,1,0,2];
+                    arrMotion2=[0,0,0,0,0,0,2,0,1];
+                    resultText="进攻反攻"
+                }
                 else{
                     return;
                 }
+
+                var arrTime=[arrTime1,arrTime2]
+                var arrMotion=[arrMotion1,arrMotion2]
+                var arrPos=[arrPos1,arrPos2];
                 // animation of fencer1
                 function animation1(){
                     var index=1;
@@ -415,7 +468,7 @@ mainApp.directive('boutChart', function () {
                         .style("opacity", 1)
                         .attr("transform", "translate("+xScale(arrPos1[0])+", "+svgBoutH/2+")")
                         .transition()           // apply a transition
-                        .duration(500)         // apply it over 4000 milliseconds
+                        .duration(arrTime1[0])         // apply it over 4000 milliseconds
                         .on("start", function repeat() {
                             if(index==arrPos1.length){
                                 svgFencer1.style("opacity", 0)
@@ -430,8 +483,9 @@ mainApp.directive('boutChart', function () {
                             }
                             else{
                                 d3.active(this)
-                                    .attr("transform", "translate("+xScale(arrPos1[index++])+", "+svgBoutH/2+")")
+                                    .attr("transform", "translate("+xScale(arrPos1[index])+", "+svgBoutH/2+")")
                                     .transition()
+                                    .duration(arrTime1[index++])
                                     .on("start", repeat);
                             }
                         });
@@ -445,15 +499,16 @@ mainApp.directive('boutChart', function () {
                         .style("opacity", 1)
                         .attr("transform", "translate("+xScale(arrPos2[0])+", "+svgBoutH/2+")")
                         .transition()           // apply a transition
-                        .duration(500)         // apply it over 4000 milliseconds
+                        .duration(arrTime2[0])         // apply it over 4000 milliseconds
                         .on("start", function repeat() {
                             if(index==arrPos2.length){
                                 svgFencer2.style("opacity", 0)
                             }
                             else{
                                 d3.active(this)
-                                    .attr("transform", "translate("+xScale(arrPos2[index++])+", "+svgBoutH/2+")")
+                                    .attr("transform", "translate("+xScale(arrPos2[index])+", "+svgBoutH/2+")")
                                     .transition()
+                                    .duration(arrTime2[index++])
                                     .on("start", repeat);
                             }
                         });
@@ -466,36 +521,38 @@ mainApp.directive('boutChart', function () {
                     if(indexPart==0){
                         console.log(arrSVGFencer)
                         arrSVGFencer[player-1][indexPart]
-                            .attr("cx",arrGlyphCoords[arrMotion1[0]][0].x*revert)
-                            .attr("cy",arrGlyphCoords[arrMotion1[0]][0].y)
+                            .attr("cx",arrGlyphCoords[arrMotion[player-1][0]][0].x*revert)
+                            .attr("cy",arrGlyphCoords[arrMotion[player-1][0]][0].y)
                             .transition()           // apply a transition
-                            .duration(500)         // apply it over 4000 milliseconds
+                            .duration(arrTime[player-1][0])         // apply it over 4000 milliseconds
                             .on("start", function repeat() {
-                                if(index<arrMotion1.length){
+                                if(index<arrMotion[player-1].length){
                                     d3.active(this)
-                                        .attr("cx",arrGlyphCoords[arrMotion1[index]][0].x*revert)
-                                        .attr("cy",arrGlyphCoords[arrMotion1[index++]][0].y)
+                                        .attr("cx",arrGlyphCoords[arrMotion[player-1][index]][0].x*revert)
+                                        .attr("cy",arrGlyphCoords[arrMotion[player-1][index]][0].y)
                                         .transition()
+                                        .duration(arrTime[player-1][index++])         // apply it over 4000 milliseconds
                                         .on("start", repeat);
                                 }
                             });
                     }
                     else{
                         arrSVGFencer[player-1][indexPart]
-                            .attr("x1",arrGlyphCoords[arrMotion1[0]][index1].x*revert)
-                            .attr("y1",arrGlyphCoords[arrMotion1[0]][index1].y)
-                            .attr("x2",arrGlyphCoords[arrMotion1[0]][index2].x*revert)
-                            .attr("y2",arrGlyphCoords[arrMotion1[0]][index2].y)
+                            .attr("x1",arrGlyphCoords[arrMotion[player-1][0]][index1].x*revert)
+                            .attr("y1",arrGlyphCoords[arrMotion[player-1][0]][index1].y)
+                            .attr("x2",arrGlyphCoords[arrMotion[player-1][0]][index2].x*revert)
+                            .attr("y2",arrGlyphCoords[arrMotion[player-1][0]][index2].y)
                             .transition()           // apply a transition
-                            .duration(500)         // apply it over 4000 milliseconds
+                            .duration(arrTime[player-1][0])         // apply it over 4000 milliseconds
                             .on("start", function repeat() {
-                                if(index<arrMotion1.length){
+                                if(index<arrMotion[player-1].length){
                                     d3.active(this)
-                                        .attr("x1",arrGlyphCoords[arrMotion1[index]][index1].x*revert)
-                                        .attr("y1",arrGlyphCoords[arrMotion1[index]][index1].y)
-                                        .attr("x2",arrGlyphCoords[arrMotion1[index]][index2].x*revert)
-                                        .attr("y2",arrGlyphCoords[arrMotion1[index++]][index2].y)
+                                        .attr("x1",arrGlyphCoords[arrMotion[player-1][index]][index1].x*revert)
+                                        .attr("y1",arrGlyphCoords[arrMotion[player-1][index]][index1].y)
+                                        .attr("x2",arrGlyphCoords[arrMotion[player-1][index]][index2].x*revert)
+                                        .attr("y2",arrGlyphCoords[arrMotion[player-1][index]][index2].y)
                                         .transition()
+                                        .duration(arrTime[player-1][index++])         // apply it over 4000 milliseconds
                                         .on("start", repeat);
                                 }
                             });

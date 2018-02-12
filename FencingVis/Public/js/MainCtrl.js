@@ -19,10 +19,7 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
     // selected match
     $scope.selectedMatch="men final";
 
-    // fliter selection
-    $scope.filterList=["no filter","3 second"];
-    // selected filter
-    $scope.selectedFilter="no filter";
+
 
     // fencing data structure
     $scope.fencingData={
@@ -30,14 +27,6 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
         , events:[]                 // events in the match: time_start, time_end, index, player, score
         , bouts:[]                  // bouts of the match: time_start, time_end, index, player
         , tactics:[]                // tactics of each bout: name, tactic1, tactic2, score
-        , statistics:[
-            {count:1,player1:0,player2:0}
-            ,{count:1,player1:0,player2:0}
-            ,{count:1,player1:0,player2:0}
-            ,{count:1,player1:0,player2:0}
-        ]         // statistics of the tactic: 0-aa;1-ar;2-ra;3-rr
-        , statistics_tree:{}       // tree of the statistics
-        , motion_tree:{}           // tree of motion
         , motion: []               // motions of feet
         , motion_hands:[]          // motions of hands
         , selectedNode:{}
@@ -45,6 +34,34 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
         , filter:"no filter"      // "no filter","3 sceond"
         , selected_bout:-1         // index of selected bout
         , bouts_data:[]            // data of each bouts
+        , filter_value:500          // the threshold value of filter
+        , filtered_phrase:0         // the number of filtered phrase
+        , B:true                    // check box result
+        , P1:true
+        , P2:true
+        , flow:{
+            nodes:[
+                {x:400,y:100,name:"S"}
+                ,{x:200,y:300,name:"FB"}
+                ,{x:400,y:300,name:"FF"}
+                ,{x:600,y:300,name:"BF"}
+                ,{x:200,y:500,name:"1"}
+                ,{x:400,y:500,name:"B"}
+                ,{x:600,y:500,name:"2"}
+            ],
+            flow:[
+                 {s:0,d:1,count:0}      //0FB
+                ,{s:0,d:2,count:0}      //1FF
+                ,{s:0,d:3,count:0}      //2BF
+                ,{s:1,d:4,count:0}      //3FB1
+                ,{s:2,d:4,count:0}      //4FF1
+                ,{s:2,d:5,count:0}      //5FFB
+                ,{s:2,d:6,count:0}      //6FF2
+                ,{s:3,d:6,count:0}      //7BF2
+                ,{s:1,d:3,count:0}      //8FBB
+                ,{s:3,d:1,count:0}      //9BFB
+            ]
+        }
     }
 
     // check if the string is offensive
@@ -480,6 +497,7 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
                 ,result:d.result
                 ,score:d.score
                 ,bout:d.bout
+                ,flow:d.flow
             });
         }, function(error, classes) {
 
@@ -487,6 +505,8 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
             generateMotionData(series);
             // generate bout data
             generateBoutData(series);
+
+            generateFlow(series);
 
 
             $scope.fencingData.series=series;
@@ -532,6 +552,7 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
         var type_hand_1="";
         var type_hand_2="";
 
+        var boutLen=0;
         // create the motion data
         series.forEach(function(d){
             if(d.bout.length>0){            // net bout
@@ -650,6 +671,7 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
                         ||d.hand1=="p"              // parry
                         ||d.hand1=="pf"             // parry miss
                         ||d.hand1=="hp"             // hit be parried
+                        ||d.hand1=="rf"             // reposte finished
                     ){
                         addMotion(motion_hands,+bout,0,1,frame_start_hand_1,d.frame,type_hand_1);
                     //    motion_hands.push({
@@ -686,6 +708,7 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
                         ||d.hand2=="p"              // parry
                         ||d.hand2=="pf"             // parry miss
                         ||d.hand2=="hp"             // hit be parried
+                        ||d.hand1=="rf"             // reposte finished
                     ){
                         addMotion(motion_hands,+bout,0,2,frame_start_hand_2,d.frame,type_hand_2);
                     //    motion_hands.push({
@@ -699,36 +722,26 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
                     }
                 }
             }
-            if(d.frame>-1)
-                frame_last=d.frame;
+            if(bout>boutLen) boutLen=bout;
         });
+        // calculate start frames of each bout
+        var start_frames=[];
+        for(var i=0;i<boutLen;i++) start_frames.push(1000000);
+        motion.forEach(function(d){
+            if(d.seq==1 && d.frame_start<start_frames[d.bout-1]) start_frames[d.bout-1]=d.frame_start;
+        })
 
         // make each motion start from frame 0
-        var start_frames=[];
-        var frame_start1;
-        var frame_start2;
         motion.forEach(function(d,i){
-            if(d.seq==1){
-                start_frames.push(d.frame_start);
-                if(d.player==1)
-                    frame_start1=d.frame_start;
-                else
-                    frame_start2=d.frame_start;
-            }
-            if(d.player==1){
-                motion[i].bias_start-=frame_start1;
-                motion[i].bias_end-=frame_start1;
-            }
-            else{
-                motion[i].bias_start-=frame_start2;
-                motion[i].bias_end-=frame_start2;
-            }
+            motion[i].bias_start-=start_frames[d.bout-1];
+            motion[i].bias_end-=start_frames[d.bout-1];
         })
         motion_hands.forEach(function(d,i) {
-            motion_hands[i].bias_start-=start_frames[(d.bout-1)*2];
-            motion_hands[i].bias_end-=start_frames[(d.bout-1)*2];
+            motion_hands[i].bias_start-=start_frames[d.bout-1];
+            motion_hands[i].bias_end-=start_frames[d.bout-1];
 
         })
+
         // sort the data
         motion.sort(function(a,b){
             var bout=a.bout-b.bout;
@@ -749,8 +762,11 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
         var boutsData=[]
         var boutIndex=1;
         var frame_start=-1;
+        var arrScores=[0,0];
         series.forEach(function(d){
             if(frame_start==-1) frame_start=d.frame_start;
+            if(d.score==1) arrScores[0]++;
+            else if(d.score==2) arrScores[1]++;
             if(d.result.length>0){
                 boutsData.push({
                     frame_start:frame_start,
@@ -763,6 +779,7 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
                     hands2:[],
                     feet1:[],
                     feet2:[],
+                    scores:[arrScores[0],arrScores[1]]
                 })
                 frame_start=-1;
             }
@@ -780,10 +797,113 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
             else
                 boutsData[d.bout-1].hands2.push(d);
         })
-        boutsData.forEach(function(d){
-            console.log(d);
-        })
+        // boutsData.forEach(function(d){            console.log(d);        })
         $scope.fencingData.bouts_data=boutsData;
+    }
+
+    function parseFromFB(flow,str){
+        if(str[2]=='f'){
+            flow.flow[3].count++;
+        }
+        else if(str[2]=='b'){
+            if(str.substring(3,5)=="fb") parseFromFB(flow,str.substring(3))
+            else if(str.substring(3,5)=="bf"){
+                flow.flow[8].count++;
+                parseFromBF(flow,str.substring(3))
+            }
+            else{
+                console.log("error in the string")
+                console.log(str.substring(3,5))
+            }
+        }
+        else if(str[2]=='a'||str[2]=='r'){
+            flow.flow[8].count++;
+            flow.flow[7].count++;
+
+        }
+        else{
+            console.log(str)
+            console.log("error in the string")
+        }
+
+    }
+    function parseFromBF(flow,str){
+        if(str[2]=='f'){
+            flow.flow[7].count++;
+        }
+        else if(str[2]=='b'){
+            if(str.substring(3,5)=="bf") parseFromBF(flow,str.substring(3))
+            else if(str.substring(3,5)=="fb"){
+                flow.flow[9].count++;
+                parseFromFB(flow,str.substring(3))
+            }
+            else{
+                console.log("error in the string")
+            }
+        }
+        else if(str[2]=='a'||str[2]=='r'){
+            flow.flow[9].count++;
+            flow.flow[3].count++;
+
+        }
+        else{
+            console.log("error in the string")
+        }
+
+    }
+    // parse a string of the flow
+    function parseFlow(flow,str){
+        if(str.substring(0,2)=="ff"){
+            flow.flow[1].count++;
+            if(str[2]=='1')flow.flow[4].count++;
+            if(str[2]=='b')flow.flow[5].count++;
+            if(str[2]=='2')flow.flow[6].count++;
+        }
+        else if(str.substring(0,2)=="bb"){
+            parseFlow(flow,str.substring(2))
+        }
+        else if(str.substring(0,2)=="fb") {
+            flow.flow[0].count++;
+            parseFromFB(flow,str);
+        }
+        else if(str.substring(0,2)=="bf") {
+            flow.flow[2].count++;
+            parseFromBF(flow,str);
+        }
+        else{
+            console.log("error in the string")
+        }
+    }
+    function generateFlow(series){
+        var flow={
+            nodes:[
+                {x:400,y:100,name:"S"}
+                ,{x:200,y:300,name:"FB"}
+                ,{x:400,y:300,name:"FF"}
+                ,{x:600,y:300,name:"BF"}
+                ,{x:200,y:500,name:"1"}
+                ,{x:400,y:500,name:"B"}
+                ,{x:600,y:500,name:"2"}
+            ],
+                flow:[
+                {s:0,d:1,count:0}
+                ,{s:0,d:2,count:0}
+                ,{s:0,d:3,count:0}
+                ,{s:1,d:4,count:0}
+                ,{s:2,d:4,count:0}
+                ,{s:2,d:5,count:0}
+                ,{s:2,d:6,count:0}
+                ,{s:3,d:6,count:0}
+                ,{s:1,d:3,count:0}
+                ,{s:3,d:1,count:0}
+            ]
+        }
+        series.forEach(function(d){
+            if(d.flow)
+                parseFlow(flow,d.flow);
+        })
+        console.log(flow);
+        $scope.fencingData.flow=flow;
     }
 
     $scope.fencingData.onSelectedNode=function(node,callback){
@@ -826,7 +946,6 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
     }
 
     $scope.$watch('selectedMatch', function() {
-        console.log("on selected Season")
         if($scope.selectedMatch=="men final"){
             fileName="../data/men_final.csv";
             fileNameV2="../data/men_final_v2.csv";
@@ -843,10 +962,7 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
         readDataV2();
     });
 
-    $scope.$watch('selectedFilter', function() {
-        console.log("on selected Filter")
-        $scope.fencingData.filter=$scope.selectedFilter;
-    });
+
 });
 
 

@@ -32,5 +32,25 @@
             .attr('cy', d.y)
     })
 
+
+
+    d3.select("body") // Select the body element
+        .append("svg")          // Append an SVG element to the body
+        .attr("width", 960)     // make it 960 pixels wide
+        .attr("height", 500)    // make it 500 pixels high
+        .append("rect")       // append a cicle to the svg
+        .attr("fill", "blue")   // fill the circle with 'blue'
+        .attr("x", 20)          // set the radius to 10 pixels
+        .attr('y', 40)         // position the circle at 40 on the x axis
+        .attr('width', 100)        // position the circle at 250 on the y axis
+        .attr('height', 100)        // position the circle at 250 on the y axis
+        .transition().style('fill', 'red').attr('x', 400).duration(1000)
+        .transition().style('fill', 'yellow').attr('y', 400).duration(1000)
+        .on('start', function () {
+            console.log("stahp, you're making me blush"); })
+        .on('end', function () {
+            console.log("crap, I'm all red now");
+        })
+
 </script>
 </body>

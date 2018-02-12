@@ -16,8 +16,10 @@
     <script src="js/statisticChart.js"></script>
     <script src="js/motionChart.js"></script>
     <script src="js/boutChart.js"></script>
+    <script src="js/tacticFlowChart.js"></script>
     <link rel="stylesheet" type="text/css" href="CSS/motion_chart_style.css">
     <link rel="stylesheet" type="text/css" href="CSS/bout_chart_style.css">
+    <link rel="stylesheet" type="text/css" href="CSS/tactic_flow_chart_style.css">
     <link rel="stylesheet" type="text/css" href="CSS/html_styles.css">
     <link rel="stylesheet" type="text/css" href="CSS/fencing_game_vis_style.css">
     <link rel="stylesheet" type="text/css" href="CSS/tactics_chart_style.css">
@@ -32,12 +34,24 @@
 
 <body ng-app="myApp" ng-controller="MainCtrl">
 
-    <h2>Select Game</h2>
-    <select ng-model="selectedMatch" ng-options="match for match in matchList" style="width:200px">
-    </select>
-    <h2>Select Filter</h2>
-    <select ng-model="selectedFilter" ng-options="filter for filter in filterList" style="width:200px">
-    </select>
+    <p>
+        <b>Select Bout</b>
+        <select ng-model="selectedMatch" ng-options="match for match in matchList" style="width:200px">
+        </select>
+        <b>Set Filter</b>
+        <input style="width:50%" ng-model="fencingData.filter_value" type="range" min="1" max="500" class="slider">
+
+    </p>        <b>Frame Filter:</b> {{fencingData.filter_value}}
+    <b>Filtered Phrase:</b> {{fencingData.filtered_phrase}}
+
+    <p>
+        <input type="checkbox" ng-model="fencingData.B"><b>No Score</b><br>
+        <input type="checkbox" ng-model="fencingData.P1"><b>Player 1 Score</b><br>
+        <input type="checkbox" ng-model="fencingData.P2"><b>Player 2 Score</b>
+    </p>
+
+    <h1>Tactic Flow Chart</h1>
+    <tactic-flow-chart data="fencingData"></tactic-flow-chart>
     <h1>Motion View</h1>
     <motion-chart data="fencingData"></motion-chart>
     <h1>Bout View</h1>

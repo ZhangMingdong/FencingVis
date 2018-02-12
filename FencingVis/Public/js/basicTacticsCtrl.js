@@ -15,6 +15,8 @@ mainApp.controller('basicTacticsCtrl', function ($scope, $http,$window) {
             ,{result:"a1"}
             ,{result:"a3"}
             ,{result:"a3"}
+            ,{result:"ra"}
+            ,{result:"ra"}
         ]
     }
     $scope.attack=function(option) {
@@ -31,6 +33,9 @@ mainApp.controller('basicTacticsCtrl', function ($scope, $http,$window) {
     }
     $scope.threeStepAttack=function(option) {
         $scope.basicTacticsData.selected_bout=($scope.basicTacticsData.selected_bout==9)?10:9;
+    }
+    $scope.retreatAttack=function(option) {
+        $scope.basicTacticsData.selected_bout=($scope.basicTacticsData.selected_bout==11)?12:11;
     }
 });
 

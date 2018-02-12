@@ -39,8 +39,27 @@ module.exports = function(app) {
     app.get('/basicTactics',function(req,res){
         res.sendfile('./public/basicTactics.html');
     });
-    app.get('/boutChartAnimationTest',function(req,res){
-        res.sendfile('./public/boutChartAnimationTest.html');
+
+    app.get('/DirectedGraphEditor',function(req,res){
+        res.sendfile('./public/DirectedGraphEditor.html');
+    });
+    app.get('/directionalArrows',function(req,res){
+        res.sendfile('./public/directionalArrows.html');
+    });
+    app.get('/movingArrow',function(req,res){
+        res.sendfile('./public/movingArrow.html');
+    });
+    app.get('/collapsibleTree',function(req,res){
+        res.sendfile('./public/collapsibleTree.html');
+    });
+    app.get('/chord',function(req,res){
+        res.sendfile('./public/chord.html');
+    });
+    app.get('/ribbon',function(req,res){
+        res.sendfile('./public/ribbon.html');
+    });
+    app.get('/sankey',function(req,res){
+        res.sendfile('./public/sankey.html');
     });
 	// application -------------------------------------------------------------
 	app.get('*', function (req, res) {

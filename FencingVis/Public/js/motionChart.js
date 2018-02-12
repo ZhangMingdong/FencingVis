@@ -99,24 +99,35 @@ mainApp.directive('motionChart', function () {
                 redraw();
             }
             function redraw(){
-                console.log("redraw motion chart");
+            //    console.log("redraw motion chart");
                 var data_feet=scope.data.motion;
                 var data_hands=scope.data.motion_hands;
 
                 // generate bout data
                 var boutsData=scope.data.bouts_data;
-                if(scope.data.filter=="3 second"){
+
+                // filtering
+                {
                     var duration =[];
                     for(var i=0;i<boutsData.length;i++) duration.push(0);
                     data_feet.forEach(function(d){
-                        if(d.bias_end>90) duration[d.bout]=1;
+                        if(d.bias_end>scope.data.filter_value) duration[d.bout-1]=1;
                     })
                     data_hands.forEach(function(d){
-                        if(d.bias_end>90) duration[d.bout]=1;
+                        if(d.bias_end>scope.data.filter_value) duration[d.bout-1]=1;
                     })
-                    boutsData=boutsData.filter(function(d){return duration[d.bout]==0})
-                    data_feet=data_feet.filter(function(d){return duration[d.bout]==0})
-                    data_hands=data_hands.filter(function(d){return duration[d.bout]==0})
+                    boutsData.forEach(function(d){
+                        var kept=false;
+                        if(scope.data.B && d.score!=1 && d.score!=2)kept= true;
+                        if(scope.data.P1 && d.score==1) kept = true;
+                        if(scope.data.P2 && d.score==2) kept = true;
+                        if(kept && duration[d.bout-1]==0) duration[d.bout-1]=0
+                        else duration[d.bout-1]=1;
+                    })
+                    boutsData=boutsData.filter(function(d){return duration[d.bout-1]==0})
+                    data_feet=data_feet.filter(function(d){return duration[d.bout-1]==0})
+                    data_hands=data_hands.filter(function(d){return duration[d.bout-1]==0})
+                    scope.data.filtered_phrase=boutsData.length;
                 }
 
                 var yScale = d3.scaleBand()
@@ -172,7 +183,7 @@ mainApp.directive('motionChart', function () {
                 boutsText
                     .enter().append("text")
                     .attr("class", "boutText")
-                    .text(function(d) { return resultText(d.result); })
+                    .text(function(d) { return resultText(d.result)+"  "+d.scores[0]+":"+d.scores[1]; })
                     .attr("x", function(d) {return svgMotionW+10 } )
                     .attr("y", function(d) { return yScale(getY(d))+yScale.bandwidth()*1.5; })
                     .attr("stroke",function(d){return boutColor(d)})
@@ -180,7 +191,7 @@ mainApp.directive('motionChart', function () {
                     .style("text-anchor", "left")
                     .style("font-family", "monospace");
                 boutsText
-                    .text(function(d) { return resultText(d.result); })
+                    .text(function(d) { return resultText(d.result)+"  "+d.scores[0]+":"+d.scores[1]; })
                     .attr("x", function(d) {return svgMotionW+10 } )
                     .attr("y", function(d) { return yScale(getY(d))+yScale.bandwidth()*1.5; })
                     .attr("stroke",function(d){return boutColor(d)})
@@ -245,7 +256,10 @@ mainApp.directive('motionChart', function () {
             scope.$watch('data', redraw);
             scope.$watch('data.motion', redraw);
             scope.$watch('data.motion_hands', redraw);
-            scope.$watch('data.filter', redraw);
+            scope.$watch('data.filter_value', redraw);
+            scope.$watch('data.B', redraw);
+            scope.$watch('data.P1', redraw);
+            scope.$watch('data.P2', redraw);
         }
         motionChart();
     }
