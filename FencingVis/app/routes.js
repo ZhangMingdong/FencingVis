@@ -61,6 +61,10 @@ module.exports = function(app) {
     app.get('/sankey',function(req,res){
         res.sendfile('./public/sankey.html');
     });
+    //
+    app.get('/v1', function (req, res) {
+        res.sendfile('./public/mainFencing.html'); // load the single view file (angular will handle the page changes on the front-end)
+    });
 	// application -------------------------------------------------------------
 	app.get('*', function (req, res) {
 	    console.log("-----get* from "+req.host+" at "+Date());

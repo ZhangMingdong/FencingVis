@@ -163,6 +163,16 @@ mainApp.directive('motionChart', function () {
                     .attr("fill","AntiqueWhite")
                     .attr("y", function(d) { return yScale(getY(d)); })
                     .attr("height", yScale.bandwidth()*2)
+                    .on('mouseenter', function (d) {
+                        // console.log("mouse leave");
+                        scope.data.focused_bout=d;
+                        scope.$apply();
+                    })
+                    .on('mouseleave', function (d) {
+                        // console.log("mouse leave");
+                        scope.data.focused_bout=null;
+                        scope.$apply();
+                    })
                     .on('click', function (d) {
                         // console.log("mouse leave");
                         scope.data.selected_bout=d.bout;

@@ -17,7 +17,6 @@ mainApp.directive('tacticFlowChart', function () {
             var svgH = svgBGH - margin.top - margin.bottom;
 
 
-
             // 1.Add DOM elements
             var svgBG = d3.select(el[0]).append("svg").attr("width",svgBGW).attr("height",svgBGH);
             var svg=svgBG.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -33,22 +32,14 @@ mainApp.directive('tacticFlowChart', function () {
             }, resize);
             // response the size-change
             function resize() {
-
-                //    console.log("====================resize motion chart=================");
-
-
                 svgW = svgBGW - margin.left - margin.right;
                 svgH = svgBGH - margin.top - margin.bottom;
-
                 svgBG
                     .attr("width", svgBGW)
                     .attr("height", svgBGH)
-
                 svg
                     .attr("width", svgW)
                     .attr("height", svgH)
-
-
                 redraw();
             }
             function redraw(){
@@ -65,24 +56,24 @@ mainApp.directive('tacticFlowChart', function () {
                     ,{x:600,y:500,name:"2"}
                     ]
                 var lines=[
-                     {s:0,d:1,width:0}      //0BB
-                    ,{s:0,d:2,width:0}      //1FB
-                    ,{s:0,d:3,width:0}      //2FF
-                    ,{s:0,d:4,width:0}      //3BF
-                    ,{s:1,d:2,width:0}      //4FB
-                    ,{s:1,d:3,width:0}      //5FF
-                    ,{s:1,d:4,width:0}      //6BF
-                    ,{s:2,d:5,width:0}      //7FBF
-                    ,{s:2,d:7,width:0}      //8FBR\FBA
-                    ,{s:3,d:5,width:0}      //9FF1
-                    ,{s:3,d:6,width:0}      //10FFB
-                    ,{s:3,d:7,width:0}      //11FF2
-                    ,{s:4,d:5,width:0}      //12BFR\BFA
-                    ,{s:4,d:7,width:0}      //13BFF
-                    ,{s:2,d:4,width:0}      //14FBB
-                    ,{s:4,d:2,width:0}      //15BFB
-                    ,{s:2,d:2,width:0}      //16FBFB
-                    ,{s:4,d:4,width:0}      //17BFBF
+                     {s:0,d:1,width:0,selected:false}      //0BB
+                    ,{s:0,d:2,width:0,selected:false}      //1FB
+                    ,{s:0,d:3,width:0,selected:false}      //2FF
+                    ,{s:0,d:4,width:0,selected:false}      //3BF
+                    ,{s:1,d:2,width:0,selected:false}      //4FB
+                    ,{s:1,d:3,width:0,selected:false}      //5FF
+                    ,{s:1,d:4,width:0,selected:false}      //6BF
+                    ,{s:2,d:5,width:0,selected:false}      //7FBF
+                    ,{s:2,d:7,width:0,selected:false}      //8FBR\FBA
+                    ,{s:3,d:5,width:0,selected:false}      //9FF1
+                    ,{s:3,d:6,width:0,selected:false}      //10FFB
+                    ,{s:3,d:7,width:0,selected:false}      //11FF2
+                    ,{s:4,d:5,width:0,selected:false}      //12BFR\BFA
+                    ,{s:4,d:7,width:0,selected:false}      //13BFF
+                    ,{s:2,d:4,width:0,selected:false}      //14FBB
+                    ,{s:4,d:2,width:0,selected:false}      //15BFB
+                    ,{s:2,d:2,width:0,selected:false}      //16FBFB
+                    ,{s:4,d:4,width:0,selected:false}      //17BFBF
                 ]
 
                 // var nodes=scope.data.flow.nodes;
@@ -108,12 +99,34 @@ mainApp.directive('tacticFlowChart', function () {
                     ,flow.fbfb
                     ,flow.bfbf
                 ]
+                var focused_flow=[
+                     scope.data.focused_flow.sbb
+                    ,scope.data.focused_flow.sfb
+                    ,scope.data.focused_flow.sff
+                    ,scope.data.focused_flow.sbf
+                    ,scope.data.focused_flow.bbfb
+                    ,scope.data.focused_flow.bbff
+                    ,scope.data.focused_flow.bbbf
+                    ,scope.data.focused_flow.fb1
+                    ,scope.data.focused_flow.fb2
+                    ,scope.data.focused_flow.ff1
+                    ,scope.data.focused_flow.ffb
+                    ,scope.data.focused_flow.ff2
+                    ,scope.data.focused_flow.bf1
+                    ,scope.data.focused_flow.bf2
+                    ,scope.data.focused_flow.fbb
+                    ,scope.data.focused_flow.bfb
+                    ,scope.data.focused_flow.fbfb
+                    ,scope.data.focused_flow.bfbf
+                ]
+
 
                 //var max_count=Math.max.apply(Math,scope.data.flow.flow.map(function(o){return o.count;}))
                 var max_count=Math.max(...widths);
                 if(max_count)
                     lines.forEach(function(d,i){
                         lines[i].width=30*widths[i]/max_count;
+                        lines[i].selected=(focused_flow[i]>0)
                     })
 
 
@@ -159,7 +172,6 @@ mainApp.directive('tacticFlowChart', function () {
                     .style("font","20px sans-serif")
 
                 svgText.exit().remove();
-
 
                 function diagonal(indexS, indexD) {
                     var path;
@@ -238,7 +250,6 @@ mainApp.directive('tacticFlowChart', function () {
                     .style("stroke-width", 30)
                     .style("stroke-opacity", .05)
 
-
                 svgLinkTube.exit().remove();
 
                 var svgLink = svg.selectAll(".link").data(lines);
@@ -247,10 +258,9 @@ mainApp.directive('tacticFlowChart', function () {
                     .attr('d', function(d){
                         return diagonal(d.s, d.d)
                     })
-                    .style("stroke-width", function(d){return d.r})
+                    .style("stroke-width", function(d){return d.width})
                     .style("stroke-opacity", .2)
                     .style("stroke", "#895621")
-
                 svgLink
                     .attr('d', function(d){
                         return diagonal(d.s, d.d)
@@ -259,16 +269,36 @@ mainApp.directive('tacticFlowChart', function () {
                         return d.width})
                     .style("stroke-opacity", .2)
                     .style("stroke", "#895621")
-
                 svgLink.exit().remove();
+
+                var svgSelectedLink = svg.selectAll(".selectedlink").data(lines);
+                svgSelectedLink.enter().append('path', "g")
+                    .attr("class", "link")
+                    .attr('d', function(d){
+                        return diagonal(d.s, d.d)
+                    })
+                    .style("stroke-width", function(d){
+                        return d.selected? 30/max_count:0
+                    })
+                    .style("stroke-opacity", .6)
+                    .style("stroke", "red")
+                svgSelectedLink
+                    .attr('d', function(d){
+                        return diagonal(d.s, d.d)
+                    })
+                    .style("stroke-width", function(d){
+                        return d.selected? 30/max_count:0
+                    })
+                    .style("stroke-opacity", .6)
+                    .style("stroke", "red")
+                svgSelectedLink.exit().remove();
 
             }
             redraw();
 
-
-
             scope.$watch('data', redraw);
             scope.$watch('data.flow', redraw);
+            scope.$watch('data.focused_flow', redraw);
         }
         tacticFlowChart();
     }
