@@ -54,14 +54,66 @@ mainApp.directive('tacticFlowChart', function () {
             function redraw(){
                 var r=20;
                 console.log("redraw tactic flow chart");
-                var nodes=scope.data.flow.nodes;
-                var lines=scope.data.flow.flow;
+                var nodes=[
+                    {x:350,y:100,name:"S"}
+                    ,{x:450,y:100,name:"BB"}
+                    ,{x:200,y:300,name:"FB"}
+                    ,{x:400,y:300,name:"FF"}
+                    ,{x:600,y:300,name:"BF"}
+                    ,{x:200,y:500,name:"1"}
+                    ,{x:400,y:500,name:"B"}
+                    ,{x:600,y:500,name:"2"}
+                    ]
+                var lines=[
+                     {s:0,d:1,width:0}      //0BB
+                    ,{s:0,d:2,width:0}      //1FB
+                    ,{s:0,d:3,width:0}      //2FF
+                    ,{s:0,d:4,width:0}      //3BF
+                    ,{s:1,d:2,width:0}      //4FB
+                    ,{s:1,d:3,width:0}      //5FF
+                    ,{s:1,d:4,width:0}      //6BF
+                    ,{s:2,d:5,width:0}      //7FBF
+                    ,{s:2,d:7,width:0}      //8FBR\FBA
+                    ,{s:3,d:5,width:0}      //9FF1
+                    ,{s:3,d:6,width:0}      //10FFB
+                    ,{s:3,d:7,width:0}      //11FF2
+                    ,{s:4,d:5,width:0}      //12BFR\BFA
+                    ,{s:4,d:7,width:0}      //13BFF
+                    ,{s:2,d:4,width:0}      //14FBB
+                    ,{s:4,d:2,width:0}      //15BFB
+                    ,{s:2,d:2,width:0}      //16FBFB
+                    ,{s:4,d:4,width:0}      //17BFBF
+                ]
 
-                var max_count=Math.max.apply(Math,scope.data.flow.flow.map(function(o){return o.count;}))
-                console.log(max_count)
+                // var nodes=scope.data.flow.nodes;
+                var flow=scope.data.flow;
+                // fill data
+                var widths=[
+                     flow.sbb
+                    ,flow.sfb
+                    ,flow.sff
+                    ,flow.sbf
+                    ,flow.bbfb
+                    ,flow.bbff
+                    ,flow.bbbf
+                    ,flow.fb1
+                    ,flow.fb2
+                    ,flow.ff1
+                    ,flow.ffb
+                    ,flow.ff2
+                    ,flow.bf1
+                    ,flow.bf2
+                    ,flow.fbb
+                    ,flow.bfb
+                    ,flow.fbfb
+                    ,flow.bfbf
+                ]
+
+                //var max_count=Math.max.apply(Math,scope.data.flow.flow.map(function(o){return o.count;}))
+                var max_count=Math.max(...widths);
                 if(max_count)
                     lines.forEach(function(d,i){
-                        lines[i].r=30*d.count/max_count;
+                        lines[i].width=30*widths[i]/max_count;
                     })
 
 
@@ -111,7 +163,7 @@ mainApp.directive('tacticFlowChart', function () {
 
                 function diagonal(indexS, indexD) {
                     var path;
-                    if(indexS==1&&indexD==3){
+                    if(indexS==2&&indexD==4){
                         var s={x:nodes[indexS].x-r,y:nodes[indexS].y}
                         var d={x:nodes[indexD].x+r,y:nodes[indexD].y}
                         path = `M ${s.x} ${s.y}
@@ -123,7 +175,7 @@ mainApp.directive('tacticFlowChart', function () {
                                   ${d.x} ${d.y}`
 
                     }
-                    else if(indexS==3&&indexD==1){
+                    else if(indexS==4&&indexD==2){
                         var s={x:nodes[indexS].x+r,y:nodes[indexS].y}
                         var d={x:nodes[indexD].x-r,y:nodes[indexD].y}
                         path = `M ${s.x} ${s.y}
@@ -134,6 +186,35 @@ mainApp.directive('tacticFlowChart', function () {
                                   ${d.x-6*r} ${d.y},
                                   ${d.x} ${d.y}`
 
+                    }
+                    else if(indexS==0&&indexD==1){
+                        var s={x:nodes[indexS].x+r,y:nodes[indexS].y}
+                        var d={x:nodes[indexD].x-r,y:nodes[indexD].y}
+                        path = `M ${s.x} ${s.y}
+                                L  ${d.x} ${d.y}`
+
+                    }
+                    else if(indexS==2&&indexD==2){
+                        var s={x:nodes[indexS].x,y:nodes[indexS].y+r}
+                        var d={x:nodes[indexD].x,y:nodes[indexD].y-r}
+                        path = `M ${s.x} ${s.y}
+                                C ${s.x} ${s.y+3*r},
+                                  ${s.x-3*r} ${s.y+3*r},
+                                  ${s.x-3*r} ${s.y}
+                                C ${s.x-3*r} ${s.y-3*r},
+                                  ${s.x} ${s.y-3*r},
+                                  ${s.x} ${s.y}`
+                    }
+                    else if(indexS==4&&indexD==4){
+                        var s={x:nodes[indexS].x,y:nodes[indexS].y+r}
+                        var d={x:nodes[indexD].x,y:nodes[indexD].y-r}
+                        path = `M ${s.x} ${s.y}
+                                C ${s.x} ${s.y+3*r},
+                                  ${s.x+3*r} ${s.y+3*r},
+                                  ${s.x+3*r} ${s.y}
+                                C ${s.x+3*r} ${s.y-3*r},
+                                  ${s.x} ${s.y-3*r},
+                                  ${s.x} ${s.y}`
                     }
                     else{
                         var s={x:nodes[indexS].x,y:nodes[indexS].y+r}
@@ -175,7 +256,7 @@ mainApp.directive('tacticFlowChart', function () {
                         return diagonal(d.s, d.d)
                     })
                     .style("stroke-width", function(d){
-                        return d.r})
+                        return d.width})
                     .style("stroke-opacity", .2)
                     .style("stroke", "#895621")
 

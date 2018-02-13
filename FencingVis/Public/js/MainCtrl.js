@@ -39,29 +39,7 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
         , B:true                    // check box result
         , P1:true
         , P2:true
-        , flow:{
-            nodes:[
-                {x:400,y:100,name:"S"}
-                ,{x:200,y:300,name:"FB"}
-                ,{x:400,y:300,name:"FF"}
-                ,{x:600,y:300,name:"BF"}
-                ,{x:200,y:500,name:"1"}
-                ,{x:400,y:500,name:"B"}
-                ,{x:600,y:500,name:"2"}
-            ],
-            flow:[
-                 {s:0,d:1,count:0}      //0FB
-                ,{s:0,d:2,count:0}      //1FF
-                ,{s:0,d:3,count:0}      //2BF
-                ,{s:1,d:4,count:0}      //3FB1
-                ,{s:2,d:4,count:0}      //4FF1
-                ,{s:2,d:5,count:0}      //5FFB
-                ,{s:2,d:6,count:0}      //6FF2
-                ,{s:3,d:6,count:0}      //7BF2
-                ,{s:1,d:3,count:0}      //8FBB
-                ,{s:3,d:1,count:0}      //9BFB
-            ]
-        }
+        , flow:{}
     }
 
     // check if the string is offensive
@@ -803,12 +781,15 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
 
     function parseFromFB(flow,str){
         if(str[2]=='f'){
-            flow.flow[3].count++;
+            flow.fb1++;
         }
         else if(str[2]=='b'){
-            if(str.substring(3,5)=="fb") parseFromFB(flow,str.substring(3))
+            if(str.substring(3,5)=="fb"){
+                flow.fbfb++;
+                parseFromFB(flow,str.substring(3))
+            }
             else if(str.substring(3,5)=="bf"){
-                flow.flow[8].count++;
+                flow.fbb++;
                 parseFromBF(flow,str.substring(3))
             }
             else{
@@ -817,9 +798,7 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
             }
         }
         else if(str[2]=='a'||str[2]=='r'){
-            flow.flow[8].count++;
-            flow.flow[7].count++;
-
+            flow.fb2++;
         }
         else{
             console.log(str)
@@ -829,12 +808,16 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
     }
     function parseFromBF(flow,str){
         if(str[2]=='f'){
-            flow.flow[7].count++;
+            flow.bf2++;
         }
         else if(str[2]=='b'){
-            if(str.substring(3,5)=="bf") parseFromBF(flow,str.substring(3))
+            if(str.substring(3,5)=="bf"){
+                flow.bfbf++;
+                parseFromBF(flow,str.substring(3))
+            }
             else if(str.substring(3,5)=="fb"){
-                flow.flow[9].count++;
+                console.log("bfb")
+                flow.bfb++;
                 parseFromFB(flow,str.substring(3))
             }
             else{
@@ -842,8 +825,7 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
             }
         }
         else if(str[2]=='a'||str[2]=='r'){
-            flow.flow[9].count++;
-            flow.flow[3].count++;
+            flow.bf1++;
 
         }
         else{
@@ -853,21 +835,38 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
     }
     // parse a string of the flow
     function parseFlow(flow,str){
-        if(str.substring(0,2)=="ff"){
-            flow.flow[1].count++;
-            if(str[2]=='1')flow.flow[4].count++;
-            if(str[2]=='b')flow.flow[5].count++;
-            if(str[2]=='2')flow.flow[6].count++;
+        var seg=str.substring(0,2)
+        if(seg=="ff"){
+            flow.sff++;
+            if(str[2]=='1')flow.ff1++;
+            if(str[2]=='b')flow.ffb++;
+            if(str[2]=='2')flow.ff2++;
         }
-        else if(str.substring(0,2)=="bb"){
-            parseFlow(flow,str.substring(2))
+        else if(seg=="bb"){
+            flow.sbb++;
+            str=str.substring(2);
+            seg=str.substring(0,2)
+            if(seg=="ff"){
+                flow.bbff++;
+                if(str[2]=='1')flow.ff1++;
+                if(str[2]=='b')flow.ffb++;
+                if(str[2]=='2')flow.ff2++;
+            }
+            else if(seg=="fb") {
+                flow.bbfb++;
+                parseFromFB(flow,str);
+            }
+            else if(seg=="bf") {
+                flow.bbbf++;
+                parseFromBF(flow,str);
+            }
         }
-        else if(str.substring(0,2)=="fb") {
-            flow.flow[0].count++;
+        else if(seg=="fb") {
+            flow.sfb++;
             parseFromFB(flow,str);
         }
-        else if(str.substring(0,2)=="bf") {
-            flow.flow[2].count++;
+        else if(seg=="bf") {
+            flow.sbf++;
             parseFromBF(flow,str);
         }
         else{
@@ -876,33 +875,30 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
     }
     function generateFlow(series){
         var flow={
-            nodes:[
-                {x:400,y:100,name:"S"}
-                ,{x:200,y:300,name:"FB"}
-                ,{x:400,y:300,name:"FF"}
-                ,{x:600,y:300,name:"BF"}
-                ,{x:200,y:500,name:"1"}
-                ,{x:400,y:500,name:"B"}
-                ,{x:600,y:500,name:"2"}
-            ],
-                flow:[
-                {s:0,d:1,count:0}
-                ,{s:0,d:2,count:0}
-                ,{s:0,d:3,count:0}
-                ,{s:1,d:4,count:0}
-                ,{s:2,d:4,count:0}
-                ,{s:2,d:5,count:0}
-                ,{s:2,d:6,count:0}
-                ,{s:3,d:6,count:0}
-                ,{s:1,d:3,count:0}
-                ,{s:3,d:1,count:0}
-            ]
+            sbb:0
+            ,sfb:0
+            ,sff:0
+            ,sbf:0
+            ,bbfb:0
+            ,bbff:0
+            ,bbbf:0
+            ,fb1:0
+            ,fb2:0
+            ,ff1:0
+            ,ffb:0
+            ,ff2:0
+            ,bf1:0
+            ,bf2:0
+            ,fbb:0
+            ,bfb:0
+            ,fbfb:0
+            ,bfbf:0
         }
         series.forEach(function(d){
             if(d.flow)
                 parseFlow(flow,d.flow);
         })
-        console.log(flow);
+    //    console.log(flow);
         $scope.fencingData.flow=flow;
     }
 
