@@ -1,0 +1,64 @@
+<!--
+    last designed 2016/09/02
+    for analysis
+-->
+<html>
+<head>
+    <title>Fencing Vis</title>
+    <script src="lib/angular.min.js"></script>
+    <script src="lib/angular-route.min.js"></script>
+    <script src="lib/d3.v4.js" charset="utf-8"></script>
+    <script src="js/mainCtrl.js"></script>
+    <script src="js/motionChart.js"></script>
+    <script src="js/boutChart.js"></script>
+    <script src="js/tacticFlowChart.js"></script>
+    <link rel="stylesheet" type="text/css" href="CSS/motion_chart_style.css">
+    <link rel="stylesheet" type="text/css" href="CSS/bout_chart_style.css">
+    <link rel="stylesheet" type="text/css" href="CSS/tactic_flow_chart_style.css">
+</head>
+
+<body ng-app="myApp" ng-controller="MainCtrl">
+    <!-- motion view -->
+    <div style="float:left;width:30%;height:99%;overflow:auto;margin:2px">
+        <motion-chart data="fencingData"></motion-chart>
+    </div>
+    <!-- flow & phrase -->
+    <div style="float:left;width:50%;height:99%;overflow:auto;margin:2px">
+        <div style="float:left;width:99%;height:80%;overflow:auto;margin:2px;">
+            <tactic-flow-chart data="fencingData" style="height:100%;width:100%"></tactic-flow-chart>
+        </div>
+        <div style="float:left;width:99%;height:19%;overflow:auto;margin:2px;">
+            <bout-chart data="fencingData" style="height:100%;width:100%"></bout-chart>
+        </div>
+
+    </div>
+    <!-- controls -->
+    <div style="float:left;width:19%;height:99%;overflow:auto;margin:2px">
+
+        <p>
+            <b>Select Bout</b>
+            <select ng-model="selectedMatch" ng-options="match for match in matchList" style="width:200px">
+            </select>
+        </p>
+        <p>
+
+            <b>Set Filter</b>
+            <input style="width:50%" ng-model="fencingData.filter_value" type="range" min="1" max="500" class="slider">
+        </p>
+        <p>
+            <b>Frame Filter:</b> {{fencingData.filter_value}}
+        </p>
+        <p>
+            <b>Filtered Phrase:</b> {{fencingData.filtered_phrase}}
+        </p>
+
+        <p>
+            <input type="checkbox" ng-model="fencingData.B"><b>No Score</b><br>
+            <input type="checkbox" ng-model="fencingData.P1"><b>Player 1 Score</b><br>
+            <input type="checkbox" ng-model="fencingData.P2"><b>Player 2 Score</b>
+        </p>
+    </div>
+</body>
+</html>
+
+

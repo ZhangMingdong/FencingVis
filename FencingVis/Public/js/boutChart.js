@@ -70,7 +70,7 @@ mainApp.directive('boutChart', function () {
             ]
 
             // 0.1.size
-            var margin = {top: 20, right: 100, bottom: 70, left: 40};
+            var margin = {top: 40, right: 50, bottom: 50, left: 50};
             var svgBoutBGW=1000;
             var svgBoutBGH=800;
             var svgBoutW = svgBoutBGW - margin.left - margin.right;

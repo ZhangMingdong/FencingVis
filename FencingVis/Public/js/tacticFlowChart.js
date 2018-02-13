@@ -10,7 +10,7 @@ mainApp.directive('tacticFlowChart', function () {
         function tacticFlowChart(){
             // 0.definition
             // 0.1.size
-            var margin = {top: 20, right: 100, bottom: 70, left: 40};
+            var margin = {top: 20, right: 50, bottom: 70, left: 50};
             var svgBGW=1000;
             var svgBGH=800;
             var svgW = svgBGW - margin.left - margin.right;
