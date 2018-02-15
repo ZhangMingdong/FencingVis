@@ -2,25 +2,11 @@ var mainApp = angular.module("myApp", ['ngRoute']);
 
 mainApp.controller('MainCtrl', function ($scope, $http,$window) {
     angular.element($window).on('resize', function () { $scope.$apply() })
-
-    function parseFrame(str){
-        var arrTime=str.split(':');
-        if(arrTime.length<3) return -1;
-        var minute=arrTime[0];
-        var second=arrTime[1];
-        var ms=arrTime[2];
-        var frame=30*((+second)+60*(+minute))+(+ms);
-        return frame;
-
-    }
-
+    // 1.data field
     // match selection
     $scope.matchList=["men final","men semifinal 1","men semifinal 2"];
     // selected match
     $scope.selectedMatch="men final";
-
-
-
     // fencing data structure
     $scope.fencingData={
         series:[]                   // raw data: time, event, score, player1, player2, position
@@ -40,6 +26,20 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
         , P1:true
         , P2:true
         , flow:{}
+        , focused_flow:{}         // flow of the focused bout
+    }
+
+    // 2.definition of functions
+
+    function parseFrame(str){
+        var arrTime=str.split(':');
+        if(arrTime.length<3) return -1;
+        var minute=arrTime[0];
+        var second=arrTime[1];
+        var ms=arrTime[2];
+        var frame=30*((+second)+60*(+minute))+(+ms);
+        return frame;
+
     }
 
     // check if the string is offensive
@@ -457,7 +457,6 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
             if (error) throw error;
         });
     }
-    readData();
 
 
     function readDataV2(){
@@ -494,7 +493,6 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
             if (error) throw error;
         });
     }
-    readDataV2();
     function addMotion(motion,bout,seq,player,start,end,type){
         motion.push({
             bout:+bout,
@@ -753,11 +751,12 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
                     player:1,
                     score: d.score,
                     result:d.result,
+                    flow:d.flow,
                     hands1:[],
                     hands2:[],
                     feet1:[],
                     feet2:[],
-                    scores:[arrScores[0],arrScores[1]]
+                    scores:[arrScores[0],arrScores[1]],
                 })
                 frame_start=-1;
             }
@@ -902,6 +901,10 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
         $scope.fencingData.flow=flow;
     }
 
+
+
+    readData();
+    readDataV2();
     $scope.fencingData.onSelectedNode=function(node,callback){
         console.log("onSelectedNode");
         //console.log("onSelectedNode");
@@ -956,6 +959,34 @@ mainApp.controller('MainCtrl', function ($scope, $http,$window) {
         }
         readData();
         readDataV2();
+    });
+    $scope.$watch('fencingData.focused_bout', function() {
+        console.log($scope.fencingData.focused_bout);
+
+        var flow={
+            sbb:0
+            ,sfb:0
+            ,sff:0
+            ,sbf:0
+            ,bbfb:0
+            ,bbff:0
+            ,bbbf:0
+            ,fb1:0
+            ,fb2:0
+            ,ff1:0
+            ,ffb:0
+            ,ff2:0
+            ,bf1:0
+            ,bf2:0
+            ,fbb:0
+            ,bfb:0
+            ,fbfb:0
+            ,bfbf:0
+        }
+        if($scope.fencingData.focused_bout)
+            parseFlow(flow,$scope.fencingData.focused_bout.flow)
+        $scope.fencingData.focused_flow=flow;
+
     });
 
 

@@ -28,6 +28,9 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
         , P2:true
         , flow:{}                 // data of the tactic flow
         , focused_flow:{}         // flow of the focused bout
+        , flow_1st:{}               // flow of the first half
+        , flow_2nd:{}               // flow of the second half
+        , Sum_flow:true             // show sum of the flow
     }
 
     // 2. definition of the functions
@@ -69,7 +72,7 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
             // generate bout data
             generateBoutData(series);
 
-            generateFlow(series);
+            generateFlow($scope.fencingData.bouts_data);
 
 
             $scope.fencingData.series=series;
@@ -367,7 +370,7 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
     }
     // parse flow from state FB
     function parseFromFB(flow,str){
-        if(str[2]=='f'){
+        if(str[2]=='f'||str.substring(2,4)=="rr"){
             flow.fb1++;
         }
         else if(str[2]=='b'){
@@ -384,7 +387,7 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
                 console.log(str.substring(3,5))
             }
         }
-        else if(str[2]=='a'||str[2]=='r'){
+        else if(str[2]=='a'||str[2]=='r'||str[2]=='c'){
             flow.fb2++;
         }
         else{
@@ -395,7 +398,7 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
     }
     // parse flow from state BF
     function parseFromBF(flow,str){
-        if(str[2]=='f'){
+        if(str[2]=='f'||str.substring(2,4)=="rr"){
             flow.bf2++;
         }
         else if(str[2]=='b'){
@@ -412,7 +415,7 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
                 console.log("error in the string")
             }
         }
-        else if(str[2]=='a'||str[2]=='r'){
+        else if(str[2]=='a'||str[2]=='r'||str[2]=='c'){
             flow.bf1++;
 
         }
@@ -458,11 +461,12 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
             parseFromBF(flow,str);
         }
         else{
+            console.log(str);
             console.log("error in the string")
         }
     }
     // generate flow from series data
-    function generateFlow(series){
+    function generateFlow(bouts_data){
         var flow={
             sbb:0
             ,sfb:0
@@ -483,12 +487,77 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
             ,fbfb:0
             ,bfbf:0
         }
-        series.forEach(function(d){
-            if(d.flow)
-                parseFlow(flow,d.flow);
+        var flow_1st={
+            sbb:0
+            ,sfb:0
+            ,sff:0
+            ,sbf:0
+            ,bbfb:0
+            ,bbff:0
+            ,bbbf:0
+            ,fb1:0
+            ,fb2:0
+            ,ff1:0
+            ,ffb:0
+            ,ff2:0
+            ,bf1:0
+            ,bf2:0
+            ,fbb:0
+            ,bfb:0
+            ,fbfb:0
+            ,bfbf:0
+        }
+        var flow_2nd={
+            sbb:0
+            ,sfb:0
+            ,sff:0
+            ,sbf:0
+            ,bbfb:0
+            ,bbff:0
+            ,bbbf:0
+            ,fb1:0
+            ,fb2:0
+            ,ff1:0
+            ,ffb:0
+            ,ff2:0
+            ,bf1:0
+            ,bf2:0
+            ,fbb:0
+            ,bfb:0
+            ,fbfb:0
+            ,bfbf:0
+        }
+        bouts_data.forEach(function(d){
+            if(d.flow){
+                if(d.scores[0]<8&&d.scores[1]<8)
+                    parseFlow(flow_1st,d.flow);
+                else
+                    parseFlow(flow_2nd,d.flow);
+            }
         })
-    //    console.log(flow);
+        var flow={
+             sbb :  flow_1st.sbb +flow_2nd.sbb
+            ,sfb :  flow_1st.sfb +flow_2nd.sfb
+            ,sff :  flow_1st.sff +flow_2nd.sff
+            ,sbf :  flow_1st.sbf +flow_2nd.sbf
+            ,bbfb:  flow_1st.bbfb+flow_2nd.bbfb
+            ,bbff:  flow_1st.bbff+flow_2nd.bbff
+            ,bbbf:  flow_1st.bbbf+flow_2nd.bbbf
+            ,fb1 :  flow_1st.fb1 +flow_2nd.fb1
+            ,fb2 :  flow_1st.fb2 +flow_2nd.fb2
+            ,ff1 :  flow_1st.ff1 +flow_2nd.ff1
+            ,ffb :  flow_1st.ffb +flow_2nd.ffb
+            ,ff2 :  flow_1st.ff2 +flow_2nd.ff2
+            ,bf1 :  flow_1st.bf1 +flow_2nd.bf1
+            ,bf2 :  flow_1st.bf2 +flow_2nd.bf2
+            ,fbb :  flow_1st.fbb +flow_2nd.fbb
+            ,bfb :  flow_1st.bfb +flow_2nd.bfb
+            ,fbfb:  flow_1st.fbfb+flow_2nd.fbfb
+            ,bfbf:  flow_1st.bfbf+flow_2nd.bfbf
+        }
         $scope.fencingData.flow=flow;
+        $scope.fencingData.flow_1st=flow_1st;
+        $scope.fencingData.flow_2nd=flow_2nd;
     }
 
     // read in the default file
@@ -542,11 +611,12 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
             fileNameV2="../data/men_semifinal_1_v2.csv";
         }
         else if($scope.selectedMatch=="men semifinal 2"){
+            fileNameV2="../data/men_semifinal_2_v2.csv";
         }
         readDataV2();
     });
     $scope.$watch('fencingData.focused_bout', function() {
-        console.log($scope.fencingData.focused_bout);
+    //    console.log($scope.fencingData.focused_bout);
 
         var flow={
             sbb:0
@@ -568,8 +638,13 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
             ,fbfb:0
             ,bfbf:0
         }
-        if($scope.fencingData.focused_bout)
-            parseFlow(flow,$scope.fencingData.focused_bout.flow)
+        if($scope.fencingData.focused_bout){
+            if($scope.fencingData.focused_bout.flow){
+
+                console.log($scope.fencingData.focused_bout.flow);
+                parseFlow(flow,$scope.fencingData.focused_bout.flow)
+            }
+        }
         $scope.fencingData.focused_flow=flow;
 
     });

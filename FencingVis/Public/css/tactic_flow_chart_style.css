@@ -9,7 +9,6 @@ tactic-flow-chart {
     z-index: 0;
     overflow: hidden;
     font-size: 10px;
-    background-color: #9acfea;
 }
 
 tactic-flow-chart .link {
