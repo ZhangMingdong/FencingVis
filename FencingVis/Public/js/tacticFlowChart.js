@@ -1,9 +1,9 @@
 ﻿/*
-    dsp: directive to show the animation of a bout
+    dsp: directive to show tactic flow of a bout
     author: Mingdong
     logs:
         created
-        2018/02/01
+        2018/02/10
  */
 mainApp.directive('tacticFlowChart', function () {
     function link(scope, el, attr) {
@@ -43,8 +43,8 @@ mainApp.directive('tacticFlowChart', function () {
                 redraw();
             }
             function redraw(){
+            //    console.log("redraw tactic flow chart");
                 var r=20;
-                console.log("redraw tactic flow chart");
                 var nodes=[
                     {x:350,y:100,name:"S"}
                     ,{x:450,y:100,name:"BB"}
@@ -255,24 +255,24 @@ mainApp.directive('tacticFlowChart', function () {
                     else if(indexS==2&&indexD==2){
                         var s={x:nodes[indexS].x,y:nodes[indexS].y+r}
                         var d={x:nodes[indexD].x,y:nodes[indexD].y-r}
-                        path = `M ${s.x} ${s.y}
-                                C ${s.x} ${s.y+3*r},
-                                  ${s.x-3*r} ${s.y+3*r},
-                                  ${s.x-3*r} ${s.y}
-                                C ${s.x-3*r} ${s.y-3*r},
-                                  ${s.x} ${s.y-3*r},
-                                  ${s.x} ${s.y}`
+                        path = `M ${s.x    } ${s.y}
+                                C ${s.x    } ${s.y+2*r},
+                                  ${s.x-3*r} ${s.y+2*r},
+                                  ${d.x-3*r} ${d.y+r}
+                                C ${d.x-3*r} ${d.y-2*r},
+                                  ${d.x    } ${d.y-2*r},
+                                  ${d.x    } ${d.y}`
                     }
                     else if(indexS==4&&indexD==4){
                         var s={x:nodes[indexS].x,y:nodes[indexS].y+r}
                         var d={x:nodes[indexD].x,y:nodes[indexD].y-r}
-                        path = `M ${s.x} ${s.y}
-                                C ${s.x} ${s.y+3*r},
-                                  ${s.x+3*r} ${s.y+3*r},
-                                  ${s.x+3*r} ${s.y}
-                                C ${s.x+3*r} ${s.y-3*r},
-                                  ${s.x} ${s.y-3*r},
-                                  ${s.x} ${s.y}`
+                        path = `M ${s.x    } ${s.y}
+                                C ${s.x    } ${s.y+2*r},
+                                  ${s.x+3*r} ${s.y+2*r},
+                                  ${d.x+3*r} ${d.y+r}
+                                C ${d.x+3*r} ${d.y-2*r},
+                                  ${d.x    } ${d.y-2*r},
+                                  ${d.x    } ${d.y}`
                     }
                     else{
                         var s={x:nodes[indexS].x,y:nodes[indexS].y+r}

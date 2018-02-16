@@ -11,7 +11,7 @@ mainApp.directive('motionChart', function () {
             // 0.definition
 
             // 0.1.size
-            var margin = {top: 20, right: 100, bottom: 70, left: 40};
+            var margin = {top: 30, right: 100, bottom: 20, left: 40};
             var svgMotionBGW=1000;
             var svgMotionBGH=800;
             var svgMotionW = svgMotionBGW - margin.left - margin.right;
@@ -20,6 +20,7 @@ mainApp.directive('motionChart', function () {
             // 0.2.color
             var color = d3.scaleOrdinal(d3.schemeCategory20)
 
+            // 0.3.functions
             var parseDate = d3.timeParse("%m/%Y")
             function type2color(type){
                 if(type=="f") return d3.schemeCategory20[0]
@@ -27,7 +28,6 @@ mainApp.directive('motionChart', function () {
                 if(type=="a") return d3.schemeCategory20[2]
                 return "black"
             }
-
 
             function type2color_hand(type){
                 if(type=="ha") return d3.schemeCategory20[6]
@@ -63,13 +63,9 @@ mainApp.directive('motionChart', function () {
             var svg=svgBG.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-            var gAxisX=svg.append("g")
-                .attr("class", "axis axis--x")
-            var gAxisXBottom=svg.append("g")
-                .attr("class", "axis axis--x")
-
-            var gAxisY=svg.append("g")
-                .attr("class", "axis axis--y")
+            var gAxisX=svg.append("g").attr("class", "axis axis--x")
+            var gAxisXBottom=svg.append("g").attr("class", "axis axis--x")
+            var gAxisY=svg.append("g").attr("class", "axis axis--y")
 
             scope.$watch(function () {
                 //    console.log("watching===============svgStreamBG")
@@ -80,10 +76,7 @@ mainApp.directive('motionChart', function () {
             }, resize);
             // response the size-change
             function resize() {
-
             //    console.log("====================resize motion chart=================");
-
-
                 svgMotionW = svgMotionBGW - margin.left - margin.right;
                 svgMotionH = svgMotionBGH - margin.top - margin.bottom;
 
@@ -94,8 +87,6 @@ mainApp.directive('motionChart', function () {
                 svg
                     .attr("width", svgMotionW)
                     .attr("height", svgMotionH)
-
-
                 redraw();
             }
             function redraw(){
