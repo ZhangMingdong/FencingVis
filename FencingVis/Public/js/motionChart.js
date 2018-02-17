@@ -151,7 +151,7 @@ mainApp.directive('motionChart', function () {
                     .attr("x", function(d) { return xScale(0); })
                     .attr("width", function(d) {return svgMotionW } )
                     .attr("stroke",function(d){return boutColor(d)})
-                    .attr("fill","AntiqueWhite")
+                    .attr("fill","whitesmoke")
                     .attr("y", function(d) { return yScale(getY(d)); })
                     .attr("height", yScale.bandwidth()*2)
                     .on('mouseenter', function (d) {
@@ -173,7 +173,7 @@ mainApp.directive('motionChart', function () {
                     .attr("x", function(d) { return xScale(0); })
                     .attr("width", function(d) {return svgMotionW } )
                     .attr("stroke",function(d){return boutColor(d)})
-                    .attr("fill","AntiqueWhite")
+                    .attr("fill","whitesmoke")
                     .attr("y", function(d) { return yScale(getY(d)); })
                     .attr("height", yScale.bandwidth()*2);
 

@@ -10,7 +10,7 @@ mainApp.directive('tacticFlowChart', function () {
         function tacticFlowChart(){
             // 0.definition
             // 0.1.size
-            var margin = {top: 20, right: 50, bottom: 70, left: 50};
+            var margin = {top: 0, right: 50, bottom: 90, left: 50};
             var svgBGW=1000;
             var svgBGH=800;
             var svgW = svgBGW - margin.left - margin.right;
@@ -220,15 +220,17 @@ mainApp.directive('tacticFlowChart', function () {
                 svgText.exit().remove();
 
                 function diagonal(indexS, indexD) {
+                    var topBias=14;
+                    var bottomBias=18;
                     var path;
                     if(indexS==2&&indexD==4){
                         var s={x:nodes[indexS].x-r,y:nodes[indexS].y}
                         var d={x:nodes[indexD].x+r,y:nodes[indexD].y}
                         path = `M ${s.x} ${s.y}
                                 C ${s.x-3*r} ${s.y},
-                                  ${s.x-3*r} ${s.y-15*r},
-                                  ${(s.x+d.x)/2} ${s.y-15*r}
-                                C ${d.x+3*r} ${d.y-15*r},
+                                  ${s.x-3*r} ${s.y-topBias*r},
+                                  ${(s.x+d.x)/2} ${s.y-topBias*r}
+                                C ${d.x+3*r} ${d.y-topBias*r},
                                   ${d.x+3*r} ${d.y},
                                   ${d.x} ${d.y}`
 
@@ -238,9 +240,9 @@ mainApp.directive('tacticFlowChart', function () {
                         var d={x:nodes[indexD].x-r,y:nodes[indexD].y}
                         path = `M ${s.x} ${s.y}
                                 C ${s.x+6*r} ${s.y},
-                                  ${s.x+6*r} ${s.y+20*r},
-                                  ${(s.x+d.x)/2} ${s.y+20*r}
-                                C ${d.x-6*r} ${d.y+20*r},
+                                  ${s.x+6*r} ${s.y+bottomBias*r},
+                                  ${(s.x+d.x)/2} ${s.y+bottomBias*r}
+                                C ${d.x-6*r} ${d.y+bottomBias*r},
                                   ${d.x-6*r} ${d.y},
                                   ${d.x} ${d.y}`
 

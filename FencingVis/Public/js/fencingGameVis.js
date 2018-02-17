@@ -32,7 +32,7 @@ mainApp.directive('fencingGameVis', function () {
             var svgGameH=100;
             var svgGameBGW=100;
             var svgGameBGH=100;
-            var margin = {top: 20, right: 40, bottom: 100, left: 30};
+            var margin = {top: 20, right: 40, bottom: 60, left: 30};
 
             // 0.3.data
             var nodes=[];
@@ -420,8 +420,8 @@ mainApp.directive('fencingGameVis', function () {
                 //    console.log("watching===============svgGameBG")
                 svgGameBGW = el.clientWidth;
                 svgGameBGH = el.clientHeight;
-                if(svgGameBGW<600) svgGameBGW=600;
-                if(svgGameBGH<200) svgGameBGH=200;
+            //    if(svgGameBGW<600) svgGameBGW=600;
+            //    if(svgGameBGH<200) svgGameBGH=200;
                 return svgGameBGW + svgGameBGH;
             }, resize);
             // watch the change of the data

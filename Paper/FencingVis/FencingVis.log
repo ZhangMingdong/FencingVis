@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2016.3.8)  9 FEB 2018 09:50
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2016.3.8)  17 FEB 2018 14:06
 entering extended mode
 **FencingVis.tex
 (E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.tex
@@ -511,7 +511,7 @@ LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <10> not available
 (Font)              Font shape `OT1/phv/m/sl' tried instead on input line 158.
 \abstractwidth=\skip53
 
-<pictures/TimeView.png, id=55, 846.16125pt x 279.0425pt>
+<pictures/TimeView.png, id=99, 846.16125pt x 279.0425pt>
 File: pictures/TimeView.png Graphic file (type png)
 
 <use pictures/TimeView.png>
@@ -519,7 +519,7 @@ Package pdftex.def Info: pictures/TimeView.png used on input line 158.
 (pdftex.def)             Requested size: 467.22528pt x 154.07845pt.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <8> not available
 (Font)              Font shape `OT1/phv/b/n' tried instead on input line 158.
- <diamondrule.pdf, id=57, 213.79875pt x 12.045pt>
+ <diamondrule.pdf, id=101, 213.79875pt x 12.045pt>
 File: diamondrule.pdf Graphic file (type pdf)
 
 <use diamondrule.pdf>
@@ -538,83 +538,85 @@ LaTeX Font Info:    Try loading font information for TS1+ptm on input line 158.
  (D:\CTEX\MiKTeX\tex\latex\psnfss\ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
-LaTeX Font Info:    Try loading font information for OT1+txtt on input line 178
+Underfull \vbox (badness 2503) has occurred while \output is active []
+
+LaTeX Font Info:    Try loading font information for OT1+txtt on input line 203
 .
 
 (D:\CTEX\MiKTeX\tex\latex\txfonts\ot1txtt.fd
 File: ot1txtt.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    Try loading font information for OMS+txtt on input line 178
+LaTeX Font Info:    Try loading font information for OMS+txtt on input line 203
 .
-LaTeX Font Info:    No file OMStxtt.fd. on input line 178.
+LaTeX Font Info:    No file OMStxtt.fd. on input line 203.
 
 
 LaTeX Font Warning: Font shape `OMS/txtt/m/n' undefined
 (Font)              using `OMS/cmsy/m/n' instead
-(Font)              for symbol `textbackslash' on input line 178.
+(Font)              for symbol `textbackslash' on input line 203.
 
 
-Underfull \hbox (badness 6961) in paragraph at lines 178--179
+Underfull \hbox (badness 6961) in paragraph at lines 203--204
 []\OT1/ptm/m/n/9 (+20) The style us-es the hy-per-ref pack-age, thus turn-s ref
 -
  []
 
 
-Underfull \hbox (badness 5862) in paragraph at lines 178--179
+Underfull \hbox (badness 5862) in paragraph at lines 203--204
 \OT1/ptm/m/n/9 (+20) er-ences in-to in-ter-nal links. We thus rec-om-mend to
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 178--179
+Underfull \hbox (badness 10000) in paragraph at lines 203--204
 \OT1/ptm/m/n/9 (+20) make use of the ``\OMS/txtt/m/n/9 n\OT1/txtt/m/n/9 autoref
 \OMS/txtt/m/n/9 f\OT1/txtt/m/n/9 reference\OMS/txtt/m/n/9 g\OT1/ptm/m/n/9 (+20)
  '' cal-l (in-
  []
 
 
-Underfull \hbox (badness 6173) in paragraph at lines 178--179
+Underfull \hbox (badness 6173) in paragraph at lines 203--204
 \OT1/ptm/m/n/9 (+20) stead of ``\OT1/txtt/m/n/9 Figure~\OMS/txtt/m/n/9 n\OT1/tx
 tt/m/n/9 ref\OMS/txtt/m/n/9 f\OT1/txtt/m/n/9 reference\OMS/txtt/m/n/9 g\OT1/ptm
 /m/n/9 (+20) '' or sim-i-lar) s-ince
  []
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 179.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 204.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 179.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 204.
 
-Overfull \hbox (0.70251pt too wide) in paragraph at lines 180--184
+Overfull \hbox (0.70251pt too wide) in paragraph at lines 205--209
 \OT1/ptm/m/n/9 (-20) use ``\OMS/txtt/m/n/9 n\OT1/txtt/m/n/9 bibliographystyle\O
 MS/txtt/m/n/9 f\OT1/txtt/m/n/9 abbrv-doi-hyperref-narrow\OMS/txtt/m/n/9 g\OT1/p
 tm/m/n/9 (-20) ''
  []
 
 
-Underfull \hbox (badness 1609) in paragraph at lines 180--184
+Underfull \hbox (badness 1609) in paragraph at lines 205--209
 \OT1/ptm/b/n/9 Note 1: \OT1/ptm/m/n/9 (+20) oc-ca-sion-al-ly (for some L[]T[]X 
 dis-tri-bu-tion-s) this
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 180--184
+Underfull \hbox (badness 10000) in paragraph at lines 205--209
 \OT1/ptm/m/n/9 (+20) (``\OT1/txtt/m/n/9 pdfendlink ended up in different nestin
 g level
  []
 
 
-Underfull \hbox (badness 1558) in paragraph at lines 180--184
+Underfull \hbox (badness 1558) in paragraph at lines 205--209
 \OT1/ptm/m/n/9 (+20) lat-est ver-sion of the hy-per-ref pack-age (i.e., up-date
  y-our
  []
 
 
-Underfull \hbox (badness 3312) in paragraph at lines 180--184
+Underfull \hbox (badness 3312) in paragraph at lines 205--209
 \OT1/ptm/m/n/9 (+20) L[]T[]X in-stal-la-tion/packages) or, al-ter-na-tive-ly, r
 e-vert back
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 180--184
+Underfull \hbox (badness 10000) in paragraph at lines 205--209
 \OT1/ptm/m/n/9 (+20) to ``\OMS/txtt/m/n/9 n\OT1/txtt/m/n/9 bibliographystyle\OM
 S/txtt/m/n/9 f\OT1/txtt/m/n/9 abbrv-doi-narrow\OMS/txtt/m/n/9 g\OT1/ptm/m/n/9 (
 +20) '' (at the
@@ -626,91 +628,93 @@ S/txtt/m/n/9 f\OT1/txtt/m/n/9 abbrv-doi-narrow\OMS/txtt/m/n/9 g\OT1/ptm/m/n/9 (
  <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/TimeView.png> <E:/FencingV
 is/FencingVis/Paper/FencingVis/diamondrule.pdf>]
 
-LaTeX Warning: Citation `Max:1995:OMF' on page 2 undefined on input line 190.
+LaTeX Warning: Citation `Max:1995:OMF' on page 2 undefined on input line 215.
 
 
-LaTeX Warning: Citation `Kitware:2003' on page 2 undefined on input line 190.
+LaTeX Warning: Citation `Kitware:2003' on page 2 undefined on input line 215.
 
 
-LaTeX Warning: Citation `Kitware:2003' on page 2 undefined on input line 190.
+LaTeX Warning: Citation `Kitware:2003' on page 2 undefined on input line 215.
 
 
-LaTeX Warning: Citation `Max:1995:OMF' on page 2 undefined on input line 190.
+LaTeX Warning: Citation `Max:1995:OMF' on page 2 undefined on input line 215.
 
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 201.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 226.
 
 (D:\CTEX\MiKTeX\tex\latex\psnfss\omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <9> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 201.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 226.
 
-Underfull \hbox (badness 1845) in paragraph at lines 208--209
+Underfull \hbox (badness 1845) in paragraph at lines 233--234
 []\OT1/ptm/m/n/9 (+20) abbreviated pro-ceed-ings name: e.g., ``Proc.\OMS/cmsy/m
 /n/9 n \OT1/ptm/m/n/9 (+20) CON-
  []
 
 
 LaTeX Warning: Citation `Lorensen:1987:MCA' on page 2 undefined on input line 2
-24.
+49.
 
 
 LaTeX Warning: Citation `Lorensen:1987:MCA' on page 2 undefined on input line 2
-24.
+49.
 
 
-LaTeX Warning: Citation `Kitware:2003' on page 2 undefined on input line 236.
+LaTeX Warning: Citation `Kitware:2003' on page 2 undefined on input line 261.
 
 
-LaTeX Warning: Citation `Max:1995:OMF' on page 2 undefined on input line 236.
+LaTeX Warning: Citation `Max:1995:OMF' on page 2 undefined on input line 261.
 
 
 LaTeX Warning: Citation `Kindlmann:1999:SAG' on page 2 undefined on input line 
-252.
+277.
 
-[2] <pictures/paper-count-w-2015-new.pdf, id=100, 832.35068pt x 451.25789pt>
+[2] <pictures/paper-count-w-2015-new.pdf, id=144, 832.35068pt x 451.25789pt>
 File: pictures/paper-count-w-2015-new.pdf Graphic file (type pdf)
 
 <use pictures/paper-count-w-2015-new.pdf>
 Package pdftex.def Info: pictures/paper-count-w-2015-new.pdf used on input line
- 360.
+ 385.
 (pdftex.def)             Requested size: 251.31898pt x 136.25288pt.
 
 
 LaTeX Warning: Citation `Isenberg:2017:VMC' on page 3 undefined on input line 3
-61.
+86.
 
 
 LaTeX Warning: Citation `Isenberg:2017:VMC' on page 3 undefined on input line 3
-61.
+86.
 
 
 LaTeX Warning: Citation `Lorensen:1987:MCA' on page 3 undefined on input line 3
-67.
+92.
 
 
 LaTeX Warning: Citation `Lorensen:1987:MCA' on page 3 undefined on input line 3
-70.
+95.
 
 
-LaTeX Warning: Citation `Wyvill:1986:DSS' on page 3 undefined on input line 370
+LaTeX Warning: Citation `Wyvill:1986:DSS' on page 3 undefined on input line 395
 .
 
 
-LaTeX Warning: Citation `Nielson:1991:TAD' on page 3 undefined on input line 38
-4.
+LaTeX Warning: Citation `Nielson:1991:TAD' on page 3 undefined on input line 40
+9.
 
-(E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 426.
- [3 <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/paper-count-w-2015-new.
-pdf>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 426.
+(E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.bbl [3 <E:/FencingVis/Fen
+cingVis/Paper/FencingVis/pictures/paper-count-w-2015-new.pdf>])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 451.
+ [4
+
+]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 451.
 
 (E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 426.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 426.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 451.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 451.
 Package rerunfilecheck Info: File `FencingVis.out' has not changed.
-(rerunfilecheck)             Checksum: 8CF0E2BBCA7E8867AFC295AD9208772E;701.
+(rerunfilecheck)             Checksum: 25A39A805F6D74DC78CBAD7E891AF599;1407.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
@@ -720,13 +724,13 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 8304 strings out of 495354
- 123629 string characters out of 3183860
- 258376 words of memory out of 3000000
- 11129 multiletter control sequences out of 15000+200000
+ 8327 strings out of 495354
+ 123937 string characters out of 3183860
+ 257376 words of memory out of 3000000
+ 11140 multiletter control sequences out of 15000+200000
  61886 words of font info for 215 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 33i,12n,35p,728b,422s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 33i,12n,35p,728b,448s stack positions out of 5000i,500n,10000p,200000b,50000s
 {D:/CTEX/MiKTeX/fonts/enc/dvips/fontname/8r.enc}<D:/CTEX/MiKTeX/fonts/type1/p
 ublic/amsfonts/cm/cmr10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy
 9.pfb><D:/CTEX/MiKTeX/fonts/type1/public/txfonts/txtt.pfb><D:/CTEX/MiKTeX/fonts
@@ -735,9 +739,9 @@ pfb><D:/CTEX/MiKTeX/fonts/type1/urw/helvetic/uhvro8a.pfb><D:/CTEX/MiKTeX/fonts/
 type1/urw/symbol/usyr.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><D:/
 CTEX/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/ti
 mes/utmri8a.pfb>
-Output written on FencingVis.pdf (3 pages, 174200 bytes).
+Output written on FencingVis.pdf (4 pages, 179825 bytes).
 PDF statistics:
- 161 PDF objects out of 1000 (max. 8388607)
- 33 named destinations out of 1000 (max. 500000)
- 55928 words of extra memory for PDF output out of 61914 (max. 10000000)
+ 213 PDF objects out of 1000 (max. 8388607)
+ 45 named destinations out of 1000 (max. 500000)
+ 56016 words of extra memory for PDF output out of 61914 (max. 10000000)
 

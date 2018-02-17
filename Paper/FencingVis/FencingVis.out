@@ -1,13 +1,24 @@
 \BOOKMARK [1][]{section.2}{Introduction}{}% 1
 \BOOKMARK [1][]{section.4}{Related Work}{}% 2
-\BOOKMARK [1][]{section.5}{FencingVis}{}% 3
-\BOOKMARK [1][]{section.6}{Case Study}{}% 4
-\BOOKMARK [1][]{section.7}{Conclusion}{}% 5
-\BOOKMARK [1][]{section.8}{Bibliography Instructions}{}% 6
-\BOOKMARK [1][]{section.9}{Example Section}{}% 7
-\BOOKMARK [1][]{section.10}{Exposition}{}% 8
-\BOOKMARK [2][]{subsection.12}{Lorem ipsum}{section.10}% 9
-\BOOKMARK [2][]{subsection.14}{Mezcal Head}{section.10}% 10
-\BOOKMARK [3][-]{subsubsection.15}{Duis Autem}{subsection.14}% 11
-\BOOKMARK [3][-]{subsubsection.17}{Ejector Seat Reservation}{subsection.14}% 12
-\BOOKMARK [1][]{section.22}{Conclusion}{}% 13
+\BOOKMARK [1][]{section.5}{Background and System Overview}{}% 3
+\BOOKMARK [2][]{subsection.6}{Background}{section.5}% 4
+\BOOKMARK [2][]{subsection.7}{Data Description}{section.5}% 5
+\BOOKMARK [2][]{subsection.8}{Requirement Analysis}{section.5}% 6
+\BOOKMARK [2][]{subsection.9}{System Overview}{section.5}% 7
+\BOOKMARK [1][]{section.10}{FencingVis}{}% 8
+\BOOKMARK [2][]{subsection.11}{Bout View}{section.10}% 9
+\BOOKMARK [2][]{subsection.12}{Motion View}{section.10}% 10
+\BOOKMARK [2][]{subsection.13}{Tactic Flow View}{section.10}% 11
+\BOOKMARK [2][]{subsection.14}{Animation Replay}{section.10}% 12
+\BOOKMARK [2][]{subsection.15}{Interaction}{section.10}% 13
+\BOOKMARK [2][]{subsection.16}{Cross-View Analysis}{section.10}% 14
+\BOOKMARK [1][]{section.17}{Case Study}{}% 15
+\BOOKMARK [1][]{section.18}{Conclusion}{}% 16
+\BOOKMARK [1][]{section.19}{Bibliography Instructions}{}% 17
+\BOOKMARK [1][]{section.20}{Example Section}{}% 18
+\BOOKMARK [1][]{section.21}{Exposition}{}% 19
+\BOOKMARK [2][]{subsection.23}{Lorem ipsum}{section.21}% 20
+\BOOKMARK [2][]{subsection.25}{Mezcal Head}{section.21}% 21
+\BOOKMARK [3][-]{subsubsection.26}{Duis Autem}{subsection.25}% 22
+\BOOKMARK [3][-]{subsubsection.28}{Ejector Seat Reservation}{subsection.25}% 23
+\BOOKMARK [1][]{section.33}{Conclusion}{}% 24
