@@ -92,117 +92,98 @@ mainApp.directive('phraseChart', function () {
 
 
             var svgHeadFencer1=svgFencer1.append("circle")
-                .attr('cy', -30)
+                .classed("fencerhead1",true)
                 .attr("r", 9)
-                .attr("fill", "red")
 
             var svgBodyFencer1=svgFencer1.append("line")
-                .attr("stroke", "red")
-                .attr("stroke-width",5)
+                .classed("fencer1",true)
+                .classed("body",true)
 
             // left arm
             var svgLA1Fencer1=svgFencer1.append("line")
-                .attr("stroke", "red")
-                .attr("stroke-width",5)
-                .attr("stroke-linecap","round")
+                .classed("fencer1",true)
+                .classed("body",true)
             var svgLA2Fencer1=svgFencer1.append("line")
-                .attr("stroke", "red")
-                .attr("stroke-width",5)
-                .attr("stroke-linecap","round")
+                .classed("fencer1",true)
+                .classed("body",true)
             // right arm
             var svgRA1Fencer1=svgFencer1.append("line")
-                .attr("stroke", "red")
-                .attr("stroke-width",5)
-                .attr("stroke-linecap","round")
+                .classed("fencer1",true)
+                .classed("body",true)
             var svgRA2Fencer1=svgFencer1.append("line")
-                .attr("stroke", "red")
-                .attr("stroke-width",5)
-                .attr("stroke-linecap","round")
+                .classed("fencer1",true)
+                .classed("body",true)
 
             // sabre
             var svgSabreFencer1=svgFencer1.append("line")
-                .attr("stroke", "red")
-                .attr("stroke-width",2)
-                .attr("stroke-linecap","round")
+                .classed("fencer1",true)
+                .classed("sword",true)
 
             // left legs
             var svgLL1Fencer1=svgFencer1.append("line")
-                .attr("stroke", "red")
-                .attr("stroke-width",5)
-                .attr("stroke-linecap","round")
+                .classed("fencer1",true)
+                .classed("body",true)
             var svgLL2Fencer1=svgFencer1.append("line")
-                .attr("stroke", "red")
-                .attr("stroke-width",5)
-                .attr("stroke-linecap","round")
+                .classed("fencer1",true)
+                .classed("body",true)
 
             // right legs
 
             var svgRL1Fencer1=svgFencer1.append("line")
-                .attr("stroke", "red")
-                .attr("stroke-width",5)
-                .attr("stroke-linecap","round")
+                .classed("fencer1",true)
+                .classed("body",true)
             var svgRL2Fencer1=svgFencer1.append("line")
-                .attr("stroke", "red")
-                .attr("stroke-width",5)
-                .attr("stroke-linecap","round")
+                .classed("fencer1",true)
+                .classed("body",true)
 
 
 
 
 
             var svgHeadFencer2=svgFencer2.append("circle")
-                .attr('cy', -20)        // position the circle at 250 on the y axis
-                .attr("fill", "blue")   // fill the circle with 'blue'
-                .attr("r", 10)          // set the radius to 10 pixels
+                .classed("fencerhead2",true)
+                .attr("r", 9)
+
             var svgBodyFencer2=svgFencer2.append("line")
-                .attr("stroke", "blue")
-                .attr("stroke-width",5)
+                .classed("fencer2",true)
+                .classed("body",true)
 
             // left arm
             var svgLA1Fencer2=svgFencer2.append("line")
-                .attr("stroke", "blue")
-                .attr("stroke-width",5)
-                .attr("stroke-linecap","round")
+                .classed("fencer2",true)
+                .classed("body",true)
             var svgLA2Fencer2=svgFencer2.append("line")
-                .attr("stroke", "blue")
-                .attr("stroke-width",5)
-                .attr("stroke-linecap","round")
+                .classed("fencer2",true)
+                .classed("body",true)
             // right arm
             var svgRA1Fencer2=svgFencer2.append("line")
-                .attr("stroke", "blue")
-                .attr("stroke-width",5)
-                .attr("stroke-linecap","round")
+                .classed("fencer2",true)
+                .classed("body",true)
             var svgRA2Fencer2=svgFencer2.append("line")
-                .attr("stroke", "blue")
-                .attr("stroke-width",5)
-                .attr("stroke-linecap","round")
+                .classed("fencer2",true)
+                .classed("body",true)
 
             // sabre
             var svgSabreFencer2=svgFencer2.append("line")
-                .attr("stroke", "blue")
-                .attr("stroke-width",2)
-                .attr("stroke-linecap","round")
+                .classed("fencer2",true)
+                .classed("sword",true)
 
             // left legs
             var svgLL1Fencer2=svgFencer2.append("line")
-                .attr("stroke", "blue")
-                .attr("stroke-width",5)
-                .attr("stroke-linecap","round")
+                .classed("fencer2",true)
+                .classed("body",true)
             var svgLL2Fencer2=svgFencer2.append("line")
-                .attr("stroke", "blue")
-                .attr("stroke-width",5)
-                .attr("stroke-linecap","round")
+                .classed("fencer2",true)
+                .classed("body",true)
 
             // right legs
 
             var svgRL1Fencer2=svgFencer2.append("line")
-                .attr("stroke", "blue")
-                .attr("stroke-width",5)
-                .attr("stroke-linecap","round")
+                .classed("fencer2",true)
+                .classed("body",true)
             var svgRL2Fencer2=svgFencer2.append("line")
-                .attr("stroke", "blue")
-                .attr("stroke-width",5)
-                .attr("stroke-linecap","round")
+                .classed("fencer2",true)
+                .classed("body",true)
 
             // svg element of fencer 1
             var arrSVGFencer=[
@@ -250,15 +231,11 @@ mainApp.directive('phraseChart', function () {
 
 
             var gAxisX=svg.append("g")
-                .attr("class", "axis axis--x")
             var gAxisXBottom=svg.append("g")
-                .attr("class", "axis axis--x")
 
             var gAxisY=svg.append("g")
-                .attr("class", "axis axis--y")
 
             var gAxisYRight=svg.append("g")
-                .attr("class", "axis axis--y")
 
 
             var pisteWidth=10;
@@ -351,7 +328,7 @@ mainApp.directive('phraseChart', function () {
 
             // show the animation of a bout
             function showBout(){
-                console.log("show bout");
+            //    console.log("show bout");
                 if(scope.data.selected_bout<0) return;
                 var arrPos1=[];
                 var arrPos2=[];

@@ -17,3 +17,30 @@ phrase-chart text {
     text-anchor: middle;
     font-family: monospace;
 }
+
+
+phrase-chart .fencer1{
+    stroke: red;
+}
+
+phrase-chart .fencer2{
+    stroke: blue;
+}
+
+phrase-chart .fencerhead1{
+    fill: red;
+}
+
+phrase-chart .fencerhead2{
+    fill: blue;
+}
+
+phrase-chart .body{
+    stroke-width:5;
+    stroke-linecap:round;
+}
+
+phrase-chart .sword{
+    stroke-width:2;
+}
+
