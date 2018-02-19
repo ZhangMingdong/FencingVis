@@ -5,9 +5,9 @@
         created
         2018/02/01
  */
-mainApp.directive('boutChart', function () {
+mainApp.directive('phraseChart', function () {
     function link(scope, el, attr) {
-        function boutChart(){
+        function phraseChart(){
             // 0.definition
             // coordinates of every critical point of the glyph for every motion
             var arrGlyphCoords=[
@@ -88,9 +88,6 @@ mainApp.directive('boutChart', function () {
                 .style("opacity", 0)
             var svgResultText=svg.append("text")
                 .style("opacity", 0)
-                .style("font-size", 30)
-                .style("text-anchor", "middle")
-                .style("font-family", "monospace");
 
 
 
@@ -569,7 +566,7 @@ mainApp.directive('boutChart', function () {
             scope.$watch('data', redraw);
             scope.$watch('data.selected_bout', showBout);
         }
-        boutChart();
+        phraseChart();
     }
     return {
         link: link,

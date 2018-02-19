@@ -44,7 +44,8 @@ mainApp.directive('motionChart', function () {
             }
 
             function getY(d){
-                return "p"+d.player+"b"+d.bout;
+                if(d.player) return "p"+d.player+"b"+d.bout;    // for motion
+                else return "p1b"+d.bout;                       // for phrase, always using player 1
             }
 
             function resultText(result){
@@ -93,8 +94,6 @@ mainApp.directive('motionChart', function () {
             //    console.log("redraw motion chart");
                 var data_feet=scope.data.motion;
                 var data_hands=scope.data.motion_hands;
-
-                // generate bout data
                 var boutsData=scope.data.bouts_data;
 
                 // filtering
@@ -144,14 +143,13 @@ mainApp.directive('motionChart', function () {
 
                 // append the rectangles for the background
 
-                var bouts=svg.selectAll(".bout").data(boutsData);
+                var bouts=svg.selectAll(".phrase").data(boutsData);
                 bouts
                     .enter().append("rect")
-                    .attr("class", "bout")
+                    .attr("class", "phrase")
                     .attr("x", function(d) { return xScale(0); })
                     .attr("width", function(d) {return svgMotionW } )
                     .attr("stroke",function(d){return boutColor(d)})
-                    .attr("fill","whitesmoke")
                     .attr("y", function(d) { return yScale(getY(d)); })
                     .attr("height", yScale.bandwidth()*2)
                     .on('mouseenter', function (d) {
@@ -173,32 +171,27 @@ mainApp.directive('motionChart', function () {
                     .attr("x", function(d) { return xScale(0); })
                     .attr("width", function(d) {return svgMotionW } )
                     .attr("stroke",function(d){return boutColor(d)})
-                    .attr("fill","whitesmoke")
                     .attr("y", function(d) { return yScale(getY(d)); })
                     .attr("height", yScale.bandwidth()*2);
 
                 bouts.exit().remove();
 
 
-                var boutsText=svg.selectAll(".boutText").data(boutsData);
+                var boutsText=svg.selectAll(".phraseText").data(boutsData);
                 boutsText
                     .enter().append("text")
-                    .attr("class", "boutText")
+                    .attr("class", "phraseText")
                     .text(function(d) { return resultText(d.result)+"  "+d.scores[0]+":"+d.scores[1]; })
                     .attr("x", function(d) {return svgMotionW+10 } )
                     .attr("y", function(d) { return yScale(getY(d))+yScale.bandwidth()*1.5; })
                     .attr("stroke",function(d){return boutColor(d)})
-                    .style("font-size", 20)
-                    .style("text-anchor", "left")
-                    .style("font-family", "monospace");
+
                 boutsText
                     .text(function(d) { return resultText(d.result)+"  "+d.scores[0]+":"+d.scores[1]; })
                     .attr("x", function(d) {return svgMotionW+10 } )
                     .attr("y", function(d) { return yScale(getY(d))+yScale.bandwidth()*1.5; })
                     .attr("stroke",function(d){return boutColor(d)})
-                    .style("font-size", 20)
-                    .style("text-anchor", "left")
-                    .style("font-family", "monospace");
+
 
                 boutsText.exit().remove();
 

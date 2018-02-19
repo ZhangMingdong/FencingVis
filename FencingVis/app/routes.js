@@ -61,6 +61,9 @@ module.exports = function(app) {
     app.get('/sankey',function(req,res){
         res.sendfile('./public/sankey.html');
     });
+    app.get('/brush_zoom', function (req, res) {
+        res.sendfile('./public/examples/brush_zoom.html'); // load the single view file (angular will handle the page changes on the front-end)
+    });
     //
     app.get('/v1', function (req, res) {
         res.sendfile('./public/mainFencing.html'); // load the single view file (angular will handle the page changes on the front-end)

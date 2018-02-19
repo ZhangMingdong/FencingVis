@@ -15,9 +15,6 @@ mainApp.directive('fencingGameVis', function () {
         function getStart(d){
             return d.time_start;
         }
-        function getIndex(d){
-            return d.index;
-        }
 
         function fencingGameVis(){
             el = el[0];
@@ -51,25 +48,15 @@ mainApp.directive('fencingGameVis', function () {
 
             // 2.function
             // 2.1.get all the nodes of the tree
-            var getNodes = function () {
-                var nodes = scope.data.events;
+            var generateGrids = function () {
+                var nodes = scope.data.bouts_data;
             //    console.log(nodes)
                 // 1.Calculate x domain
                 var xMin=d3.min(nodes,function(d){return getStart(d);});
                 var xMax=d3.max(nodes,function(d){return getEnd(d);});
-            //    console.log(nodes);
-                var indexMin=d3.min(nodes,function(d){return getIndex(d);});
-                var indexMax=d3.max(nodes,function(d){return getIndex(d);});
 
-                // 2.Calculate y domain
-                var statistic =[];
-                for(var i=indexMin;i<=indexMax;i++) statistic.push(0);
-                // 2.1.calculate y for each nodes
-                nodes.forEach(function (d) {
-                    d.y=statistic[getIndex(d)-indexMin]++;
-                });
-                var yMin=d3.min(nodes,function(d){return d.score;});
-                var yMax=d3.max(nodes,function(d){return d.score;})
+                var yMin=d3.min(nodes,function(d){return d.scores[0]>d.scores[1]?d.scores[1]:d.scores[0];});
+                var yMax=d3.max(nodes,function(d){return d.scores[0]>d.scores[1]?d.scores[0]:d.scores[1];})
                 // 2.2.put them to the middle
 
 
@@ -79,16 +66,13 @@ mainApp.directive('fencingGameVis', function () {
                 grids=[];
                 var time_start,time_end;
                 for(var i=0;i<nodes.length;i++){
-                    if(nodes[i].score==8){
+                    if(nodes[i].scores[0]==8||nodes[i].scores[1]==8){
                         time_start=nodes[i].time_end;
-                        if(i%2==0) time_end=nodes[i+2].time_start;
-                        else time_end=nodes[i+1].time_start;
+                        time_end=nodes[i+1].time_start;
                         break;
                     }
                 }
                 grids.push({start:time_start,end:time_end});
-
-                return nodes;
             }
 
             // 2.2.response the size-change
@@ -164,19 +148,15 @@ mainApp.directive('fencingGameVis', function () {
 
             // 2.6.redraw events
             function _drawEvents() {
+                var svgEvents1 = svgGame.selectAll(".event1").data(nodes);
 
-
-                var svgNodes = svgGame.selectAll(".node").data(nodes);
-
-                svgNodes.enter()
+                svgEvents1.enter()
                     .append('rect')
-                    .classed("node",true)
+                    .classed("event1",true)
                     .attr("fill", "yellow")
                     .attr("fill-opacity", 0.1)
                     .attr("stroke", function (d) {
-                        if (d.player == 1) return 'red';
-                        else if (d.player == 2) return 'blue';
-                        else return 'grey'
+                        return 'red';
                     })
                     //.attr("stroke","blue")
                     .attr("width", function (d) {
@@ -192,7 +172,7 @@ mainApp.directive('fencingGameVis', function () {
                         // We use the gridXTranslation and gridYTranslation and multiply it by a factor to move it to the center of the cell. There is probably
                         // a better way of doing this though.
                         var currentDataIndex = d[1];
-                        return "translate(" + xGameScale(getStart(d)) + ", " + yGameScale(d.score) + ")";
+                        return "translate(" + xGameScale(getStart(d)) + ", " + yGameScale(d.scores[0]) + ")";
                     })
                     .on('mouseenter', function (d) {
                         // console.log("mouse enter");
@@ -213,13 +193,11 @@ mainApp.directive('fencingGameVis', function () {
                         redraw();
                     });
 
-                svgNodes
+                svgEvents1
                     .attr("fill", "yellow")
                     .attr("fill-opacity", 0.1)
                     .attr("stroke", function (d) {
-                        if (d.player == 1) return 'red';
-                        else if (d.player == 2) return 'blue';
-                        else return 'grey'
+                        return 'red';
                     })
                     //.attr("stroke","blue")
                     .attr("width", function (d) {
@@ -235,7 +213,7 @@ mainApp.directive('fencingGameVis', function () {
                         // We use the gridXTranslation and gridYTranslation and multiply it by a factor to move it to the center of the cell. There is probably
                         // a better way of doing this though.
                         var currentDataIndex = d[1];
-                        return "translate(" + xGameScale(getStart(d)) + ", " + yGameScale(d.score) + ")";
+                        return "translate(" + xGameScale(getStart(d)) + ", " + yGameScale(d.scores[0]) + ")";
                     })
                     .on('mouseenter', function (d) {
                         // console.log("mouse enter");
@@ -257,20 +235,109 @@ mainApp.directive('fencingGameVis', function () {
                     });
 
                 // without this, the page won't update when an node is deleted
-                svgNodes.exit().remove();
+                svgEvents1.exit().remove();
+
+                var svgEvents2 = svgGame.selectAll(".event2").data(nodes);
+
+                svgEvents2.enter()
+                    .append('rect')
+                    .classed("event2",true)
+                    .attr("fill", "yellow")
+                    .attr("fill-opacity", 0.1)
+                    .attr("stroke", function (d) {
+                        return 'blue';
+                    })
+                    //.attr("stroke","blue")
+                    .attr("width", function (d) {
+
+                        return xGameScale(getEnd(d)) - xGameScale(getStart(d));
+                    })
+                    .attr("height", 6)
+                    .attr("x", 0)
+                    .attr("y", -3)
+                    .attr("transform", function (d) {
+                        // This is where we use the index here to translate the pie chart and rendere it in the appropriate cell.
+                        // Normally, the chart would be squashed up against the top left of the cell, obscuring the text that shows the day of the month.
+                        // We use the gridXTranslation and gridYTranslation and multiply it by a factor to move it to the center of the cell. There is probably
+                        // a better way of doing this though.
+                        var currentDataIndex = d[1];
+                        return "translate(" + xGameScale(getStart(d)) + ", " + yGameScale(d.scores[1]) + ")";
+                    })
+                    .on('mouseenter', function (d) {
+                        // console.log("mouse enter");
+                    })
+                    .on('mouseleave', function (d) {
+                        // console.log("mouse leave");
+                    })
+                    .on('mouseover', function (d) {
+                        // console.log("mouse over");
+                        scope.$apply(function () {
+                            scope.data.onSelectedNode(d, redraw);
+                        });
+
+                    })
+                    .on('mouseleave', function (d) {
+                        // console.log("mouse leave");
+                        scope.data.onUnSelectedNode();
+                        redraw();
+                    });
+
+                svgEvents2
+                    .attr("fill", "yellow")
+                    .attr("fill-opacity", 0.1)
+                    .attr("stroke", function (d) {
+                        return 'blue';
+                    })
+                    //.attr("stroke","blue")
+                    .attr("width", function (d) {
+
+                        return xGameScale(getEnd(d)) - xGameScale(getStart(d));
+                    })
+                    .attr("height", 6)
+                    .attr("x", 0)
+                    .attr("y", -3)
+                    .attr("transform", function (d) {
+                        // This is where we use the index here to translate the pie chart and rendere it in the appropriate cell.
+                        // Normally, the chart would be squashed up against the top left of the cell, obscuring the text that shows the day of the month.
+                        // We use the gridXTranslation and gridYTranslation and multiply it by a factor to move it to the center of the cell. There is probably
+                        // a better way of doing this though.
+                        var currentDataIndex = d[1];
+                        return "translate(" + xGameScale(getStart(d)) + ", " + yGameScale(d.scores[1]) + ")";
+                    })
+                    .on('mouseenter', function (d) {
+                        // console.log("mouse enter");
+                    })
+                    .on('mouseleave', function (d) {
+                        // console.log("mouse leave");
+                    })
+                    .on('mouseover', function (d) {
+                        // console.log("mouse over");
+                        scope.$apply(function () {
+                            scope.data.onSelectedNode(d, redraw);
+                        });
+
+                    })
+                    .on('mouseleave', function (d) {
+                        // console.log("mouse leave");
+                        scope.data.onUnSelectedNode();
+                        redraw();
+                    });
+
+                // without this, the page won't update when an node is deleted
+                svgEvents2.exit().remove();
             }
 
-            // 2.7.redraw bouts
-            function _drawBouts(){
-                var svgEvents=svgGame.selectAll(".event").data(scope.data.bouts);
-                svgEvents.enter()
+            // 2.7.redraw phrases
+            function _drawPhrases(){
+                var svgPhrases=svgGame.selectAll(".phrase").data(scope.data.bouts_data);
+                svgPhrases.enter()
                     .append('rect')
-                    .classed("event",true)
+                    .classed("phrase",true)
                     .attr("fill","yellow")
                     .attr("fill-opacity",0.1)
                     .attr("stroke",function(d){
-                        if(d.player==1) return 'red';
-                        else if(d.player==2) return 'blue';
+                        if(d.score==1) return 'red';
+                        else if(d.score==2) return 'blue';
                         else return 'grey'
                     })
                     //.attr("stroke","blue")
@@ -308,12 +375,12 @@ mainApp.directive('fencingGameVis', function () {
                         redraw();
                     });
 
-                svgEvents
+                svgPhrases
                     .attr("fill","yellow")
                     .attr("fill-opacity",0.1)
                     .attr("stroke",function(d){
-                        if(d.player==1) return 'red';
-                        else if(d.player==2) return 'blue';
+                        if(d.score==1) return 'red';
+                        else if(d.score==2) return 'blue';
                         else return 'grey'
                     })
                     //.attr("stroke","blue")
@@ -352,17 +419,17 @@ mainApp.directive('fencingGameVis', function () {
                     });
 
                 // without this, the page won't update when an node is deleted
-                svgEvents.exit().remove();
+                svgPhrases.exit().remove();
             }
 
             // 2.8.redraw the svg
             function redraw(){
             //    console.log("redraw")
                 if (!scope.data) { return };
-                if(scope.data.bouts.length==0) return;
+                if(scope.data.bouts_data.length==0) return;
 
-
-                nodes=getNodes();         // this should be called before tree.getEdges
+                generateGrids()
+                nodes=scope.data.bouts_data;
 
                 // draw grids
                 _drawGrid();
@@ -370,7 +437,7 @@ mainApp.directive('fencingGameVis', function () {
 
                 _drawEvents();
 
-                _drawBouts();
+                _drawPhrases();
 
                 renderAxis();
             }
@@ -426,7 +493,7 @@ mainApp.directive('fencingGameVis', function () {
             }, resize);
             // watch the change of the data
             scope.$watch('data', redraw);
-            scope.$watchCollection('data.events', redraw);
+            scope.$watchCollection('data.bouts_data', redraw);
 
         }
 

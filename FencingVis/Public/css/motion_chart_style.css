@@ -11,10 +11,18 @@ motion-chart {
     font-size: 10px;
 }
 
-motion-chart rect {
+motion-chart .phrase {
+    fill: whitesmoke;
     stroke-width: 1;
 }
 
-motion-chart rect:hover {
+motion-chart .phrase:hover {
     stroke-width: 2;
+}
+
+
+motion-chart .phraseText {
+    font-size: 18;
+    text-anchor: left;
+    font-family: monospace;
 }

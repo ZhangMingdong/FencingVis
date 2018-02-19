@@ -11,8 +11,48 @@ tactic-flow-chart {
     font-size: 10px;
 }
 
+tactic-flow-chart .node {
+    fill: white;
+    stroke: red;
+}
+tactic-flow-chart text {
+    text-anchor: middle;
+    font: 20px sans-serif;
+}
+
 tactic-flow-chart .link {
     fill: none;
+    stroke: gray;
+    stroke-opacity: .2;
+}
+
+
+tactic-flow-chart .link:hover {
+    stroke-opacity: .6;
+}
+
+
+tactic-flow-chart .linktube {
+    fill: none;
+    stroke: gray;
+    stroke-width: 30;
+    stroke-opacity: .05;
+}
+
+
+tactic-flow-chart .link1 {
+    fill: none;
+    stroke: blue;
+    stroke-opacity: .3;
+}
+
+tactic-flow-chart .link2 {
+    fill: none;
+    stroke: red;
+    stroke-opacity: .3;
+}
+tactic-flow-chart .linkselected {
+    fill: none;
     stroke: black;
-    stroke-width: 2px;
+    stroke-opacity: .6;
 }

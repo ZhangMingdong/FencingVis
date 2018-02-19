@@ -183,8 +183,6 @@ mainApp.directive('tacticFlowChart', function () {
                     .attr("r",function(d){return r;})
                     .attr("cx",function(d){return d.x})
                     .attr("cy",function(d){return d.y})
-                    .attr("stroke","red")
-                    .attr("fill","white")
                 svgNodes.exit().remove();
 
 /*
@@ -201,10 +199,9 @@ mainApp.directive('tacticFlowChart', function () {
                     });
 */
 
-                var svgText = svg.selectAll(".text").data(nodes);
+                var svgText = svg.selectAll("text").data(nodes);
                 svgText.enter()
                     .append("text")
-                    .attr("class","text")
                     .text(function(d){return d.name})
                     .attr("x", function(d) {
                         return d.x;
@@ -212,10 +209,6 @@ mainApp.directive('tacticFlowChart', function () {
                     .attr("y", function(d) {
                         return d.y+r/2;
                     })
-                    .attr("text-anchor", function(d) {
-                        return "middle"
-                    })
-                    .style("font","20px sans-serif")
 
                 svgText.exit().remove();
 
@@ -293,12 +286,9 @@ mainApp.directive('tacticFlowChart', function () {
                     .attr('d', function(d){
                         return diagonal(d.s, d.d)
                     })
-                    .attr("fill","none")
-                    .attr("stroke","gray")
-                    .style("stroke-width", 30)
-                    .style("stroke-opacity", .05)
-
                 svgLinkTube.exit().remove();
+
+
                 var svgLink = svg.selectAll(".link").data(lines);
                 svgLink.enter().append('path', "g")
                     .attr("class", "link")
@@ -306,29 +296,23 @@ mainApp.directive('tacticFlowChart', function () {
                         return diagonal(d.s, d.d)
                     })
                     .style("stroke-width", function(d){return d.width})
-                    .style("stroke-opacity", .2)
-                    .style("stroke", "gray")
                 svgLink
                     .attr('d', function(d){
                         return diagonal(d.s, d.d)
                     })
                     .style("stroke-width", function(d){
                         return d.width})
-                    .style("stroke-opacity", .2)
-                    .style("stroke", "gray")
                 svgLink.exit().remove();
 
-                var svgSelectedLink = svg.selectAll(".selectedlink").data(lines);
+                var svgSelectedLink = svg.selectAll(".linkselected").data(lines);
                 svgSelectedLink.enter().append('path', "g")
-                    .attr("class", "link")
+                    .attr("class", "linkselected")
                     .attr('d', function(d){
                         return diagonal(d.s, d.d)
                     })
                     .style("stroke-width", function(d){
                         return d.selected? 30/max_count:0
                     })
-                    .style("stroke-opacity", .6)
-                    .style("stroke", "black")
                 svgSelectedLink
                     .attr('d', function(d){
                         return diagonal(d.s, d.d)
@@ -336,45 +320,36 @@ mainApp.directive('tacticFlowChart', function () {
                     .style("stroke-width", function(d){
                         return d.selected? 30/max_count:0
                     })
-                    .style("stroke-opacity", .6)
-                    .style("stroke", "black")
                 svgSelectedLink.exit().remove();
+
                 var svgLink1 = svg.selectAll(".link1").data(lines);
                 svgLink1.enter().append('path', "g")
-                    .attr("class", "link")
+                    .attr("class", "link1")
                     .attr('d', function(d){
                         return diagonal(d.s, d.d)
                     })
                     .style("stroke-width", function(d){return d.w1})
-                    .style("stroke-opacity", .3)
-                    .style("stroke", "blue")
                 svgLink1
                     .attr('d', function(d){
                         return diagonal(d.s, d.d)
                     })
                     .style("stroke-width", function(d){
                         return d.w1})
-                    .style("stroke-opacity", .3)
-                    .style("stroke", "blue")
                 svgLink1.exit().remove();
 
                 var svgLink2 = svg.selectAll(".link2").data(lines);
                 svgLink2.enter().append('path', "g")
-                    .attr("class", "link")
+                    .attr("class", "link2")
                     .attr('d', function(d){
                         return diagonal(d.s, d.d)
                     })
                     .style("stroke-width", function(d){return d.w2})
-                    .style("stroke-opacity", .3)
-                    .style("stroke", "red")
                 svgLink2
                     .attr('d', function(d){
                         return diagonal(d.s, d.d)
                     })
                     .style("stroke-width", function(d){
                         return d.w2})
-                    .style("stroke-opacity", .3)
-                    .style("stroke", "red")
                 svgLink2.exit().remove();
 
             }

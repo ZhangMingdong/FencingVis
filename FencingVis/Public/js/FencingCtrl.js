@@ -31,8 +31,6 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
         , flow_1st:{}               // flow of the first half
         , flow_2nd:{}               // flow of the second half
         , Sum_flow:true             // show sum of the flow
-        , events:[]                 // events in the match: time_start, time_end, index, player, score
-        , bouts:[]                  // bouts of the match: time_start, time_end, index, player
     }
 
     // 2. definition of the functions
@@ -75,9 +73,6 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
             generateBoutData(series);
             // generate tactic flow data
             generateFlow($scope.fencingData.bouts_data);
-            // generate bout data and events data for the gameVis view
-            generateTimeLineData(series);
-
 
             $scope.fencingData.series=series;
             $scope.$apply();
@@ -330,33 +325,60 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
     // generate the data of the bouts
     function generateBoutData(series){
         // generate bout data
+        // 0.Declaration
         var boutsData=[]
-        var boutIndex=1;
-        var frame_start=-1;
-        var arrScores=[0,0];
+
+        // 1.structural data generation
+        var frame_start=-1;                             // start frame of the bout
+        var frame_phrase_start=-1;                      // start frame of the current phrase
+        var frame_last=-1;                              // the last frame
+        var scale=40;                                   // scale of frame to time
+        var index=1;                                    // index of current phrase
+        var scores=[0,0];                               // current scores of the two player
+        var bias=0;                                     // accumulated bias
         series.forEach(function(d){
-            if(frame_start==-1) frame_start=d.frame_start;
-            if(d.score==1) arrScores[0]++;
-            else if(d.score==2) arrScores[1]++;
-            if(d.result.length>0){
+            if(d.frame&&d.frame>0){
+                // record the start frame of the bout
+                if(frame_start==-1)
+                    frame_start=d.frame;
+                // record the start frame of the current phrase
+                if(frame_phrase_start==-1){
+                    frame_phrase_start=d.frame;
+                    // update bias
+                    if(frame_last>-1){
+                        bias+=(d.frame-frame_last-15);
+                    }
+                }
+            }
+            if(d.result){
+                var time_start=new Date((frame_phrase_start-frame_start-bias)*scale)
+                var time_end=new Date((frame_last-frame_start-bias)*scale);
+
                 boutsData.push({
-                    frame_start:frame_start,
-                    frame_end:d.frame,
-                    bout:boutIndex++,
-                    player:1,
+                    frame_start:frame_phrase_start,
+                    frame_end:frame_last,
+                    time_start:time_start,
+                    time_end: time_end,
+                    bout:index++,
                     score: d.score,
                     result:d.result,
                     hands1:[],
                     hands2:[],
                     feet1:[],
                     feet2:[],
-                    scores:[arrScores[0],arrScores[1]],
+                    scores:[scores[0],scores[1]],
                     flow:d.flow
                 })
-                frame_start=-1;
+                // update scores
+                if(d.score==1) scores[0]++;
+                else if(d.score==2) scores[1]++;
+                // reset start frame of current phrase
+                frame_phrase_start=-1
             }
+            if(d.frame&&d.frame>0)
+                frame_last=d.frame;
         })
-        // bind motion data to bouts data
+        // 2.bind motion data to bouts data
         $scope.fencingData.motion.forEach(function(d){
             if(d.player==1)
                 boutsData[d.bout-1].feet1.push(d);
@@ -369,7 +391,8 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
             else
                 boutsData[d.bout-1].hands2.push(d);
         })
-        // boutsData.forEach(function(d){            console.log(d);        })
+
+        // 3.set data to the scope
         $scope.fencingData.bouts_data=boutsData;
     }
     // parse flow from state FB
@@ -562,63 +585,6 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
         $scope.fencingData.flow=flow;
         $scope.fencingData.flow_1st=flow_1st;
         $scope.fencingData.flow_2nd=flow_2nd;
-    }
-    // generate data for the time line
-    function generateTimeLineData(series){
-        var events=[];
-        var bouts=[];
-        var frame_start=-1;
-        var frame_phrase_start=-1;
-        var frame_last=-1;
-        var time_base=new Date(2017,1,1,0,0,0,0);
-        var scale=40;
-        var index=1;
-        var scores=[0,0];
-        var bias=0;
-        series.forEach(function(d){
-            if(d.frame&&d.frame>0){
-                if(frame_start==-1)
-                    frame_start=d.frame;
-                if(frame_phrase_start==-1){
-                    frame_phrase_start=d.frame;
-                    if(frame_last>-1){
-                        bias+=(d.frame-frame_last-15);
-                    }
-                }
-            }
-            if(d.result){
-                var time_start=new Date((frame_phrase_start-frame_start-bias)*scale)
-                var time_end=new Date((frame_last-frame_start-bias)*scale);
-                events.push({
-                    time_start:time_start,
-                    time_end: time_end,
-                    index: index,
-                    player: 1,
-                    score: scores[0]
-                })
-                events.push({
-                    time_start:time_start,
-                    time_end: time_end,
-                    index: index,
-                    player: 2,
-                    score: scores[1]
-                })
-                bouts.push({
-                    time_start:time_start,
-                    time_end: time_end,
-                    index: index,
-                    player: d.score
-                })
-                if(d.score==1) scores[0]++;
-                else if(d.score==2) scores[1]++;
-                index++;
-                frame_phrase_start=-1
-            }
-            if(d.frame&&d.frame>0)
-                frame_last=d.frame;
-        })
-        $scope.fencingData.events=events;
-        $scope.fencingData.bouts=bouts;
     }
 
     // read in the default file

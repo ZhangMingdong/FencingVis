@@ -2,11 +2,18 @@
 
 
 
-bout-chart {
+phrase-chart {
     width: 100%;
     height: 200px;
     display: block;
     z-index: 0;
     overflow: hidden;
     font-size: 10px;
+}
+
+
+phrase-chart text {
+    font-size: 20;
+    text-anchor: middle;
+    font-family: monospace;
 }
