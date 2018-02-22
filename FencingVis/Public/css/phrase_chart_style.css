@@ -12,8 +12,8 @@ phrase-chart {
 }
 
 
-phrase-chart text {
-    font-size: 20;
+phrase-chart text.result {
+    font-size: 30;
     text-anchor: middle;
     font-family: monospace;
 }

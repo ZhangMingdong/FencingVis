@@ -70,16 +70,16 @@ mainApp.directive('phraseChart', function () {
             ]
 
             // 0.1.size
-            var margin = {top: 40, right: 50, bottom: 50, left: 50};
-            var svgBoutBGW=1000;
-            var svgBoutBGH=800;
-            var svgBoutW = svgBoutBGW - margin.left - margin.right;
-            var svgBoutH = svgBoutBGH - margin.top - margin.bottom;
+            var margin = {top: 20, right: 20, bottom: 20, left: 20};
+            var svgBGW=1000;
+            var svgBGH=800;
+            var svgW = svgBGW - margin.left - margin.right;
+            var svgH = svgBGH - margin.top - margin.bottom;
 
 
 
             // 1.Add DOM elements
-            var svgBG = d3.select(el[0]).append("svg").attr("width",svgBoutBGW).attr("height",svgBoutBGH);
+            var svgBG = d3.select(el[0]).append("svg").attr("width",svgBGW).attr("height",svgBGH);
             var svg=svgBG.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
             var svgFencer1=svg.append("g")
@@ -87,6 +87,7 @@ mainApp.directive('phraseChart', function () {
             var svgFencer2=svg.append("g")
                 .style("opacity", 0)
             var svgResultText=svg.append("text")
+                .classed("result",true)
                 .style("opacity", 0)
 
 
@@ -248,27 +249,26 @@ mainApp.directive('phraseChart', function () {
 
             scope.$watch(function () {
                 //    console.log("watching===============svgStreamBG")
-                svgBoutBGW = el[0].clientWidth;
-                svgBoutBGH = el[0].clientHeight;
+                svgBGW = el[0].clientWidth;
+                svgBGH = el[0].clientHeight;
 
-                return svgBoutBGW + svgBoutBGH;
+                if(svgBGH<100) svgBGH=100;
+
+                return svgBGW + svgBGH;
             }, resize);
             // response the size-change
             function resize() {
-
                 //    console.log("====================resize motion chart=================");
-
-
-                svgBoutW = svgBoutBGW - margin.left - margin.right;
-                svgBoutH = svgBoutBGH - margin.top - margin.bottom;
+                svgW = svgBGW - margin.left - margin.right;
+                svgH = svgBGH - margin.top - margin.bottom;
 
                 svgBG
-                    .attr("width", svgBoutBGW)
-                    .attr("height", svgBoutBGH)
+                    .attr("width", svgBGW)
+                    .attr("height", svgBGH)
 
                 svg
-                    .attr("width", svgBoutW)
-                    .attr("height", svgBoutH)
+                    .attr("width", svgW)
+                    .attr("height", svgH)
 
 
                 redraw();
@@ -277,17 +277,17 @@ mainApp.directive('phraseChart', function () {
             //    console.log("redraw bout chart");
 
                 yScale
-                    .range([0,svgBoutH])
+                    .range([0,svgH])
 
                 xScale
-                    .range([0, svgBoutW]);
+                    .range([0, svgW]);
 
                 // update axes
                 gAxisX
                     .attr("transform", "translate(0," + -2 + ")")
                     .call(d3.axisTop(xScale));
                 gAxisXBottom
-                    .attr("transform", "translate(0," + svgBoutH + ")")
+                    .attr("transform", "translate(0," + svgH + ")")
                     .call(d3.axisBottom(xScale))
 
                 /*
@@ -307,7 +307,7 @@ mainApp.directive('phraseChart', function () {
                     .attr("x1", function(d) { return xScale(d); })
                     .attr("x2", function(d) { return xScale(d); })
                     .attr("y1", function(d) { return 0; })
-                    .attr("y2", function(d) { return svgBoutH; })
+                    .attr("y2", function(d) { return svgH; })
                     .attr("stroke","black")
 
 
@@ -315,7 +315,7 @@ mainApp.directive('phraseChart', function () {
                     .attr("x1", function(d) { return xScale(d); })
                     .attr("x2", function(d) { return xScale(d); })
                     .attr("y1", function(d) { return 0; })
-                    .attr("y2", function(d) { return svgBoutH; })
+                    .attr("y2", function(d) { return svgH; })
                     .attr("stroke","black")
 
                 // fencers
@@ -337,7 +337,7 @@ mainApp.directive('phraseChart', function () {
                 var arrTime1=[500,500,500,500,500,500,500,500,500,500];
                 var arrTime2=[500,500,500,500,500,500,500,500,500,500];
                 var resultText=""
-                var bout=scope.data.bouts_data[scope.data.selected_bout-1];
+                var bout=scope.data.phrases[scope.data.selected_bout-1];
                 if(bout.result=="b"){
                     arrPos1=[
                         4.5
@@ -440,7 +440,7 @@ mainApp.directive('phraseChart', function () {
                     var index=1;
                     svgFencer1
                         .style("opacity", 1)
-                        .attr("transform", "translate("+xScale(arrPos1[0])+", "+svgBoutH/2+")")
+                        .attr("transform", "translate("+xScale(arrPos1[0])+", "+svgH/2+")")
                         .transition()           // apply a transition
                         .duration(arrTime1[0])         // apply it over 4000 milliseconds
                         .on("start", function repeat() {
@@ -449,7 +449,7 @@ mainApp.directive('phraseChart', function () {
                                 svgResultText
                                     .text(resultText)
                                     .attr("x",xScale(7))
-                                    .attr("y",svgBoutH/2)
+                                    .attr("y",svgH/2)
                                     .style("opacity",1)
                                     .transition()           // apply a transition
                                     .duration(1000)         // apply it over 4000 milliseconds
@@ -457,7 +457,7 @@ mainApp.directive('phraseChart', function () {
                             }
                             else{
                                 d3.active(this)
-                                    .attr("transform", "translate("+xScale(arrPos1[index])+", "+svgBoutH/2+")")
+                                    .attr("transform", "translate("+xScale(arrPos1[index])+", "+svgH/2+")")
                                     .transition()
                                     .duration(arrTime1[index++])
                                     .on("start", repeat);
@@ -471,7 +471,7 @@ mainApp.directive('phraseChart', function () {
                     var index=1;
                     svgFencer2
                         .style("opacity", 1)
-                        .attr("transform", "translate("+xScale(arrPos2[0])+", "+svgBoutH/2+")")
+                        .attr("transform", "translate("+xScale(arrPos2[0])+", "+svgH/2+")")
                         .transition()           // apply a transition
                         .duration(arrTime2[0])         // apply it over 4000 milliseconds
                         .on("start", function repeat() {
@@ -480,7 +480,7 @@ mainApp.directive('phraseChart', function () {
                             }
                             else{
                                 d3.active(this)
-                                    .attr("transform", "translate("+xScale(arrPos2[index])+", "+svgBoutH/2+")")
+                                    .attr("transform", "translate("+xScale(arrPos2[index])+", "+svgH/2+")")
                                     .transition()
                                     .duration(arrTime2[index++])
                                     .on("start", repeat);

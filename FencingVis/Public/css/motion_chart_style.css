@@ -16,7 +16,7 @@ motion-chart .phrase {
     stroke-width: 1;
 }
 
-motion-chart .phrase:hover {
+motion-chart .phrase.focused {
     stroke-width: 2;
 }
 

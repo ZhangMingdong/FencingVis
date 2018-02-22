@@ -21,14 +21,14 @@ mainApp.directive('motionChart', function () {
             var color = d3.scaleOrdinal(d3.schemeCategory20)
 
             // 0.3.functions
-            var parseDate = d3.timeParse("%m/%Y")
+            // map motion type to color
             function type2color(type){
                 if(type=="f") return d3.schemeCategory20[0]
                 if(type=="b") return d3.schemeCategory20[1]
                 if(type=="a") return d3.schemeCategory20[2]
                 return "black"
             }
-
+            // map motion type of hand to color
             function type2color_hand(type){
                 if(type=="ha") return d3.schemeCategory20[6]
                 if(type=="hp") return d3.schemeCategory20[8]
@@ -36,18 +36,20 @@ mainApp.directive('motionChart', function () {
                 if(type=="hc") return d3.schemeCategory20[10]
                 return "black"
             }
-
-            function boutColor(bout){
-                if(bout.score==1) return "red"
-                else if(bout.score==2) return "blue"
+            // get the color of the phrase
+            function phraseColor(phrase){
+                if(phrase.score==1) return "red"
+                else if(phrase.score==2) return "blue"
                 else return "gray"
             }
 
+            // get the y scale value of the phrase or motion
             function getY(d){
-                if(d.player) return "p"+d.player+"b"+d.bout;    // for motion
-                else return "p1b"+d.bout;                       // for phrase, always using player 1
+                if(d.player) return d.bout+"-"+d.player;    // for motion
+                else return d.bout+"-1";                    // for phrase, always using player 1
             }
 
+            // get the text of the result
             function resultText(result){
                 return result.toUpperCase();
                 if(result=="a") return "进攻反攻"
@@ -94,31 +96,13 @@ mainApp.directive('motionChart', function () {
             //    console.log("redraw motion chart");
                 var data_feet=scope.data.motion;
                 var data_hands=scope.data.motion_hands;
-                var boutsData=scope.data.bouts_data;
+                var phrases=scope.data.phrases;
 
                 // filtering
-                {
-                    var duration =[];
-                    for(var i=0;i<boutsData.length;i++) duration.push(0);
-                    data_feet.forEach(function(d){
-                        if(d.bias_end>scope.data.filter_value) duration[d.bout-1]=1;
-                    })
-                    data_hands.forEach(function(d){
-                        if(d.bias_end>scope.data.filter_value) duration[d.bout-1]=1;
-                    })
-                    boutsData.forEach(function(d){
-                        var kept=false;
-                        if(scope.data.B && d.score!=1 && d.score!=2)kept= true;
-                        if(scope.data.P1 && d.score==1) kept = true;
-                        if(scope.data.P2 && d.score==2) kept = true;
-                        if(kept && duration[d.bout-1]==0) duration[d.bout-1]=0
-                        else duration[d.bout-1]=1;
-                    })
-                    boutsData=boutsData.filter(function(d){return duration[d.bout-1]==0})
-                    data_feet=data_feet.filter(function(d){return duration[d.bout-1]==0})
-                    data_hands=data_hands.filter(function(d){return duration[d.bout-1]==0})
-                    scope.data.filtered_phrase=boutsData.length;
-                }
+                var arrFilter=scope.data.filters;
+                phrases=phrases.filter(function(d){return arrFilter[d.bout-1]==0})
+                data_feet=data_feet.filter(function(d){return arrFilter[d.bout-1]==0})
+                data_hands=data_hands.filter(function(d){return arrFilter[d.bout-1]==0})
 
                 var yScale = d3.scaleBand()
                     .domain(data_feet.map(function(d) { return getY(d); }))
@@ -143,57 +127,60 @@ mainApp.directive('motionChart', function () {
 
                 // append the rectangles for the background
 
-                var bouts=svg.selectAll(".phrase").data(boutsData);
-                bouts
+                var svgPhrase=svg.selectAll(".phrase").data(phrases);
+                svgPhrase
                     .enter().append("rect")
                     .attr("class", "phrase")
                     .attr("x", function(d) { return xScale(0); })
                     .attr("width", function(d) {return svgMotionW } )
-                    .attr("stroke",function(d){return boutColor(d)})
+                    .attr("stroke",function(d){return phraseColor(d)})
                     .attr("y", function(d) { return yScale(getY(d)); })
                     .attr("height", yScale.bandwidth()*2)
                     .on('mouseenter', function (d) {
                         // console.log("mouse leave");
-                        scope.data.focused_bout=d;
-                        scope.$apply();
+                        scope.data.onFocusedPhrase(d.bout-1);
+                    //    scope.data.focused_bout=d;
+                    //    scope.$apply();
                     })
                     .on('mouseleave', function (d) {
                         // console.log("mouse leave");
-                        scope.data.focused_bout=null;
-                        scope.$apply();
+                        scope.data.onFocusedPhrase(-1);
+                    //    scope.data.focused_bout=null;
+                    //    scope.$apply();
                     })
                     .on('click', function (d) {
                         // console.log("mouse leave");
                         scope.data.selected_bout=d.bout;
                         scope.$apply();
                     });
-                bouts
+                svgPhrase
+                    .classed("focused",function(d){return d.focused})
                     .attr("x", function(d) { return xScale(0); })
                     .attr("width", function(d) {return svgMotionW } )
-                    .attr("stroke",function(d){return boutColor(d)})
+                    .attr("stroke",function(d){return phraseColor(d)})
                     .attr("y", function(d) { return yScale(getY(d)); })
                     .attr("height", yScale.bandwidth()*2);
 
-                bouts.exit().remove();
+                svgPhrase.exit().remove();
 
 
-                var boutsText=svg.selectAll(".phraseText").data(boutsData);
-                boutsText
+                var svtText=svg.selectAll(".phraseText").data(phrases);
+                svtText
                     .enter().append("text")
                     .attr("class", "phraseText")
                     .text(function(d) { return resultText(d.result)+"  "+d.scores[0]+":"+d.scores[1]; })
                     .attr("x", function(d) {return svgMotionW+10 } )
                     .attr("y", function(d) { return yScale(getY(d))+yScale.bandwidth()*1.5; })
-                    .attr("stroke",function(d){return boutColor(d)})
+                    .attr("stroke",function(d){return phraseColor(d)})
 
-                boutsText
+                svtText
                     .text(function(d) { return resultText(d.result)+"  "+d.scores[0]+":"+d.scores[1]; })
                     .attr("x", function(d) {return svgMotionW+10 } )
                     .attr("y", function(d) { return yScale(getY(d))+yScale.bandwidth()*1.5; })
-                    .attr("stroke",function(d){return boutColor(d)})
+                    .attr("stroke",function(d){return phraseColor(d)})
 
 
-                boutsText.exit().remove();
+                svtText.exit().remove();
 
                 //data_feet.forEach(function(d){console.log(d)})
 
@@ -250,10 +237,7 @@ mainApp.directive('motionChart', function () {
             scope.$watch('data', redraw);
             scope.$watch('data.motion', redraw);
             scope.$watch('data.motion_hands', redraw);
-            scope.$watch('data.filter_value', redraw);
-            scope.$watch('data.B', redraw);
-            scope.$watch('data.P1', redraw);
-            scope.$watch('data.P2', redraw);
+            scope.$watch('data.filters', redraw);
         }
         motionChart();
     }

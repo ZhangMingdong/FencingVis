@@ -11,13 +11,34 @@ fencing-game-vis {
     font-size: 10px;
 }
 
-
 fencing-game-vis rect {
     stroke-width: 1;
 }
-
-fencing-game-vis rect:hover {
+fencing-game-vis rect.focused {
     stroke-width: 2;
+}
+
+
+fencing-game-vis .event1, .event2 {
+    fill: yellow;
+    fill-opacity: 0.1;
+}
+
+fencing-game-vis .phrase {
+    fill: yellow;
+    fill-opacity: 0.1;
+}
+
+fencing-game-vis .phrasebg {
+    fill: gray;
+    fill-opacity: 0.2;
+    stroke:none;
+}
+
+fencing-game-vis .grid {
+    fill: gray;
+    fill-opacity: 0.5;
+    stroke:none;
 }
 
 
