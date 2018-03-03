@@ -3,8 +3,8 @@ var mainApp = angular.module("myApp", ['ngRoute']);
 mainApp.controller('basicTacticsCtrl', function ($scope, $http,$window) {
 
     $scope.basicTacticsData={
-        selected_bout:-1
-        , bouts_data:[
+        selected_phrase:-1
+        , phrases:[
             {result:"b"}
             ,{result:"b"}
             ,{result:"r"}
@@ -18,24 +18,25 @@ mainApp.controller('basicTacticsCtrl', function ($scope, $http,$window) {
             ,{result:"ra"}
             ,{result:"ra"}
         ]
+        , exchange:false
     }
     $scope.attack=function(option) {
-        $scope.basicTacticsData.selected_bout=($scope.basicTacticsData.selected_bout==1)?2:1;
+        $scope.basicTacticsData.selected_phrase=($scope.basicTacticsData.selected_phrase==1)?2:1;
     }
     $scope.reposte=function(option) {
-        $scope.basicTacticsData.selected_bout=($scope.basicTacticsData.selected_bout==3)?4:3;
+        $scope.basicTacticsData.selected_phrase=($scope.basicTacticsData.selected_phrase==3)?4:3;
     }
     $scope.antiReposte=function(option) {
-        $scope.basicTacticsData.selected_bout=($scope.basicTacticsData.selected_bout==5)?6:5;
+        $scope.basicTacticsData.selected_phrase=($scope.basicTacticsData.selected_phrase==5)?6:5;
     }
     $scope.oneStepAttack=function(option) {
-        $scope.basicTacticsData.selected_bout=($scope.basicTacticsData.selected_bout==7)?8:7;
+        $scope.basicTacticsData.selected_phrase=($scope.basicTacticsData.selected_phrase==7)?8:7;
     }
     $scope.threeStepAttack=function(option) {
-        $scope.basicTacticsData.selected_bout=($scope.basicTacticsData.selected_bout==9)?10:9;
+        $scope.basicTacticsData.selected_phrase=($scope.basicTacticsData.selected_phrase==9)?10:9;
     }
     $scope.retreatAttack=function(option) {
-        $scope.basicTacticsData.selected_bout=($scope.basicTacticsData.selected_bout==11)?12:11;
+        $scope.basicTacticsData.selected_phrase=($scope.basicTacticsData.selected_phrase==11)?12:11;
     }
 });
 

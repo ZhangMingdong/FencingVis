@@ -9,18 +9,8 @@
     <script src="lib/angular-route.min.js"></script>
     <script src="lib/d3.v4.js" charset="utf-8"></script>
     <script src="js/basicTacticsCtrl.js"></script>
-    <script src="js/fencingGameVis.js"></script>
-    <script src="js/tacticsChart.js"></script>
-    <script src="js/tacticsMatrix.js"></script>
-    <script src="js/statisticChart.js"></script>
-    <script src="js/motionChart.js"></script>
     <script src="js/phraseChart.js"></script>
-    <link rel="stylesheet" type="text/css" href="CSS/motion_chart_style.css">
-    <link rel="stylesheet" type="text/css" href="CSS/bout_chart_style.css">
-    <link rel="stylesheet" type="text/css" href="CSS/html_styles.css">
-    <link rel="stylesheet" type="text/css" href="CSS/fencing_game_vis_style.css">
-    <link rel="stylesheet" type="text/css" href="CSS/tactics_chart_style.css">
-    <link rel="stylesheet" type="text/css" href="CSS/statistic_chart_style.css">
+    <link rel="stylesheet" type="text/css" href="CSS/phrase_chart_style.css">
     <link rel="stylesheet" type="text/css" href="CSS/bootstrap/bootstrap.min.css">
 </head>
 
@@ -32,10 +22,11 @@
 <button class="btn btn-primary btn-1g" ng-click="reposte()">防守还击</button>
 <button class="btn btn-primary btn-1g" ng-click="retreatAttack()">拉开还击</button>
 <button class="btn btn-primary btn-1g" ng-click="antiReposte()">反还击</button>
+<input type="checkbox" ng-model="basicTacticsData.exchange"><b>Exchange</b><br>
 <br>
 <br>
 <br>
-<bout-chart style="width:1000px" data="basicTacticsData"></bout-chart>
+<phrase-chart style="width:1000px" data="basicTacticsData"></phrase-chart>
 </body>
 </html>
 

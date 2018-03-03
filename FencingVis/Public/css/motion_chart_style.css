@@ -18,6 +18,7 @@ motion-chart .phrase {
 
 motion-chart .phrase.focused {
     stroke-width: 2;
+    fill: gold;
 }
 
 

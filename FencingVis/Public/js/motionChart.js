@@ -150,7 +150,7 @@ mainApp.directive('motionChart', function () {
                     })
                     .on('click', function (d) {
                         // console.log("mouse leave");
-                        scope.data.selected_bout=d.bout;
+                        scope.data.selected_phrase=d.bout;
                         scope.$apply();
                     });
                 svgPhrase
@@ -238,6 +238,7 @@ mainApp.directive('motionChart', function () {
             scope.$watch('data.motion', redraw);
             scope.$watch('data.motion_hands', redraw);
             scope.$watch('data.filters', redraw);
+            scope.$watch('data.focused_bout', redraw);
         }
         motionChart();
     }

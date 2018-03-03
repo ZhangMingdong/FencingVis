@@ -35,6 +35,11 @@ fencing-game-vis .phrasebg {
     stroke:none;
 }
 
+
+fencing-game-vis .phrasebg.focused {
+    fill: gold;
+}
+
 fencing-game-vis .grid {
     fill: gray;
     fill-opacity: 0.5;

@@ -18,7 +18,7 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
         , selectedNode:{}
         , selectedInfo:[]         // used for the selected node information display
         , filter:"no filter"      // "no filter","3 sceond"
-        , selected_bout:-1        // index of selected bout, mouse click
+        , selected_phrase:-1        // index of selected phrase, mouse click
         , focused_bout:-1         // index of focused bout, mouse hover
         , phrases:[]              // data of each phrase
         , filter_value:500        // the threshold value of filter
@@ -804,7 +804,7 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
             ,bfbf:0
         }
         if($scope.fencingData.focused_bout>=0){
-            console.log($scope.fencingData.phrases[$scope.fencingData.focused_bout].flow);
+        //    console.log($scope.fencingData.phrases[$scope.fencingData.focused_bout].flow);
             if($scope.fencingData.phrases[$scope.fencingData.focused_bout].flow){
 
                 parseFlow(flow,$scope.fencingData.phrases[$scope.fencingData.focused_bout].flow)
