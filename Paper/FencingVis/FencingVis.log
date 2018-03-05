@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2016.3.8)  3 MAR 2018 18:47
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2016.3.8)  4 MAR 2018 12:03
 entering extended mode
 **FencingVis.tex
 (E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.tex
@@ -514,15 +514,15 @@ LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <10> not available
 (Font)              Font shape `OT1/phv/m/sl' tried instead on input line 158.
 \abstractwidth=\skip53
 
-<pictures/main.png, id=75, 1866.975pt x 943.525pt>
+<pictures/main.png, id=75, 1935.23pt x 1051.93pt>
 File: pictures/main.png Graphic file (type png)
  <use pictures/main.png>
 Package pdftex.def Info: pictures/main.png used on input line 158.
-(pdftex.def)             Requested size: 467.22528pt x 236.11102pt.
+(pdftex.def)             Requested size: 467.22528pt x 253.9611pt.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <8> not available
 (Font)              Font shape `OT1/phv/b/n' tried instead on input line 158.
 
-<diamondrule.pdf, id=76, 213.79875pt x 12.045pt>
+<diamondrule.pdf, id=77, 213.79875pt x 12.045pt>
 File: diamondrule.pdf Graphic file (type pdf)
  <use diamondrule.pdf>
 Package pdftex.def Info: diamondrule.pdf used on input line 158.
@@ -541,7 +541,10 @@ LaTeX Font Info:    Try loading font information for TS1+ptm on input line 158.
 (D:\CTEX\MiKTeX\tex\latex\psnfss\ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
-<pictures/glyph.png, id=82, 953.06062pt x 393.72093pt>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+<pictures/glyph.png, id=83, 953.06062pt x 393.72093pt>
 File: pictures/glyph.png Graphic file (type png)
 
 <use pictures/glyph.png>
@@ -564,7 +567,15 @@ LaTeX Warning: Reference `tab:vis_papers' on page 1 undefined on input line 204
 LaTeX Warning: Citation `Isenberg:2017:VMC' on page 1 undefined on input line 2
 04.
 
-<pictures/threeBout.png, id=83, 1343.0175pt x 434.37282pt>
+
+Underfull \vbox (badness 5756) has occurred while \output is active []
+
+ [1{D:/CTEX/UserData/pdftex/config/pdftex.map{Unicode.sfd}{UGBK.sfd}}
+
+
+ <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/main.png> <E:/FencingVis/F
+encingVis/Paper/FencingVis/diamondrule.pdf>]
+<pictures/threeBout.png, id=104, 1343.0175pt x 434.37282pt>
 File: pictures/threeBout.png Graphic file (type png)
 
 <use pictures/threeBout.png>
@@ -572,37 +583,27 @@ Package pdftex.def Info: pictures/threeBout.png used on input line 214.
 (pdftex.def)             Requested size: 514.92374pt x 166.54141pt.
 
 
-LaTeX Warning: Reference `tab:vis_papers' on page 1 undefined on input line 215
+LaTeX Warning: Reference `tab:vis_papers' on page 2 undefined on input line 215
 .
 
 
-LaTeX Warning: Citation `Isenberg:2017:VMC' on page 1 undefined on input line 2
+LaTeX Warning: Citation `Isenberg:2017:VMC' on page 2 undefined on input line 2
 15.
 
-(E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.bbl
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [1{D:/CTEX/UserData/pdftex/config/pdftex.map{Unicode.sfd}{UGBK.sfd}}
-
-
- <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/main.png> <E:/FencingVis/F
-encingVis/Paper/FencingVis/diamondrule.pdf>])
+(E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.bbl)
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 237.
- [2 <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/threeBout.png> <E:/Fenc
-ingVis/FencingVis/Paper/FencingVis/pictures/glyph.png>]
+ [2
+
+ <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/glyph.png>] [3 <E:/Fencing
+Vis/FencingVis/Paper/FencingVis/pictures/threeBout.png>]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 237.
+
 (E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 237.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 237.
+Package rerunfilecheck Info: File `FencingVis.out' has not changed.
+(rerunfilecheck)             Checksum: FC701709660F7ADA46DCC186BC59A90E;1085.
 
-
-Package rerunfilecheck Warning: File `FencingVis.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `FencingVis.out':
-(rerunfilecheck)             Before: 1A674B23F2862538B670090C84B977BE;1087
-(rerunfilecheck)             After:  FC701709660F7ADA46DCC186BC59A90E;1085.
 
 LaTeX Warning: There were undefined references.
 
@@ -612,23 +613,20 @@ LaTeX Warning: There were multiply-defined labels.
  ) 
 Here is how much of TeX's memory you used:
  8064 strings out of 495354
- 120830 string characters out of 3183860
- 234340 words of memory out of 3000000
+ 120823 string characters out of 3183860
+ 233340 words of memory out of 3000000
  10990 multiletter control sequences out of 15000+200000
  42629 words of font info for 138 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
  33i,7n,35p,323b,373s stack positions out of 5000i,500n,10000p,200000b,50000s
-pdfTeX warning (dest): name{subsection.17} has been referenced but does not e
-xist, replaced by a fixed one
-
-{D:/CTEX/MiKTeX/fonts/enc/dvips/fontname/8r.enc}<D:/CTEX/MiKTeX/fonts/type1/urw
-/helvetic/uhvb8a.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><D:/CT
-EX/MiKTeX/fonts/type1/urw/helvetic/uhvro8a.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/
-times/utmb8a.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><D:/CTEX/MiKT
-eX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on FencingVis.pdf (2 pages, 864559 bytes).
+{D:/CTEX/MiKTeX/fonts/enc/dvips/fontname/8r.enc}<D:/CTEX/MiKTeX/fonts/type1/u
+rw/helvetic/uhvb8a.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><D:/
+CTEX/MiKTeX/fonts/type1/urw/helvetic/uhvro8a.pfb><D:/CTEX/MiKTeX/fonts/type1/ur
+w/times/utmb8a.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><D:/CTEX/Mi
+KTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on FencingVis.pdf (3 pages, 884473 bytes).
 PDF statistics:
- 142 PDF objects out of 1000 (max. 8388607)
+ 147 PDF objects out of 1000 (max. 8388607)
  33 named destinations out of 1000 (max. 500000)
  44709 words of extra memory for PDF output out of 51595 (max. 10000000)
 
