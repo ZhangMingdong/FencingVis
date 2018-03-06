@@ -22,8 +22,6 @@ mainApp.directive('tacticFlowChart', function () {
             var svgBG = d3.select(el[0]).append("svg").attr("width",svgBGW).attr("height",svgBGH);
             var svg=svgBG.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        //    var svgArrows = svg.selectAll(".arrow");
-
             scope.$watch(function () {
                 //    console.log("watching===============svgStreamBG")
                 svgBGW = el[0].clientWidth;
@@ -75,9 +73,9 @@ mainApp.directive('tacticFlowChart', function () {
                 var nodes=[
                      {x:middle-50   ,y:000,name:"S"}
                     ,{x:middle+50   ,y:000,name:"BB"}
-                    ,{x:middle-200  ,y:160,name:"FB"}
+                    ,{x:middle+200  ,y:160,name:"FB"}
                     ,{x:middle      ,y:160,name:"FF"}
-                    ,{x:middle+200  ,y:160,name:"BF"}
+                    ,{x:middle-200  ,y:160,name:"BF"}
                     ,{x:middle-200  ,y:320,name:"1"}
                     ,{x:middle      ,y:320,name:"B"}
                     ,{x:middle+200  ,y:320,name:"2"}
@@ -341,6 +339,8 @@ mainApp.directive('tacticFlowChart', function () {
 
                 var svgNodes = svg.selectAll(".node").data(nodes);
 
+                // 1.nodes
+
                 /*
                 svgNodes.enter().append("circle")
                     .attr("class","node")
@@ -372,20 +372,6 @@ mainApp.directive('tacticFlowChart', function () {
                     .attr("y",function(d){return d.y-r})
                 svgNodes.exit().remove();
 
-/*
-                svgArrows=svgArrows.data(nodes);
-                svgArrows.enter()
-                    .append('svg:path')
-                    .attr("class","arrow")
-                    .attr('d', 'M0,-5L10,0L0,5')
-                    .attr('fill', '#000')
-                    .attr("refX",function(d){return d.x})
-                    .attr("refY",function(d){return d.y})
-                    .attr("transform",function(d){
-                        return "translate(" + d.x+","+d.y + ") rotate( " + 90 + ")";
-                    });
-*/
-
                 var svgText = svg.selectAll("text").data(nodes);
                 svgText.enter()
                     .append("text")
@@ -411,7 +397,7 @@ mainApp.directive('tacticFlowChart', function () {
                     var topBias=14;
                     var bottomBias=14;
                     var path;
-                    if(indexS==2&&indexD==4){
+                    if(indexS==4&&indexD==2){
                         /*
                         var s={x:nodes[indexS].x-r,y:nodes[indexS].y}
                         var d={x:nodes[indexD].x+r,y:nodes[indexD].y}
@@ -431,7 +417,7 @@ mainApp.directive('tacticFlowChart', function () {
                                   ${d.x} ${d.y}`
 
                     }
-                    else if(indexS==4&&indexD==2){
+                    else if(indexS==2&&indexD==4){
                         var s={x:nodes[indexS].x+r,y:nodes[indexS].y}
                         var d={x:nodes[indexD].x-r,y:nodes[indexD].y}
                         path = `M ${s.x                 } ${s.y}
@@ -450,7 +436,7 @@ mainApp.directive('tacticFlowChart', function () {
                                 L  ${d.x} ${d.y}`
 
                     }
-                    else if(indexS==2&&indexD==2){
+                    else if(indexS==4&&indexD==4){
                         var x=nodes[indexS].x;
                         var y=nodes[indexS].y;
                         path = `M ${x         } ${y+r}
@@ -461,7 +447,7 @@ mainApp.directive('tacticFlowChart', function () {
                                   ${x         } ${y-biasEarH},
                                   ${x         } ${y-r}`
                     }
-                    else if(indexS==4&&indexD==4){
+                    else if(indexS==2&&indexD==2){
                         var x=nodes[indexS].x;
                         var y=nodes[indexS].y;
                         path = `M ${x         } ${y+r}
@@ -482,6 +468,7 @@ mainApp.directive('tacticFlowChart', function () {
                     }
                     return path
                 }
+
                 function drawTube(b){
                     var svgLinkTube = svg.selectAll(".linktube").data(b?lines:[]);
                     svgLinkTube.enter().insert('path', "g")
@@ -499,6 +486,7 @@ mainApp.directive('tacticFlowChart', function () {
                 drawTube(scope.data.Show_tube);
 
 
+                // 2.links
                 var svgLink = svg.selectAll(".link").data(lines);
                 svgLink.enter().append('path', "g")
                     .attr("class", "link")
@@ -589,6 +577,168 @@ mainApp.directive('tacticFlowChart', function () {
                         return d.selectedw})
                 svgLinkSelected.exit().remove();
 
+                var flow_player1=scope.data.flow_player1;
+                var flow_player2=scope.data.flow_player2;
+
+
+                // 3.for players
+                if(flow_player1.b)
+                {
+                    var nodes1=[
+                        {x:middle-400   ,y:000,name:"S"}
+                        ,{x:middle-450  ,y:160,name:"B"}
+                        ,{x:middle-350  ,y:160,name:"F"}
+                        ,{x:middle-480  ,y:320,name:"1"}
+                        ,{x:middle-400  ,y:320,name:"B"}
+                        ,{x:middle-320  ,y:320,name:"2"}
+                    ]
+                    var nodes2=[
+                        {x:middle+400   ,y:000,name:"S"}
+                        ,{x:middle+450  ,y:160,name:"B"}
+                        ,{x:middle+350  ,y:160,name:"F"}
+                        ,{x:middle+480  ,y:320,name:"1"}
+                        ,{x:middle+400  ,y:320,name:"B"}
+                        ,{x:middle+320  ,y:320,name:"2"}
+                    ]
+                    var maxW=flow_player1.b+flow_player1.f;
+                    var lines1=[
+                         {s:0,d:1,width:flow_player1.b, w1:0,w2:0,selectedw:0,focused:false,name:"b"}
+                        ,{s:0,d:2,width:flow_player1.f, w1:0,w2:0,selectedw:0,focused:false,name:"f"}
+                        ,{s:1,d:3,width:flow_player1.b1,w1:0,w2:0,selectedw:0,focused:false,name:"b1"}
+                        ,{s:1,d:4,width:flow_player1.bb,w1:0,w2:0,selectedw:0,focused:false,name:"bb"}
+                        ,{s:1,d:5,width:flow_player1.b2,w1:0,w2:0,selectedw:0,focused:false,name:"b2"}
+                        ,{s:2,d:3,width:flow_player1.f1,w1:0,w2:0,selectedw:0,focused:false,name:"f1"}
+                        ,{s:2,d:4,width:flow_player1.fb,w1:0,w2:0,selectedw:0,focused:false,name:"fb"}
+                        ,{s:2,d:5,width:flow_player1.f2,w1:0,w2:0,selectedw:0,focused:false,name:"f2"}
+                    ]
+                    var lines2=[
+                         {s:0,d:1,width:flow_player2.b, w1:0,w2:0,selectedw:0,focused:false,name:"b"}
+                        ,{s:0,d:2,width:flow_player2.f, w1:0,w2:0,selectedw:0,focused:false,name:"f"}
+                        ,{s:1,d:3,width:flow_player2.b1,w1:0,w2:0,selectedw:0,focused:false,name:"b1"}
+                        ,{s:1,d:4,width:flow_player2.bb,w1:0,w2:0,selectedw:0,focused:false,name:"bb"}
+                        ,{s:1,d:5,width:flow_player2.b2,w1:0,w2:0,selectedw:0,focused:false,name:"b2"}
+                        ,{s:2,d:3,width:flow_player2.f1,w1:0,w2:0,selectedw:0,focused:false,name:"f1"}
+                        ,{s:2,d:4,width:flow_player2.fb,w1:0,w2:0,selectedw:0,focused:false,name:"fb"}
+                        ,{s:2,d:5,width:flow_player2.f2,w1:0,w2:0,selectedw:0,focused:false,name:"f2"}
+                    ]
+                    if(!scope.data.Show_individual){
+                        nodes1=[];
+                        nodes2=[];
+                        lines1=[];
+                        lines2=[];
+                    }
+                    function playerDiagnal(nodeS,nodeD){
+                        var s={x:nodeS.x,y:nodeS.y+r}
+                        var d={x:nodeD.x,y:nodeD.y-r}
+                        var path = `M ${s.x} ${s.y}
+                                C ${s.x} ${(s.y + d.y) / 2},
+                                  ${d.x} ${(s.y + d.y) / 2},
+                                  ${d.x} ${d.y}`
+                        return path;
+                    }
+                    var svgNodes1 = svg.selectAll(".node1").data(nodes1);
+                    svgNodes1.enter().append("rect")
+                        .attr("class","node1")
+                        .attr("width",function(d){return r*2;})
+                        .attr("height",function(d){return r*2;})
+                        .attr("x",function(d){return d.x-r})
+                        .attr("y",function(d){return d.y-r})
+                    svgNodes1
+                        .attr("width",function(d){return r*2;})
+                        .attr("height",function(d){return r*2;})
+                        .attr("x",function(d){return d.x-r})
+                        .attr("y",function(d){return d.y-r})
+                    svgNodes1.exit().remove();
+
+                    var svgLinkplayer1 = svg.selectAll(".linkplayer1").data(lines1);
+                    svgLinkplayer1.enter().append('path', "g")
+                        .attr("class", "linkplayer1")
+                        .attr('d', function(d){
+                            return playerDiagnal(nodes1[d.s], nodes1[d.d])
+                        })
+                        .style("stroke-width", function(d){return d.width})
+                    svgLinkplayer1
+                        .attr('d', function(d){
+                            return playerDiagnal(nodes1[d.s], nodes1[d.d])
+                        })
+                        .style("stroke-width", function(d){return d.width})
+                    svgLinkplayer1.exit().remove();
+
+
+                    var svgNodes2 = svg.selectAll(".node2").data(nodes2);
+                    svgNodes2.enter().append("rect")
+                        .attr("class","node2")
+                        .attr("width",function(d){return r*2;})
+                        .attr("height",function(d){return r*2;})
+                        .attr("x",function(d){return d.x-r})
+                        .attr("y",function(d){return d.y-r})
+                    svgNodes2
+                        .attr("width",function(d){return r*2;})
+                        .attr("height",function(d){return r*2;})
+                        .attr("x",function(d){return d.x-r})
+                        .attr("y",function(d){return d.y-r})
+                    svgNodes2.exit().remove();
+
+                    var svgLinkplayer2 = svg.selectAll(".linkplayer2").data(lines2);
+                    svgLinkplayer2.enter().append('path', "g")
+                        .attr("class", "linkplayer2")
+                        .attr('d', function(d){
+                            return playerDiagnal(nodes2[d.s], nodes2[d.d])
+                        })
+                        .style("stroke-width", function(d){return d.width})
+                    svgLinkplayer2
+                        .attr('d', function(d){
+                            return playerDiagnal(nodes2[d.s], nodes2[d.d])
+                        })
+                        .style("stroke-width", function(d){return d.width})
+                    svgLinkplayer2.exit().remove();
+
+
+                    var svgText1 = svg.selectAll(".text1").data(nodes1);
+                    svgText1.enter()
+                        .append("text")
+                        .attr("class", "text1")
+                        .text(function(d){return d.name})
+                        .attr("x", function(d) {
+                            return d.x;
+                        })
+                        .attr("y", function(d) {
+                            return d.y+r/2;
+                        })
+                    svgText1
+                        .text(function(d){return d.name})
+                        .attr("x", function(d) {
+                            return d.x;
+                        })
+                        .attr("y", function(d) {
+                            return d.y+r/2;
+                        })
+
+                    svgText1.exit().remove();
+
+                    var svgText2 = svg.selectAll("text2").data(nodes2);
+                    svgText2.enter()
+                        .append("text")
+                        .attr("class", "text2")
+                        .text(function(d){return d.name})
+                        .attr("x", function(d) {
+                            return d.x;
+                        })
+                        .attr("y", function(d) {
+                            return d.y+r/2;
+                        })
+                    svgText2
+                        .text(function(d){return d.name})
+                        .attr("x", function(d) {
+                            return d.x;
+                        })
+                        .attr("y", function(d) {
+                            return d.y+r/2;
+                        })
+
+                    svgText2.exit().remove();
+                }
+
 
             }
             redraw();
@@ -599,6 +749,7 @@ mainApp.directive('tacticFlowChart', function () {
             scope.$watch('data.Sum_flow', redraw);
             scope.$watch('data.Switch_pos', redraw);
             scope.$watch('data.Show_tube', redraw);
+            scope.$watch('data.Show_individual', redraw);
         }
         tacticFlowChart();
     }

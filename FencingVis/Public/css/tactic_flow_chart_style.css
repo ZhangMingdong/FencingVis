@@ -11,7 +11,7 @@ tactic-flow-chart {
     font-size: 10px;
 }
 
-tactic-flow-chart .node {
+tactic-flow-chart .node, .node1, .node2 {
     fill: white;
     stroke: red;
     stroke-width: 1;
@@ -65,4 +65,15 @@ tactic-flow-chart .linkselected {
     fill: none;
     stroke: black;
     stroke-opacity: .6;
+}
+
+tactic-flow-chart .linkplayer1 {
+    fill: none;
+    stroke: red;
+    stroke-opacity: .3;
+}
+tactic-flow-chart .linkplayer2 {
+    fill: none;
+    stroke: blue;
+    stroke-opacity: .3;
 }

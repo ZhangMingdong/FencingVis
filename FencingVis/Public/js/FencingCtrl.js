@@ -32,8 +32,11 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
         , flow_1st:{}             // flow of the first half
         , flow_2nd:{}             // flow of the second half
         , Sum_flow:true           // show sum of the flow
+        , flow_player1:{}         // show flow of player 1
+        , flow_player2:{}         // show flow of player 2
         , Switch_pos: false       // change the positions of the two player
         , Show_tube: true         // show the tube of the flow
+        , Show_individual: true   // show flow of individuals
         , filters:[]              // filters of the index, 0 means kept
     }
 
@@ -591,6 +594,61 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
             ,fbfb:  flow_1st.fbfb+flow_2nd.fbfb
             ,bfbf:  flow_1st.bfbf+flow_2nd.bfbf
         }
+        // flow for each players
+        var flow_player1={
+            f:0
+            ,b:0
+            ,f1:0
+            ,fb:0
+            ,f2:0
+            ,b1:0
+            ,bb:0
+            ,b2:0
+        }
+        var flow_player2={
+            f:0
+            ,b:0
+            ,f1:0
+            ,fb:0
+            ,f2:0
+            ,b1:0
+            ,bb:0
+            ,b2:0
+        }
+        phrases.forEach(function(d) {
+            if(d.flow) {
+                var fb1=d.flow[0]=='f';
+                var fb2=d.flow[1]=='f';
+                var s1=d.score==1;
+                var s2=d.score==2;
+                if(fb1){
+                    flow_player1.f++;
+                    if(s1) flow_player1.f1++;
+                    else if(s2) flow_player1.f2++;
+                    else flow_player1.fb++;
+                }
+                else{
+                    flow_player1.b++;
+                    if(s1) flow_player1.b1++;
+                    else if(s2) flow_player1.b2++;
+                    else flow_player1.bb++;
+                }
+                if(fb2){
+                    flow_player2.f++;
+                    if(s1) flow_player2.f1++;
+                    else if(s2) flow_player2.f2++;
+                    else flow_player2.fb++;
+                }
+                else{
+                    flow_player2.b++;
+                    if(s1) flow_player2.b1++;
+                    else if(s2) flow_player2.b2++;
+                    else flow_player2.bb++;
+                }
+            }
+        });
+        $scope.fencingData.flow_player1=flow_player1;
+        $scope.fencingData.flow_player2=flow_player2;
         $scope.fencingData.flow=flow;
         $scope.fencingData.flow_1st=flow_1st;
         $scope.fencingData.flow_2nd=flow_2nd;
