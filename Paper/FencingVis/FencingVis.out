@@ -1,18 +1,20 @@
 \BOOKMARK [1][]{section.2}{Introduction}{}% 1
-\BOOKMARK [1][]{section.4}{Related Work}{}% 2
-\BOOKMARK [2][]{subsection.5}{Analysis and Visualization for Fencing}{section.4}% 3
-\BOOKMARK [2][]{subsection.6}{Sports Visualization}{section.4}% 4
-\BOOKMARK [1][]{section.7}{Background and System Overview}{}% 5
-\BOOKMARK [2][]{subsection.8}{Background}{section.7}% 6
-\BOOKMARK [2][]{subsection.9}{Data Description}{section.7}% 7
-\BOOKMARK [2][]{subsection.10}{Requirement Analysis}{section.7}% 8
-\BOOKMARK [2][]{subsection.11}{System Overview}{section.7}% 9
-\BOOKMARK [1][]{section.12}{FencingVis}{}% 10
-\BOOKMARK [2][]{subsection.13}{Bout View}{section.12}% 11
-\BOOKMARK [2][]{subsection.14}{Motion View}{section.12}% 12
-\BOOKMARK [2][]{subsection.15}{Tactic Flow View}{section.12}% 13
-\BOOKMARK [2][]{subsection.16}{Animation Replay}{section.12}% 14
-\BOOKMARK [2][]{subsection.18}{Interaction}{section.12}% 15
-\BOOKMARK [2][]{subsection.19}{Cross-View Analysis}{section.12}% 16
-\BOOKMARK [1][]{section.20}{Case Study}{}% 17
-\BOOKMARK [1][]{section.22}{Conclusion}{}% 18
+\BOOKMARK [1][]{section.8}{Related Work}{}% 2
+\BOOKMARK [2][]{subsection.9}{Analysis and Visualization for Fencing}{section.8}% 3
+\BOOKMARK [2][]{subsection.10}{Sports Visualization and visual analytics}{section.8}% 4
+\BOOKMARK [1][]{section.11}{Background and System Overview}{}% 5
+\BOOKMARK [2][]{subsection.12}{Background}{section.11}% 6
+\BOOKMARK [2][]{subsection.13}{Data Description}{section.11}% 7
+\BOOKMARK [2][]{subsection.20}{Requirement Analysis}{section.11}% 8
+\BOOKMARK [2][]{subsection.21}{System Overview}{section.11}% 9
+\BOOKMARK [1][]{section.22}{FencingVis}{}% 10
+\BOOKMARK [2][]{subsection.23}{Bout View}{section.22}% 11
+\BOOKMARK [2][]{subsection.24}{Motion View}{section.22}% 12
+\BOOKMARK [2][]{subsection.25}{Tactic Flow View}{section.22}% 13
+\BOOKMARK [2][]{subsection.26}{Animation Replay}{section.22}% 14
+\BOOKMARK [2][]{subsection.28}{Interaction}{section.22}% 15
+\BOOKMARK [2][]{subsection.29}{Cross-View Analysis}{section.22}% 16
+\BOOKMARK [1][]{section.30}{Case Study}{}% 17
+\BOOKMARK [2][]{subsection.31}{Men's Sabre Individual Golden Match of 2017 World Fencing Championships}{section.30}% 18
+\BOOKMARK [2][]{subsection.32}{Comparison of Three Bouts}{section.30}% 19
+\BOOKMARK [1][]{section.35}{Conclusion}{}% 20

@@ -1,5 +1,9 @@
 This is BibTeX, Version 0.99dThe top-level auxiliary file: FencingVis.aux
 The style file: abbrv-doi.bst
 Database file #1: FencingVis.bib
+Repeated entry---line 107 of file FencingVis.bib
+ : @article{perin2016using
+ :                        ,
+I'm skipping whatever remains of this entry
 Warning--I didn't find a database entry for "Isenberg:2017:VMC"
-(There was 1 warning)
+(There was 1 error message)

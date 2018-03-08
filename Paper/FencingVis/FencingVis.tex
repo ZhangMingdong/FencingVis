@@ -129,7 +129,7 @@ delenit augue duis dolore te feugait nulla facilisi.%
 \teaser{
   \centering
   \includegraphics[width=\linewidth]{main}
-  \caption{In the Clouds: Vancouver from Cypress Mountain. Note that the teaser may not be wider than the abstract block.}
+  \caption{The main picture of FencingVis. A) Motion View. B) Tactic Flowchart View. C) Phrase View. D) Bout View. E Control Pannel}
 	\label{fig:teaser}
 }
 
@@ -158,42 +158,107 @@ delenit augue duis dolore te feugait nulla facilisi.%
 
 %% \section{Introduction} %for journal use above \firstsection{..} instead
 
-\cite{Wu2018iTTVis}
-\cite{polk2014tennivis}
-\cite{perin2016using}
-\cite{sacha2014feature}
-\cite{perin2013soccerstories}
-This template is for papers of VGTC-sponsored conferences such as IEEE VIS, IEEE VR, and ISMAR which are published as special issues of TVCG. The template does not contain the respective dates of the conference/journal issue, these will be entered by IEEE as part of the publication production process.
+The development of information technology makes the data recorded in sports more and more comprehensive and detailed, which leads to the research on the visualization and visual analysis of sports data.
+Sports data visualization and visual analysis work for a wide range of groups, mainly can be divided into four categories.
+Methods for general sports enthusiasts focus on the display of big data, so that sports enthusiasts can more intuitive and quick access to their own information of interest, as well as provide some simple analysis and prediction results.
+Methods for professional teams of athletes and coaches focus on exploring the technical and tactical characteristics behind the data, thus providing guidance for training and tactical use.
+There are also efforts aimed at relevant sports associations and operators, often requiring analysis of larger-scale data to provide strategic guidance for their future operations.
+According to the design of sports researchers need to combine the knowledge of biomechanics, psychology and other fields, to assist researchers to complete their relevant experimental analysis.
+Previous data analysis and visualization efforts for fencing were relatively small.
+Although the sport has a long history and has been playing a role in major competition systems such as the Olympic games, it is more difficult to understand than other sports and therefore attracts fewer groups.
+In addition, fencing competition time is short, fast pace, many times even professional fencer and referee will produce different understanding.
+So for this sport, the display of the game not only for ordinary enthusiasts, professionals also exist in this aspect of the demand, this has been unified in the analysis of the demand.
+In addition, fencing competition data do not have the natural structure, need to extract its structural data, and this work is a basic work for the display and analysis of the game.
+In view of the above requirements, we design a visual analysis system.
+First, we extract the original data of fencing competition in a structured way.
+After that, we show from different dimensions of time, space, statistics and so on, and on this basis to provide professionals for technical and tactical analysis of interactive exploration.
+Our main contributions:
+\begin{enumerate}
+	\item We have structured definitions of fencing competition data and provide conversion from raw data to structured data.
+	\item We design a variety of different views to present the transformed structured data in all directions and angles.
+	\item We provide a series of interactive methods and view correlation to help professionals explore and find technical and tactical problems in the game, to better develop training plans and arrange the game strategy.
+	\item We conducted user analysis of fencing athletes and coaches, as well as case studies of international competitions, which proved that our system could help them get new intuiation.
+\end{enumerate}
 
 \section{Related Work}
+Our work is mainly related to the analysis of fencing data and sports data visualization and visual analysis, so we first introduce the related work in these two areas.
 
 \subsection{Analysis and Visualization for Fencing}
+The existing data analysis for fencing mainly focus on biomechanics category, through the analysis of competition data to send the difference between excellent fencers and beginners, so as to clear the focus of training\cite{chen2017biomechanics}. But these works are completely from the technical level, did not consider the improvement of tactical ability. 
+Previous studies have also used statistical methods for time series analysis of fencing competition data\cite{tarrago2016complementary}. These studies use the existing empirical model to collect data, and the game process is summarized as a combination of several known patterns\cite{tarrago2015analisis}. We use this description of the game for reference, but at the recording level we choose to record the most primitive data, such as the movements of the steps and the movements of the hands. This can reduce the cost and information loss caused by introducing domain knowledge into the data acquisition process. We put the data abstraction work in the subsequent analysis process, doing so will bring a variety of benefits. First of all, the behavior pattern of different sword species is different, but at the most basic level is the hands and feet of all kinds of actions, we can use a unified format to record data, and in the logic of processing to distinguish it. In addition, if these empirical models change in the future, we can modify the logic of the system without having to recapture the data.
 
-\subsection{Sports Visualization}
+\subsection{Sports Visualization and visual analytics}
+The visualization and visual analysis of sports data has developed vigorously in the past two decades, but there are still many opportunities and challenges.
+Basole et. al. summarized two major difficulties in visualizing sports data\cite{basole2016sports}.
+In addition to the complexity of the data, the main dilemma facing sports data visualization is the wide range of users, and different users' needs vary greatly.
+Previous work has often targeted the needs of a particular class of users.
+Some for general sports enthusiasts, some for professional athletes and coaches, some for related sports institutions and operators, some for psychological and physiological related researchers.
+
+From the analysis of the data range, sports data visualization work can also be classified into four categories.
+There is some work for a full tournament or league season, showing the points and rankings of each team during the season\cite{perin2016using}, or providing support for game forecasting\cite{vuillemot2016sports}.
+The other is for a game, showing the dynamics of the situation in the game and the information on both sides of the game.
+Some of the work is aimed at multi-player games, such as football, basketball, they focus on the spatial information of athletes, and analyze the space reflects the tactical layout of the impact on the game.\cite{sacha2014feature,perin2013soccerstories}.
+Others focus on showing and analyzing the use of tactics or ability characteristics for individual athletes.\cite{polk2014tennivis,wu2018ittvis}
+There are also games that compare multiple games. 
+The last category deals with certain scenarios for a particular athlete or game.
+
+Our work is for a single-player game, and two previous jobs are similar to our scenario.
+TenniVis\cite{polk2014tennivis} uses the score and serve data to analyze amateur tennis matches.
+iTTVis\cite{wu2018ittvis} uses more specialized data, such as placement and batting techniques, to analyze table tennis data more professionally.
+Their method does not apply to fencing data because fencing has different characteristics compared to tennis and table tennis.
+First of all, tennis and table tennis each round will end with one score, and fencing is not the case, some rounds can be both sides do not score, and some rounds both sides score (epee), which requires different visual design.
+
+
+
 
 \section{Background and System Overview}
 We will introduce the background knowledge of fencing, as long as the data we used and the analysis target. We will also give the main picture of our system.
 \subsection{Background}
+Fencing is one of the representative events of the Olympic games, which developed from the fencing used for military combat and duel in the cold weapon era.
+Fencing consists of epee, foil, and sabre, all of which score by hitting the opponent's active part.
+The basic techniques of fencing are divided into offensive techniques and defensive techniques.
+Attack techniques include attack, riposte, feint, lunge, beat attack, disengage, compound attack, continuation/renewal of attack, and flick.
+Defense techniques include parry, circle parry, counter attack, point-in-line.
+These techniques are implemented by a limited combination of hand and foot movements.
+Fencing competition is divided into individual and group competition, there are two stages of group competition and group competition.
+The individual's first 15 points out of the group game to win ( heavy sword or foil after playing full game time score more victory ).
+After one player has scored eight points in the sabre match, the two sides will take a minute off.
 
-	sabre
-	
-	game
-	
-	bout
-	
-	phrase
-	
-	offensive / defensive
+
 	
 \subsection{Data Description}
+Because of the fast pace of fencing, it is difficult to record the details of the match in real time.
+And in order to avoid interfering with the competitors, it is not convenient to install the sensor device.
+The existing analysis of fencing competition is achieved through the video of the game, we also extract data from the game video data.
+Because of the accuracy of the general game video is 30 frames per second, we record data frame by frame, time accuracy is 1/30 seconds. For each frame of data, we record the listing attributes:
+\begin{enumerate}
+	\item Footwork of both sides: Record the start and end of forward, backward, and lunge.
+	\item Blade work of both sides: Record the start and end of attack, antiattack, parry, and riposte.
+	\item Position in the strip.
+	\item Result: The referee's decision on the current phrase.
+	\item Score: Record which player scored or none.
+	\item Sequence: sequence of the current phrase.	
+\end{enumerate} 
+In the process of data marking, continuous footwork is not easy to effectively segmentation.
+After consulting the domain experts, we use the start time of the next action as the segmentation point of the two actions.
+Such as continuous forward we use each front foot lift as a segmentation point, continuous back we use each rear foot lift as a segmentation point.
 
 \subsection{Requirement Analysis}
-
+Through ongoing exchanges and discussions with field experts, we have initially identified system needs:
+\begin{itemize}
+	\item (R1) Show how the game changes over time
+	\begin{itemize}
+		\item (R1a) Show changes in scores
+		\item (R1b) Shows how long each turn lasts
+	\end{itemize}
+	\item (R2) Show a detailed comparison of the actions of each phrase
+	\item (R3) Show how the tactics of both sides were used throughout the game
+	\item (R4) Exploratory pattern discovery and result communication
+\end{itemize}
 \subsection{System Overview}
-
+Our system consists of five forms, as shown in \autoref{fig:teaser}
 \section{FencingVis}
 \subsection{Bout View}
-
 
 \subsection{Motion View}
 \subsection{Tactic Flow View}
@@ -208,7 +273,16 @@ We will introduce the background knowledge of fencing, as long as the data we us
 \subsection{Cross-View Analysis}
 
 \section{Case Study}
+\subsection{Men's Sabre Individual Golden Match of 2017 World Fencing Championships}
 
+\subsection{Comparison of Three Bouts}
+
+\begin{figure*}[tb]
+	\centering
+	\includegraphics[width=\linewidth]{ScorePhrases}
+	\caption{Bout View}
+	\label{fig:boutview}
+\end{figure*}
 \begin{figure*}[tb]
 	\centering
 	\includegraphics[width=\linewidth]{threeBout}

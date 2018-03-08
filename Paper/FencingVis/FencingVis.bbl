@@ -1,4 +1,14 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{basole2016sports}
+R.~C. Basole and D.~Saupe.
+\newblock Sports data visualization [guest editors' introduction].
+\newblock {\em IEEE Computer Graphics and Applications}, 36(5):24--26, 2016.
+
+\bibitem{chen2017biomechanics}
+T.~L.-W. Chen, D.~W.-C. Wong, Y.~Wang, S.~Ren, F.~Yan, and M.~Zhang.
+\newblock Biomechanics of fencing sport: A scoping review.
+\newblock {\em PLoS One}, 12(2), 2017.
 
 \bibitem{perin2016using}
 C.~Perin, J.~Boy, and F.~Vernier.
@@ -24,7 +34,25 @@ D.~Sacha, M.~Stein, T.~Schreck, D.~A. Keim, O.~Deussen, et~al.
 \newblock In {\em Visual Analytics Science and Technology (VAST), 2014 IEEE
   Conference on}, pp. 13--22. IEEE, 2014.
 
-\bibitem{Wu2018iTTVis}
+\bibitem{tarrago2016complementary}
+R.~Tarrag{\'o}, X.~Iglesias, D.~Lapresa, and M.~T. Anguera.
+\newblock A complementary study of elite fencing tactics using lag sequential,
+  polar coordinate, and t-pattern analyses.
+\newblock In {\em Proceedings of the International Conference on Sequence
+  Analysis and Related Methods}, pp. 339--348, 2016.
+
+\bibitem{tarrago2015analisis}
+R.~Tarrag{\'o}, X.~Iglesias, J.~J. Michavila, D.~Chaverri, L.~Ruiz-Sanchis, and
+  M.~T. Anguera.
+\newblock An{\'a}lisis de patrones en asaltos de espada de alto nivel.
+\newblock {\em Cuadernos de Psicolog{\'\i}a del Deporte}, 15(1):151--160, 2015.
+
+\bibitem{vuillemot2016sports}
+R.~Vuillemot and C.~Perin.
+\newblock Sports tournament predictions using direct manipulation.
+\newblock {\em IEEE computer graphics and applications}, 36(5):62--71, 2016.
+
+\bibitem{wu2018ittvis}
 Y.~Wu, J.~Lan, X.~Shu, C.~Ji, K.~Zhao, J.~Wang, and H.~Zhang.
 \newblock ittvis: Interactive visualization of table tennis data.
 \newblock {\em IEEE Transactions on Visualization and Computer Graphics},
