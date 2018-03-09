@@ -207,8 +207,24 @@ TenniVis\cite{polk2014tennivis} uses the score and serve data to analyze amateur
 iTTVis\cite{wu2018ittvis} uses more specialized data, such as placement and batting techniques, to analyze table tennis data more professionally.
 Their method does not apply to fencing data because fencing has different characteristics compared to tennis and table tennis.
 First of all, tennis and table tennis each round will end with one score, and fencing is not the case, some rounds can be both sides do not score, and some rounds both sides score (epee), which requires different visual design.
-
-
+In addition, priority rules in fencing competition is very important, and the judgment of this information needs some professional knowledge.
+If you can't judge the ownership of the priority, you can't understand the fencing score.
+Therefore, the demonstration of priority is very important to the understanding of fencing competition.
+We summarize the characteristics of fencing that need to be considered in visual design:
+\begin{itemize}
+	\item Fencing is not as easy to understand as tennis, table tennis, etc.
+	It is often difficult for inexperienced users to read games directly.
+	Therefore, the visual design needs to be able to help users better understand the game.
+	\item In most sports competitions, the current field information is clear, but the most important priority information in fencing is not clear.
+	People with different experiences may have different understandings, which involves the visualization of uncertainty.
+	\item Most sports are bound to end each round with one side scoring, but fencing is not the case.
+	Both sides may not score points or score points at the same time in a phrase, which also needs special design to reflect.
+	\item The use of tactics is more important in fencing than in sports that place more emphasis on adaptability.
+	And fencing tactics are often planned in advance before each phrase, so it is more valuable to show the impact of this strategy on the game.
+\end{itemize}
+In addition, fencing is divided into epee, foil, and sabre.
+The three have both similarities and their own characteristics.
+Therefore, showing the differences between the three is also one of the design goals of visualization system.
 
 
 \section{Background and System Overview}
@@ -259,8 +275,38 @@ Through ongoing exchanges and discussions with field experts, we have initially 
 Our system consists of five forms, as shown in \autoref{fig:teaser}
 \section{FencingVis}
 \subsection{Bout View}
+Almost all game data naturally have time attributes, and both tactical and technical analysis need to consider the impact of time.
+The influence of time is reflected in two aspects.
+First of all, different stages of the game, the athlete's psychological and physical changes, which has an important impact on the results of the game.
+In addition, the use of tactics is also time - dependent.
+The fencer will choose the next tactics based on the tactics he or she and his or her opponent have used over a period of time.
+Such as the choice of repetition or conversion, need to be determined according to the characteristics of the previous game and the opponent.
+Therefore, it is very important for analysts to show the changes of competition over time.
+
+The bout view mainly shows three elements, time, score change and phrase duration.
+We use a tailored step chart to show the variation of scores according to time.
+X - axis mapping game time, y - axis mapping score.
+Red and blue rectangles represent scores for both sides, respectively.
+The two rectangles naturally overlap in purple when they are equal-scored.
+To visually compare the duration of each turn, we add a horizontal rectangle below the x - axis to show each phrase.
+The color of the rectangle indicates the player who scores in this phrase, and the gray indicates that neither side scores.
+The upper and lower views correspond to each other, helping the user visually observe the relationship between the three attributes.
+Since the break between the first and second half often has a greater impact on the course of the game, we use a vertical line to emphasize this split moment.
+When making a selection of the phrase, we use a gray background to reflect the selection of the phrase.
+
+Description: The game time in our view does not exactly correspond to the natural time.
+Since the time in the fencing phrases accounts for a small proportion of the actual time, the view becomes very sparse if mapped directly.
+So we map the time in the phrases equally, and map the time between two adjacent rounds all to one second interval.
 
 \subsection{Motion View}
+
+\begin{figure*}[tb]
+	\centering
+	\includegraphics[width=\linewidth]{motionview}
+	\caption{Motion View}
+	\label{fig:motionview}
+\end{figure*}
+
 \subsection{Tactic Flow View}
 \subsection{Animation Replay}
 \begin{figure}[tb]

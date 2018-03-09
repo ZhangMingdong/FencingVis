@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2016.3.8)  8 MAR 2018 09:46
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2016.3.8)  9 MAR 2018 15:08
 entering extended mode
 **FencingVis.tex
 (E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.tex
@@ -400,6 +400,9 @@ Package hyperref Info: Option `linktocpage' set `true' on input line 143.
 
 LaTeX Warning: Label `fig:sample' multiply defined.
 
+
+LaTeX Warning: Label `fig:sample' multiply defined.
+
 )
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 149.
 LaTeX Font Info:    ... okay on input line 149.
@@ -545,68 +548,74 @@ File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 
  <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/main.png> <E:/FencingVis/F
 encingVis/Paper/FencingVis/diamondrule.pdf>]
+[2]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 248.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 267.
+ <pictures/motionview.png, id=131, 1263.21938pt x 791.20593pt>
+File: pictures/motionview.png Graphic file (type png)
 
-<pictures/glyph.png, id=114, 953.06062pt x 393.72093pt>
+<use pictures/motionview.png>
+Package pdftex.def Info: pictures/motionview.png used on input line 305.
+(pdftex.def)             Requested size: 514.92374pt x 322.51317pt.
+
+<pictures/glyph.png, id=132, 953.06062pt x 393.72093pt>
 File: pictures/glyph.png Graphic file (type png)
 
 <use pictures/glyph.png>
-Package pdftex.def Info: pictures/glyph.png used on input line 265.
+Package pdftex.def Info: pictures/glyph.png used on input line 314.
 (pdftex.def)             Requested size: 251.31898pt x 103.81888pt.
 
 
-LaTeX Warning: Reference `tab:vis_papers' on page 2 undefined on input line 266
+LaTeX Warning: Reference `tab:vis_papers' on page 3 undefined on input line 315
 .
 
 
-LaTeX Warning: Citation `Isenberg:2017:VMC' on page 2 undefined on input line 2
-66.
+LaTeX Warning: Citation `Isenberg:2017:VMC' on page 3 undefined on input line 3
+15.
 
 
-LaTeX Warning: Reference `tab:vis_papers' on page 2 undefined on input line 266
+LaTeX Warning: Reference `tab:vis_papers' on page 3 undefined on input line 315
 .
 
 
-LaTeX Warning: Citation `Isenberg:2017:VMC' on page 2 undefined on input line 2
-66.
+LaTeX Warning: Citation `Isenberg:2017:VMC' on page 3 undefined on input line 3
+15.
 
-[2] <pictures/ScorePhrases.png, id=138, 992.95969pt x 429.10312pt>
+<pictures/ScorePhrases.png, id=133, 992.95969pt x 429.10312pt>
 File: pictures/ScorePhrases.png Graphic file (type png)
 
 <use pictures/ScorePhrases.png>
-Package pdftex.def Info: pictures/ScorePhrases.png used on input line 279.
+Package pdftex.def Info: pictures/ScorePhrases.png used on input line 328.
 (pdftex.def)             Requested size: 514.92374pt x 222.52597pt.
 
-<pictures/threeBout.png, id=139, 1343.0175pt x 434.37282pt>
+<pictures/threeBout.png, id=134, 1343.0175pt x 434.37282pt>
 File: pictures/threeBout.png Graphic file (type png)
 
 <use pictures/threeBout.png>
-Package pdftex.def Info: pictures/threeBout.png used on input line 285.
+Package pdftex.def Info: pictures/threeBout.png used on input line 334.
 (pdftex.def)             Requested size: 514.92374pt x 166.54141pt.
 
 
-LaTeX Warning: Reference `tab:vis_papers' on page 3 undefined on input line 286
+LaTeX Warning: Reference `tab:vis_papers' on page 3 undefined on input line 335
 .
 
 
-LaTeX Warning: Citation `Isenberg:2017:VMC' on page 3 undefined on input line 2
-86.
+LaTeX Warning: Citation `Isenberg:2017:VMC' on page 3 undefined on input line 3
+35.
 
 (E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 308.
- [3
-
- <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/glyph.png>] [4 <E:/Fencing
-Vis/FencingVis/Paper/FencingVis/pictures/ScorePhrases.png> <E:/FencingVis/Fenci
-ngVis/Paper/FencingVis/pictures/threeBout.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 308.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 357.
+ [3 <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/glyph.png>] [4 <E:/Fenc
+ingVis/FencingVis/Paper/FencingVis/pictures/motionview.png> <E:/FencingVis/Fenc
+ingVis/Paper/FencingVis/pictures/ScorePhrases.png>] [5 <E:/FencingVis/FencingVi
+s/Paper/FencingVis/pictures/threeBout.png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 357.
 
 (E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 308.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 308.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 357.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 357.
 Package rerunfilecheck Info: File `FencingVis.out' has not changed.
-(rerunfilecheck)             Checksum: E085E7F8416001B7CDA1B78D10D7BAE7;1310.
+(rerunfilecheck)             Checksum: 8ABDC4620352E91864CAAFED2185A0EC;1310.
 
 
 LaTeX Warning: There were undefined references.
@@ -616,11 +625,11 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 8178 strings out of 495354
- 122085 string characters out of 3183860
+ 8207 strings out of 495354
+ 122412 string characters out of 3183860
  245604 words of memory out of 3000000
- 11010 multiletter control sequences out of 15000+200000
- 47507 words of font info for 189 fonts, out of 3000000 for 9000
+ 11015 multiletter control sequences out of 15000+200000
+ 48340 words of font info for 203 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
  33i,7n,35p,1153b,399s stack positions out of 5000i,500n,10000p,200000b,50000s
 {D:/CTEX/MiKTeX/fonts/enc/dvips/fontname/8r.enc}<D:/CTEX/MiKTeX/fonts/type1/u
@@ -628,9 +637,9 @@ rw/helvetic/uhvb8a.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><D:/
 CTEX/MiKTeX/fonts/type1/urw/helvetic/uhvro8a.pfb><D:/CTEX/MiKTeX/fonts/type1/ur
 w/times/utmb8a.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><D:/CTEX/Mi
 KTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on FencingVis.pdf (4 pages, 934897 bytes).
+Output written on FencingVis.pdf (5 pages, 1084350 bytes).
 PDF statistics:
- 187 PDF objects out of 1000 (max. 8388607)
- 52 named destinations out of 1000 (max. 500000)
- 45754 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 193 PDF objects out of 1000 (max. 8388607)
+ 54 named destinations out of 1000 (max. 500000)
+ 45759 words of extra memory for PDF output out of 51595 (max. 10000000)
 
