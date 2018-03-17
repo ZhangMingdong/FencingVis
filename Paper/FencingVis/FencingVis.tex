@@ -130,7 +130,7 @@ delenit augue duis dolore te feugait nulla facilisi.%
   \centering
   \includegraphics[width=\linewidth]{main}
   \caption{The main picture of FencingVis. A) Motion View. B) Tactic Flowchart View. C) Phrase View. D) Bout View. E Control Pannel}
-	\label{fig:teaser}
+	\label{fig:main}
 }
 
 %% Uncomment below to disable the manuscript note
@@ -247,14 +247,30 @@ Because of the fast pace of fencing, it is difficult to record the details of th
 And in order to avoid interfering with the competitors, it is not convenient to install the sensor device.
 The existing analysis of fencing competition is achieved through the video of the game, we also extract data from the game video data.
 Because of the accuracy of the general game video is 30 frames per second, we record data frame by frame, time accuracy is 1/30 seconds. For each frame of data, we record the listing attributes:
-\begin{enumerate}
-	\item Footwork of both sides: Record the start and end of forward, backward, and lunge.
-	\item Blade work of both sides: Record the start and end of attack, antiattack, parry, and riposte.
-	\item Position in the strip.
-	\item Result: The referee's decision on the current phrase.
-	\item Score: Record which player scored or none.
-	\item Sequence: sequence of the current phrase.	
-\end{enumerate} 
+
+\begin{table}[]
+	\centering
+	\caption{Data Description}
+	\label{my-label}
+	\begin{tabular}{|p{2cm}|p{4cm}|}
+		\cline{1-2}
+		Bout ID  &  The ID of the bout to which this event belongs.\\	\cline{1-2}
+		Phrase ID  & The ID of the phrase to which this event belongs.\\	\cline{1-2}
+		Frame  &  The frame at which this event occurs.\\	\cline{1-2}
+		Footwork of Fencer 1  & Begining or finishing of forward, backward, or lunge of fencer 1\\ 	\cline{1-2}
+		Footwork of Fencer 2  & Begining or finishing of forward, backward, or lunge of fencer 2\\ 	\cline{1-2}
+		Bladework of Fencer 1  & Begining or finishing of attack, parry, piposte, or counter attack of fencer 1\\ 	\cline{1-2}
+		Bladework of Fencer 2  & Begining or finishing of attack, parry, piposte, or counter attack of fencer 2\\ 	\cline{1-2}
+		Attack Position of Fencer 1  & Attacked position of fencer 1\\ 	\cline{1-2}
+		Attack Position of Fencer 2  & Attacked position of fencer 2\\ 	\cline{1-2}
+		Parry Position of Fencer 1  & Parried position of fencer 1\\ 	\cline{1-2}
+		Parry Position of Fencer 2  & Parried position of fencer 2\\ 	\cline{1-2}
+		Confrontation position  & Confrontation position of the two fencers on the strip.\\ 	\cline{1-2}
+		Result  & The referee's decision on the current phrase.\\ 	\cline{1-2}
+		Score  & Record which player scored or none.\\ 	\cline{1-2}
+	\end{tabular}
+\end{table}
+
 In the process of data marking, continuous footwork is not easy to effectively segmentation.
 After consulting the domain experts, we use the start time of the next action as the segmentation point of the two actions.
 Such as continuous forward we use each front foot lift as a segmentation point, continuous back we use each rear foot lift as a segmentation point.
@@ -307,21 +323,185 @@ So we map the time in the phrases equally, and map the time between two adjacent
 	\label{fig:motionview}
 \end{figure*}
 
+The motion view is mainly used to show the details of the clash between the two swordsmen in each phrase.
+Phrases are arranged row by row from top to bottom in the order of the game, with each row describing the information for one phrase.
+Each phrase is subdivided into two lines up and down, respectively, describing the action of two fencers, with the left fencer in the above, and the right fencer in the below.
+Labels to the left of each phrase boxe indicate the order of the current phrase and the corresponding fencer for quick retrieval.
+And the labels on the right show the outcome of each phrase. We use the first letter to show the  words of the referee(A for attack, R for riposte, S for simultaneous), along with the outcome scores.
+
+Bar charts are used to describe fencers' behaviors within the turn, the horizontal axis corresponds to time duration, which is described by the number of frames.
+We use data from videos containing 30 frames per second, so the scale is the same.
+If the corresponding number of seconds is needed, it can be viewedfrom the corresponding location  in the bout view.
+Tall bars indicate the movements of the feet, and short bars embedded in the tall bars indicate the swordwoks. Different colors stand for different type of actions, which is shown in c of \autoref{fig:motionview}.
+
+In order to highlight the score of the phrase, we use the colorsof the two fencers (red and blue) to render the border and text of the phrase respectively.
+The non - coloring of the fill is done to avoid interfering with the display of internal details, which, if translucent, can lead to color inconsistencies.
+
+The items shown in the motion view is affected by the filter setting in the control panel, which including score filters and duration filters.
+
 \subsection{Tactic Flow View}
-\subsection{Animation Replay}
-\begin{figure}[tb]
+\begin{figure*}[tb]
 	\centering
-	\includegraphics[width=\columnwidth]{glyph}
-	\caption{A visualization of the data from \autoref{tab:vis_papers}. The image is from \cite{Isenberg:2017:VMC} and is in the public domain.}
+	\includegraphics[width=\linewidth]{flowchart}
+	\caption{Tactics Flow View}
+	\label{fig:flowchart}
+\end{figure*}
+Only time series and statistical level display, can only let the user more clear understanding of the game, does not bring more inspiration.
+In order to allow analysts to have a deeper understanding of the tactical use of both sides in the game, we designed a tactical flow chart to show the tactical use of two fencers.
+
+In order to analyze the tactical information in fencing competition, we first convert the collected time series torque into a tactical graph model.
+We consulted professional fencing coaches and athletes and devised a series of conversion rules.
+The process of modeling needs to introduce some domain knowledge, not directly from the level of data conversion.
+For example, to check whether the fencer choosing forward orbackward strategies, we need to look at the behavior after the first two or more steps.
+The use of strategy itself is a process of deception and anti-deception\cite{roi2008science}. Fencer usually use two-step lunge, but sometimes will also use one-step lunge in order to attack in sudden. So there may be one-step lunge, but most backword movements are performed after two steps forward.
+
+The design of tactical flow chart is based on the graph model we built for the game data.
+Through in-depth discussion with experts, we abstract the time series of fencing competition into eight States:
+\begin{enumerate}
+	\item Start(S): This is the state when the referee issues a start command, with both sides behind the engard lines (or the position where the last phrase interrupted). 
+	The start state is the first state of the dataflow graph for each phrase and the source node of the dataflow graph.
+	\item Forward-Forward(FF): This is the state of both sides to attack forward at the same time.
+	The game enter this state in two scenarios. 
+	After the start of both sides attack into ff state at the same time or both sides back at the same time and then switch into ff state at the same time.
+	\item Backward-Backward(BB): This is the state of simultaneous retreat.
+	Since both fencers will step forward after the start in most case of the fencing phrase, our decision on BB state is not according to a direct backwards, but whether a backward is planned before the phrase. 
+	It is usually the case that both fencers perform a step or two forward, then switch to back away.
+	If the fencer pauses as he moves forward and then moves on, we also determine that he chooses backward tachtic, though with a fast switching.
+	\item Backward-Forward(BF): The state that the left fencer chooses backward while the right fencer chooses forward.
+	\item Forward-Backward(FB): The state that the left fencer choose forward while the right fencer choose backward.
+	\item Player 1 score(1): The state that fencer 1 score.
+	\item Player 2 score(2): The state that fencer 2 score
+	\item Simultaneous(S): The state that both fencers hit each other simultaneously without any scoring.
+\end{enumerate}
+
+In order to provide a more intuitive observation, we arranged the nine nodes according to the following criteria:
+\begin{itemize}
+	\item The view shows the progress of the game from top to bottom.
+	The nodes are naturally arranged in three layers.
+	The first layer, containing node S and node BB, is designed to represent the start of the phrases.
+	The second layer, containing node FB, node FF and node BF, is used to represent the middle stage of the phrases.
+	The third layer which contains node 1, node 0, and node 2, is to represent the end of the phrases.
+	All data flow in that data flow diagram flow only from the upper layer to the low layer or between the same layers.
+	\item The node layout of the view in the horizontal direction reflects the advantages of the fencers.
+	The nodes are arranged in three columns.
+	The left column indicates that the player on the left are dominant (scoring or having priority).
+	The right column indicates that the player on the right are dominant.
+	The middle column represents the balance of power between the two sides.
+	\item Although we've laid out this principle as a whole, we've made some trade-offs to keep our views clean and tidy.
+	Such as node S and node BB, which should be arranged up and down if strictly in accordance with the above rules, are arranged in the same horizontal layer. 
+	Otherwise, there will be a lot of overlap.
+	We arrange the two nodes left and right, but close together as one region, this is is consistent with the above rules in the region level.
+	This can also make the edge between the node S and node BB in a focused position (center on the upper side), which can show the importance of this edge (as discussed in the case studies).
+	
+\end{itemize}
+In order to compare the two fencers' tactical behaviors, we also designed two simplified flow charts for each of the two fencer's tactics, as shown in a) and c) of \autoref{fig:flowchart}
+
+\subsection{Animation Replay}
+\begin{figure*}[tb]
+	\centering
+	\includegraphics[width=\linewidth]{glyph}
+	\caption{Glyph designing of the animations in the phrase view}
 	\label{fig:sample}
-\end{figure}
+\end{figure*}
+Although the phrase view shows the details of each phrase, its presentation is time-dimensional, which has two limitations.
+The first is the inability to reflect the position information on the pitch, and this is not intuitive for domain experts.
+To make up for this deficiency, we designed a phrase view to show the information of each round in the form of animations.
+
+Our animation design mainly reflects two aspects of information, which are the position on the field and the attitude of both sides.
+These two aspects of the information, although relevant, can be disassembled.
+We use a more flexible design, animation design for two layers, respectively, to achieve the change of two kinds of information, stacked together to show the information of a phrase.
+The animation of the position is relatively simple to implement, i.e. the position of the icon is driven against the recorded position data.
+For pose animation, we abstract the player's pose on the pitch into four icons by observing existing games and consulting domain experts.
+\begin{itemize}
+	\item engarde glyph
+	\item lunge glyph
+	\item parry glyph
+	\item riposte glyph
+\end{itemize}
+Animation is triggered by clicking on the corresponding turn in the behavior view,  which establishes a seamless connection between the two views.
+
+\subsection{Control Pannel}
+In order to meet the interactive exploration of data, we provide some control components, mainly used to filter and change the display mode of the displayed data, as shown in E of \autoref{fig:main}.
+First of all, we provide a drop-down menu to select the game to analyze.
+We also provides filters for the phrases, mainly from the results and time dimensions.
+The result filters are used to select combinations that showing scoring phrase of player 1, scoring phrase of player 2 or no score phrases.
+The time filter selects a time threshold through a time bar, and phrases with durationturns longer than the threshold are filtered out, leaving only short phrases.
+The effects of the two filters can be superimposed and the results are updated synchronously on the bout view and the action view.
+In order to have a clear understanding of the number of filtering results at all times, the filtering threshold and the number of filtered results are displayed simultaneously.
+
+Controls of the display mode provides selection of three modes.
+The user may choose whether the data stream displays the entire game or makes a comparison between the first and second halves.
+Users can also choose to exchange the position of the fencers, which is used in the scenario that  different games of the same player need comparison. If a fencer is located on different sides in these gamey, data flow chart comparison is not intuitive for comparison, and switch to the same direction can make it easier.
+The background of the data stream can also be chosen to be presented or not.
+For users who have just come into contact with the system, the background presentation allows them to know more quickly which nodes can have data flow between them, although the current race under analysis may not have occurred.
+
+	
+	
 \subsection{Interaction}
 \subsection{Cross-View Analysis}
-
+The interactive exploration of data is mainly realized through the association of views.
+The main view associations we provide are the following:
+\begin{itemize}
+	\item After the user modifies the filter settings, the action view and game view are updated synchronously.
+	The former displays only the filtered results, while the latter highlights the filtered results with a gray background.
+	\item When the mouse moves in the action view or the bout view, the corresponding phrase of the two views highlights the border to prompt.
+	The data flow for this round is also displayed synchronously in the data flow diagram
+	\item User can click the items in action view or bout view to trigger the animation in the phrase view of the corresponding phrase.
+\end{itemize}
 \section{Case Study}
 \subsection{Men's Sabre Individual Golden Match of 2017 World Fencing Championships}
+In the first case, we will analyze the final of szatmari and gu in the men's individual men's fencing competition at the 2017 world championships.
+Through a quick look at the bout view, we saw Gu leading in the first half, but Szatmari reversed in the second half, so we judged that the game's win and loss was related to a change in strategy in the first half and the second half.
+So we switched the tactical flow chart to the half-court view, as shown in a) of \author{fig:case1}
+\begin{figure*}[tb]
+	\centering
+	\includegraphics[width=\linewidth]{case1}
+	\caption{Tactics flowchart of the first case.}
+	\label{fig:case1}
+\end{figure*}
 
-\subsection{Comparison of Three Bouts}
+We can see clearly that most of Gu's score in the first half came from FF and BF (shown in blue), which, however, was significantly reduced in the second half (shown in red).
+At the same time, Szatmari's second-half main scoring sources were FB and BF nodes.
+Summing up the four more obvious flow changes, we get the following preliminary conclusions:
+\begin{enumerate}
+	\item Gu's counter-attack points were reduced in the second half.
+	\item Szatmari increased his score by moving forward while the his opponent choosing backward in the second half.
+	\item Gu's forward with Szatmari's backward mainly contribute to Gu's score in the first half , but changed to contributing Szatmari in the second half.
+\end{enumerate}
+For these three preliminary conclusions, we try to find a deeper reason.
+We shifted our attention from the lower half of the tactical flow chart to the upper half.
+First, it is very intuitive to see that the S-FB flow increased in the second half and the S-FF decreased in the second half, both of which reflected Szatmari's progress, but Gu was backward and forward, respectively.
+This means that Gu's progress in the second half decreased, back increased, which led to his points.
+
+In addition, we observed the inflow of BF node, S-BF increased in the second half.
+In order to further analyze the situation of BF node, we switch back to the overall tactical flow chart to select the S-BF segment, as shown in b) of \autoref{fig:case1}.
+At this point we can see that most of the S-BF flow ended up at node 1, which is Szatmari scoring, and most of these were occurred in the second half.
+
+So we can get a guess at the game:
+\begin{enumerate}
+	\item Gu led the game with points in the first half, relying on his strong offensive ability.
+	Szatmari failed to handle Gu's attack, 	no matter choosing forward or backward.
+	\item After the break, Szatmari adapted to Gu's attack, and began to retreat to catch Gu's attack, and achieved success, scored many times, which is reflected in the BF-1 segment.
+	\item As a result of being caught many times,Gu's attack began to hesitate, chose more backward.
+	This is reflected in the decrease in counter-attack and the increase in Szatmari's forward Gu retreat.
+	\item Together, these factors led to gu's defeat.
+\end{enumerate}
+In order to confirm the above assumptions, we locate the start phrase of the second half in the game view, and then check the details of the next few phrases in the motion view.
+From the action view, we see that Szatmari consecutive offensive points in the phrases of beginning of the second half, which is different with our previous assumptions.
+At the same time, Szatmari's backward scorings came at the end of the game.
+So we redefined our understanding of the game:
+\begin{enumerate}
+	\item Gu led the game with points in the first half, relying on his strong offensive ability.
+	\item However, although Gu attack sharp, but its attack on the physical consumption is bigger, after the start of the second half, its attack effect began to weaken, leading to the opponent's attack score.
+	\item So Gu began to change strategy, the use of retreat began to increase, however, its ability to retreat is not good at, so was chased points by his opponent.
+	\item Gu had to continue to attack, but because the opponent has seen its speed decline, continuous retreat to catch its attack, and finally won.
+\end{enumerate}
+
+We analyzed gu's tactics and tactics through this game.
+His offensive ability is very strong, but the attack on the physical loss is too big, lead to the second half is unsustainable.
+If gu wants to improve, he needs to strengthen his strength to keep the offensive ability does not decline, or improve his other aspects of the short board, also can have other effective method in the case of attack ability decline.
+From szatmari's point of view, its ability is relatively average, the second half of the timely discovery of the opponent's state changes, reasonable adjustment strategy, and achieved the final victory.
+
 
 \begin{figure*}[tb]
 	\centering
@@ -329,15 +509,46 @@ So we map the time in the phrases equally, and map the time between two adjacent
 	\caption{Bout View}
 	\label{fig:boutview}
 \end{figure*}
+Finally, let's check the scoring rounds phrases of both fencers in the game view respectively.
+It is clearly shown in \autoref{fig:boutview},  all long duration phrases contributed to Gu's scoring (shown in a)), while szatmari's scoring phrase are all short phrases (shown in b)).
+This also confirmed that Gu's ability is better, Szatmari won the game  through reasonable tactical use.
+
+
+\subsection{Comparison of Three Bouts}
 \begin{figure*}[tb]
 	\centering
 	\includegraphics[width=\linewidth]{threeBout}
-	\caption{A visualization of the data from \autoref{tab:vis_papers}. The image is from \cite{Isenberg:2017:VMC} and is in the public domain.}
+	\caption{Comparison of tactical flow charts in the semi-finals and finals of fencing world championships in 2017}
 	\label{fig:sample}
 \end{figure*}
+In this case, we compared the tactical flow charts of the two semi-finals and final of the men's sabre individual at the 2017 fencing world championships.
+For ease of comparison, we switched the position of gu and iburagimov in the semi-final, so the two fencers Szatmari and Gu we focused on were in the same position on the graph in their respective two games.
+
+In the view, the thickest flow always catches the viewer's attention first.
+Obviously, the flow S-FF is the thickest in all the three graphs, which is consistent with the dominant position of the attack in the sabre.
+In addition, the flow S-BB in the final was significantly thicker than the corresponding flow in the two semi-finals, indicating that the fencers played more conservatively and  chose to retreat more frequently in the final.
+
+Comparing the three games, szatmari's victory in the final mainly depends on the counter-attack score and back direct score, while in the semi-final mainly depends on the counter-attack score.
+In the other semi-final, Gu's main way to score against his opponent was by going back and scoring directly.
+It can be found that the main winning means in the sword game is to attack and pull open direct attack, and the formation of long-distance attack is less and rarely reflects the obvious advantages.
+This show especially in high level competition, when the fencers' basic skills are equal.
+
+This case showed shat our system can easily compare different games, which was not available in previous work\cite{Wu2018iTTVis,polk2014tennivis}
+
+
+
+
 
 \section{Conclusion}
+We design and implement a visual analysis system fencingVis, for fencing data.
+We use multiple views to present fencing data from different perspectives and provide exploratory analysis to domain experts through a series of interactive filters and view associations.
+Through two case studies, we prove that the system can help domain experts find the patterns that are not easy to find before.
+Experts also gave us a lot of positive feedback.
 
+This system is mainly aimed at sabre individual.
+The rules for epee and foil are slightly different, so we're going to improve the system for the other two types of sword.
+At the same time, also want to add team game analysis.
+Team events involve more players and the order between them adds new complexity to the data, which is also a problem we need to work on in the future.
 
 
 

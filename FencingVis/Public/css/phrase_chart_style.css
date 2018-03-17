@@ -44,3 +44,8 @@ phrase-chart .sword{
     stroke-width:2;
 }
 
+phrase-chart .rect{
+    fill:gray;
+    stroke:none;
+    opacity:.2;
+}

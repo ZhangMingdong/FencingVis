@@ -64,9 +64,13 @@ module.exports = function(app) {
     app.get('/brush_zoom', function (req, res) {
         res.sendfile('./public/examples/brush_zoom.html'); // load the single view file (angular will handle the page changes on the front-end)
     });
-    //
+    // the old version
     app.get('/v1', function (req, res) {
         res.sendfile('./public/mainFencing.html'); // load the single view file (angular will handle the page changes on the front-end)
+    });
+    // for multibouts comparison
+    app.get('/comparison', function (req, res) {
+        res.sendfile('./public/MultiBouts.html'); // load the single view file (angular will handle the page changes on the front-end)
     });
 	// application -------------------------------------------------------------
 	app.get('*', function (req, res) {

@@ -13,12 +13,26 @@ tactic-flow-chart {
 
 tactic-flow-chart .node, .node1, .node2 {
     fill: white;
-    stroke: red;
+    stroke: black;
     stroke-width: 1;
 }
 
-tactic-flow-chart .node:hover {
+tactic-flow-chart .node.simultaneous{
+    fill: gray;
+    opacity:.8;
+}
+
+tactic-flow-chart .node.selected {
     stroke-width: 3;
+}
+
+tactic-flow-chart .node_left{
+    fill: red;
+    opacity: .5;
+}
+tactic-flow-chart .node_right{
+    fill: blue;
+    opacity: .5;
 }
 
 tactic-flow-chart text {
@@ -76,4 +90,10 @@ tactic-flow-chart .linkplayer2 {
     fill: none;
     stroke: blue;
     stroke-opacity: .3;
+}
+
+tactic-flow-chart .node_pos, .node_step{
+    fill: red;
+    stroke:black;
+    strock-width:1;
 }

@@ -1,6 +1,6 @@
 var mainApp = angular.module("myApp", ['ngRoute']);
 
-mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
+mainApp.controller('ComparisonCtrl', function ($scope, $http,$window) {
     angular.element($window).on('resize', function () { $scope.$apply() })
 
     // 1.data field
@@ -9,6 +9,7 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
 
     // selected match
     $scope.selectedMatch="men final";
+
 
     // fencing data structure
     $scope.fencingData={
@@ -31,17 +32,17 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
         , focused_flow:{}         // flow of the focused bout
         , flow_1st:{}             // flow of the first half
         , flow_2nd:{}             // flow of the second half
-        , Sum_flow:true          // show sum of the flow
+        , Sum_flow:false           // show sum of the flow
         , flow_player1:{}         // show flow of player 1
         , flow_player2:{}         // show flow of player 2
         , Switch_pos: false       // change the positions of the two player
         , Show_tube: false         // show the tube of the flow
         , Show_individual: false   // show flow of individuals
         , Show_node_label: false   // show the labels of the nodes
-        , filters:[]              // filters of the index, 0 means kept
+        , filters:[]               // filters of the index, 0 means kept
         , selected_node:""         // nodes in the tactic flow chart with mouse hover
         , selected_phrases:[]       // phrases of the selected nodes or flow in flowchart
-        , orthogonal:false             // whether show orthogonal layout
+        , orthogonal:true           // whether show orthogonal layout
     }
 
     // 2. definition of the functions
@@ -60,11 +61,14 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
     }
     // function of reading data of version 2
     function readDataV2(){
+        var bout_name1="../data/men_semifinal_1_v2.csv";
+        var bout_name2="../data/men_final_v2.csv";
         //console.log("read data v2");
-        var series=[];
-        d3.csv(fileNameV2, function(d) {
+        var series1=[];
+        var series2=[];
+        d3.csv(bout_name1, function(d) {
             var frame=parseFrame(d.time);
-            series.push({
+            series1.push({
                 frame:frame
                 ,foot1:d.foot1
                 ,foot2:d.foot2
@@ -81,47 +85,50 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
             });
         }, function(error, classes) {
 
-            // generate motion data of hands and feet
-            var arrMotion=generateMotionData(series);
-            // generate bout data
-            var phrases=generatePhrases(series,arrMotion);
-            // generate tactic flow data
-            var arrFlow=generateFlow(phrases);
+            d3.csv(bout_name2, function(d) {
+                var frame=parseFrame(d.time);
+                series2.push({
+                    frame:frame
+                    ,foot1:d.foot1
+                    ,foot2:d.foot2
+                    ,hand1:d.hand1
+                    ,hand2:d.hand2
+                    ,pos1:d.pos1
+                    ,pos2:d.pos2
+                    ,parry_pos1:d.parry_pos1
+                    ,parry_pos2:d.parry_pos2
+                    ,result:d.result
+                    ,score:d.score
+                    ,bout:d.bout
+                    ,flow:d.flow
+                });
+            }, function(error, classes) {
 
-            $scope.fencingData.motion_hands=arrMotion[0];
-            $scope.fencingData.motion=arrMotion[1];
-            $scope.fencingData.series=series;
-            $scope.fencingData.phrases=phrases;
-            $scope.fencingData.flow=arrFlow[0];
-            $scope.fencingData.flow_player1=arrFlow[1];
-            $scope.fencingData.flow_player2=arrFlow[2];
-            $scope.fencingData.flow_1st=arrFlow[3];
-            $scope.fencingData.flow_2nd=arrFlow[4];
-            // initiate selected flow to 0
-            $scope.fencingData.selected_flow={
-                sbb:0
-                ,sfb:0
-                ,sff:0
-                ,sbf:0
-                ,bbfb:0
-                ,bbff:0
-                ,bbbf:0
-                ,fb1:0
-                ,fb2:0
-                ,ff1:0
-                ,ffb:0
-                ,ff2:0
-                ,bf1:0
-                ,bf2:0
-                ,fbb:0
-                ,bfb:0
-                ,fbfb:0
-                ,bfbf:0
+                // generate motion data of hands and feet
+                var arrMotion=[[],[]];
+                // generate bout data
+                var phrases1=generatePhrases(series1,arrMotion);
+                var phrases2=generatePhrases(series2,arrMotion);
+                // generate tactic flow data
+                var arrFlow1=generateFlow(phrases1);
+                var arrFlow2=generateFlow(phrases2);
+                var flow=combineFlows(arrFlow1[0],arrFlow2[0]);
+                //console.log(flow,arrFlow1[0],arrFlow2[0]);
 
-            }
-            // 4.update filters after read csv files
-            updateFilter();
-            $scope.$apply();
+                $scope.fencingData.motion_hands=arrMotion[0];
+                $scope.fencingData.motion=arrMotion[1];
+                $scope.fencingData.series=series1;
+                $scope.fencingData.phrases=phrases1;
+                $scope.fencingData.flow=flow;
+                $scope.fencingData.flow_player1=arrFlow1[1];
+                $scope.fencingData.flow_player2=arrFlow1[2];
+                $scope.fencingData.flow_1st=arrFlow1[0];
+                $scope.fencingData.flow_2nd=arrFlow2[0];
+                // 4.update filters after read csv files
+                updateFilter();
+                $scope.$apply();
+            });
+
 
             if (error) throw error;
         });
@@ -193,14 +200,14 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
                     else if(d.foot1=="af"){
                         frame_end=d.frame;
                         addMotion(motion,+bout,+seq1,1,frame_start1,frame_end,type1);
-                    //    motion.push({
-                    //        bout:+bout,
-                    //        player:1,
-                    //        seq:+seq1,
-                    //        frame_start:frame_start1,
-                    //        frame_end:frame_end,
-                    //        type:type1
-                    //    });
+                        //    motion.push({
+                        //        bout:+bout,
+                        //        player:1,
+                        //        seq:+seq1,
+                        //        frame_start:frame_start1,
+                        //        frame_end:frame_end,
+                        //        type:type1
+                        //    });
                     }
                     else if(d.foot1=="bs"){
                         seq1=(++seq1);
@@ -226,14 +233,14 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
 
                         frame_end=d.frame;
                         addMotion(motion,+bout,+seq2,2,frame_start2,frame_end,type2);
-                    //    motion.push({
-                    //        bout:+bout,
-                    //        player:2,
-                    //        seq:+seq2,
-                    //        frame_start:frame_start2,
-                    //        frame_end:frame_end,
-                    //        type:type2
-                    //    });
+                        //    motion.push({
+                        //        bout:+bout,
+                        //        player:2,
+                        //        seq:+seq2,
+                        //        frame_start:frame_start2,
+                        //        frame_end:frame_end,
+                        //        type:type2
+                        //    });
                     }
                     else if(d.foot2=="as"){
                         seq2=(++seq2);
@@ -285,14 +292,14 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
                         ||d.hand1=="rf"             // reposte finished
                     ){
                         addMotion(motion_hands,+bout,0,1,frame_start_hand_1,d.frame,type_hand_1);
-                    //    motion_hands.push({
-                    //        bout:bout,
-                    //        player:1,
-                    //        seq:0,
-                    //        frame_start:frame_start_hand_1,
-                    //        frame_end:d.frame,
-                    //        type:type_hand_1
-                    //    });
+                        //    motion_hands.push({
+                        //        bout:bout,
+                        //        player:1,
+                        //        seq:0,
+                        //        frame_start:frame_start_hand_1,
+                        //        frame_end:d.frame,
+                        //        type:type_hand_1
+                        //    });
                     }
                 }
                 if(d.hand2.length>0){
@@ -322,14 +329,14 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
                         ||d.hand1=="rf"             // reposte finished
                     ){
                         addMotion(motion_hands,+bout,0,2,frame_start_hand_2,d.frame,type_hand_2);
-                    //    motion_hands.push({
-                    //        bout:bout,
-                    //        player:2,
-                    //        seq:0,
-                    //        frame_start:frame_start_hand_2,
-                    //        frame_end:d.frame,
-                    //        type:type_hand_2
-                    //    });
+                        //    motion_hands.push({
+                        //        bout:bout,
+                        //        player:2,
+                        //        seq:0,
+                        //        frame_start:frame_start_hand_2,
+                        //        frame_end:d.frame,
+                        //        type:type_hand_2
+                        //    });
                     }
                 }
             }
@@ -618,6 +625,7 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
             }
         })
         var flow=combineFlows(flow_1st,flow_2nd);
+
         // flow for each players
         var flow_player1={
             f:0
@@ -673,13 +681,12 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
         });
 
         return [flow,flow_player1,flow_player2,flow_1st,flow_2nd];
-
     }
 
     // combine 2 flows
     function combineFlows(flow1,flow2){
         var flow={
-            sbb :  flow1.sbb +flow2.sbb
+             sbb :  flow1.sbb +flow2.sbb
             ,sfb :  flow1.sfb +flow2.sfb
             ,sff :  flow1.sff +flow2.sff
             ,sbf :  flow1.sbf +flow2.sbf
@@ -759,7 +766,7 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
          */
     }
     $scope.fencingData.onSelectedFlow=function(flow,callback){
-    //    console.log("onSelectedFlow",flow);
+        //    console.log("onSelectedFlow",flow);
         // 1."selectedFlows": get the phrases contain the selected flow
         var selectedFlows=$scope.fencingData.phrases.filter(function(d){
             var newFlow={
@@ -819,7 +826,7 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
         callback();
     }
     $scope.fencingData.onUnSelectedFlow=function(){
-    //   console.log("onUnSelectedFlow");
+        //   console.log("onUnSelectedFlow");
         var newFlow={
             sbb:0
             ,sfb:0
@@ -878,8 +885,8 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
                 }
                 var pos = {
                     BB: ["sbb"]
-                    , BF: ["sbf", "bbbf","fbb","bfb"]
-                    , FB: ["sfb", "bbfb","fbb","bfb"]
+                    , BF: ["sbf", "bbbf"]
+                    , FB: ["sfb", "bbfb"]
                     , FF: ["sff", "bbff"]
                 }
                 if (d.flow) {
@@ -918,7 +925,7 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
             ,bfbf:0
         }
         selectedPhrases.forEach(function(d){
-        //    console.log(d);
+            console.log(d);
             //console.log(d.bout,d.pos1,d.pos2);
             parseFlow(newFlow,d.flow);
         })
@@ -935,7 +942,7 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
         $scope.fencingData.onUnSelectedFlow();
     }
     $scope.fencingData.onFocusedPhrase=function(focusedIndex){
-    //    console.log("focused phrase")
+        //    console.log("focused phrase")
         if(focusedIndex==-1){
             if($scope.fencingData.focused_bout>-1){
                 $scope.fencingData.phrases[$scope.fencingData.focused_bout].focused=false;
@@ -975,7 +982,7 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
         readDataV2();
     });
     $scope.$watch('fencingData.focused_bout', function() {
-    //    console.log($scope.fencingData.focused_bout);
+        //    console.log($scope.fencingData.focused_bout);
         var flow={
             sbb:0
             ,sfb:0
@@ -997,7 +1004,7 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
             ,bfbf:0
         }
         if($scope.fencingData.focused_bout>=0){
-        //    console.log($scope.fencingData.phrases[$scope.fencingData.focused_bout].flow);
+            //    console.log($scope.fencingData.phrases[$scope.fencingData.focused_bout].flow);
             if($scope.fencingData.phrases[$scope.fencingData.focused_bout].flow){
 
                 parseFlow(flow,$scope.fencingData.phrases[$scope.fencingData.focused_bout].flow)

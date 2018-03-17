@@ -11,12 +11,11 @@ mainApp.directive('tacticFlowChart', function () {
             // 0.definition
 
             // 0.1.size
-            var margin = {top: 85, right: 0, bottom: 0, left: 0};
+            var margin = {top: 0, right: 0, bottom: 0, left: 0};
             var svgBGW=1000;
             var svgBGH=800;
             var svgW = svgBGW - margin.left - margin.right;
             var svgH = svgBGH - margin.top - margin.bottom;
-
 
             // 1.Add DOM elements
             var svgBG = d3.select(el[0]).append("svg").attr("width",svgBGW).attr("height",svgBGH);
@@ -32,6 +31,7 @@ mainApp.directive('tacticFlowChart', function () {
 
                 return svgBGW + svgBGH;
             }, resize);
+
             // switch element in the array of index1 and index 2
             function switchFlow(arr,index1,index2){
                 var width=arr[index1].width;
@@ -47,8 +47,9 @@ mainApp.directive('tacticFlowChart', function () {
                 arr[index2].w1=w1;
                 arr[index2].w2=w2;
             }
+
             // response the size-change
-            function resize() {
+            function resize(){
                 svgW = svgBGW - margin.left - margin.right;
                 svgH = svgBGH - margin.top - margin.bottom;
                 svgBG
@@ -59,693 +60,830 @@ mainApp.directive('tacticFlowChart', function () {
                     .attr("height", svgH)
                 redraw();
             }
+
             function redraw(){
-            //    console.log("redraw tactic flow chart");
-                var flowRange=40;           // range of the flow width
-                var r=20;
-                var biasEarW=60;
-                var biasEarH=60;
-                var biasTopW=80;
-                var biasTopH=150;
-                var biasBottomW=100;
-                var biasBottomH=200;
-                var middle=svgW/2;
-                var nodes=[
-                     {x:middle-50   ,y:000,name:"S"}
-                    ,{x:middle+50   ,y:000,name:"BB"}
-                    ,{x:middle+200  ,y:160,name:"FB"}
-                    ,{x:middle      ,y:160,name:"FF"}
-                    ,{x:middle-200  ,y:160,name:"BF"}
-                    ,{x:middle-200  ,y:320,name:"1"}
-                    ,{x:middle      ,y:320,name:"B"}
-                    ,{x:middle+200  ,y:320,name:"2"}
-                    ]
-                var lines=[
-                     {s:0,d:1,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"sbb"}      //0    S-BB
-                    ,{s:0,d:2,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"sfb"}      //1    S-FB
-                    ,{s:0,d:3,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"sff"}      //2    S-FF
-                    ,{s:0,d:4,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"sbf"}      //3    S-BF
-                    ,{s:1,d:2,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"bbfb"}      //4    BB-FB
-                    ,{s:1,d:3,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"bbff"}      //5    BB-FF
-                    ,{s:1,d:4,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"bbbf"}      //6    BB-BF
-                    ,{s:2,d:5,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"fb1"}      //7    FBF
-                    ,{s:2,d:7,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"fb2"}      //8    FBR\FBA
-                    ,{s:3,d:5,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"ff1"}      //9    FF1
-                    ,{s:3,d:6,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"ffb"}      //10   FFB
-                    ,{s:3,d:7,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"ff2"}      //11   FF2
-                    ,{s:4,d:5,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"bf1"}      //12   BFR\BFA
-                    ,{s:4,d:7,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"bf2"}      //13   BFF
-                    ,{s:2,d:4,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"fbb"}      //14   FBB
-                    ,{s:4,d:2,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"bfb"}      //15   BFB
-                    ,{s:2,d:2,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"fbfb"}      //16   FBFB
-                    ,{s:4,d:4,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"bfbf"}      //17   BFBF
-                ]
+                // 1.definitions
+                var radius_node=0.055*svgH;//30;         // radius of nodes
+                var flowRange=radius_node*2;//60;           // range of the flow width
+                var middleX=svgW/2;         // middle of the view
+                var middleY=svgH/2;         // middle of the view in Y
+                //var spanY=110;              // X span
+                //var spanX=110;              // Y span
+                var spanY=(svgH-radius_node*3)/4;              // X span
+                var spanX=(svgH-radius_node*3)/4;              // Y span
+                var nodeBias={
+                    "S" :{w1:0.0,w2:0.0},
+                    "BB":{w1:0.2,w2:0.2},
+                    "FB":{w1:0.8,w2:0.2},
+                    "FF":{w1:0.5,w2:0.5},
+                    "BF":{w1:0.2,w2:0.8},
+                    "1" :{w1:1.0,w2:0.0},
+                    "=" :{w1:0.0,w2:0.0},
+                    "2" :{w1:0.0,w2:1.0}
+                }          // bias of left part and right part of the nodes
+                var nodes=[]                // data of nodes
+                var lines=[]                // data of lines
 
-                // var nodes=scope.data.flow.nodes;
+                // map x and y to svg
+                function mapX(d){return middleX+d.x*spanX;}
+                function mapY(d){return middleY+d.y*spanY;}
+
+                // flow and mapping
                 var flow=scope.data.flow;
-                // fill data
-                var flow_total=[
-                     flow.sbb
-                    ,flow.sfb
-                    ,flow.sff
-                    ,flow.sbf
-                    ,flow.bbfb
-                    ,flow.bbff
-                    ,flow.bbbf
-                    ,flow.fb1
-                    ,flow.fb2
-                    ,flow.ff1
-                    ,flow.ffb
-                    ,flow.ff2
-                    ,flow.bf1
-                    ,flow.bf2
-                    ,flow.fbb
-                    ,flow.bfb
-                    ,flow.fbfb
-                    ,flow.bfbf
-                ]
-                var flow_focused=[
-                     scope.data.focused_flow.sbb
-                    ,scope.data.focused_flow.sfb
-                    ,scope.data.focused_flow.sff
-                    ,scope.data.focused_flow.sbf
-                    ,scope.data.focused_flow.bbfb
-                    ,scope.data.focused_flow.bbff
-                    ,scope.data.focused_flow.bbbf
-                    ,scope.data.focused_flow.fb1
-                    ,scope.data.focused_flow.fb2
-                    ,scope.data.focused_flow.ff1
-                    ,scope.data.focused_flow.ffb
-                    ,scope.data.focused_flow.ff2
-                    ,scope.data.focused_flow.bf1
-                    ,scope.data.focused_flow.bf2
-                    ,scope.data.focused_flow.fbb
-                    ,scope.data.focused_flow.bfb
-                    ,scope.data.focused_flow.fbfb
-                    ,scope.data.focused_flow.bfbf
-                ]
-                var flow_1st=[
-                     scope.data.flow_1st.sbb
-                    ,scope.data.flow_1st.sfb
-                    ,scope.data.flow_1st.sff
-                    ,scope.data.flow_1st.sbf
-                    ,scope.data.flow_1st.bbfb
-                    ,scope.data.flow_1st.bbff
-                    ,scope.data.flow_1st.bbbf
-                    ,scope.data.flow_1st.fb1
-                    ,scope.data.flow_1st.fb2
-                    ,scope.data.flow_1st.ff1
-                    ,scope.data.flow_1st.ffb
-                    ,scope.data.flow_1st.ff2
-                    ,scope.data.flow_1st.bf1
-                    ,scope.data.flow_1st.bf2
-                    ,scope.data.flow_1st.fbb
-                    ,scope.data.flow_1st.bfb
-                    ,scope.data.flow_1st.fbfb
-                    ,scope.data.flow_1st.bfbf
-                ]
-                var flow_2nd=[
-                     scope.data.flow_2nd.sbb
-                    ,scope.data.flow_2nd.sfb
-                    ,scope.data.flow_2nd.sff
-                    ,scope.data.flow_2nd.sbf
-                    ,scope.data.flow_2nd.bbfb
-                    ,scope.data.flow_2nd.bbff
-                    ,scope.data.flow_2nd.bbbf
-                    ,scope.data.flow_2nd.fb1
-                    ,scope.data.flow_2nd.fb2
-                    ,scope.data.flow_2nd.ff1
-                    ,scope.data.flow_2nd.ffb
-                    ,scope.data.flow_2nd.ff2
-                    ,scope.data.flow_2nd.bf1
-                    ,scope.data.flow_2nd.bf2
-                    ,scope.data.flow_2nd.fbb
-                    ,scope.data.flow_2nd.bfb
-                    ,scope.data.flow_2nd.fbfb
-                    ,scope.data.flow_2nd.bfbf
-                ]
-                var flow_selected=[
-                     scope.data.selected_flow.sbb
-                    ,scope.data.selected_flow.sfb
-                    ,scope.data.selected_flow.sff
-                    ,scope.data.selected_flow.sbf
-                    ,scope.data.selected_flow.bbfb
-                    ,scope.data.selected_flow.bbff
-                    ,scope.data.selected_flow.bbbf
-                    ,scope.data.selected_flow.fb1
-                    ,scope.data.selected_flow.fb2
-                    ,scope.data.selected_flow.ff1
-                    ,scope.data.selected_flow.ffb
-                    ,scope.data.selected_flow.ff2
-                    ,scope.data.selected_flow.bf1
-                    ,scope.data.selected_flow.bf2
-                    ,scope.data.selected_flow.fbb
-                    ,scope.data.selected_flow.bfb
-                    ,scope.data.selected_flow.fbfb
-                    ,scope.data.selected_flow.bfbf
-                ]
+                var focused_flow=scope.data.focused_flow;
+                var flow1=scope.data.flow_1st;
+                var flow2=scope.data.flow_2nd;
+                var selected_flow=scope.data.selected_flow;
 
-                if(!flow.sbb){
-
-                    flow_total=[
-                         0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                    ]
-                    flow_focused=[
-                         0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                    ]
-                    flow_1st=[
-                         0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                    ]
-                    flow_2nd=[
-                         0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                    ]
-                    flow_selected=[
-                         0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                        ,0
-                    ]
+                // calculate max count
+                var max_count=20;
+                for(var d in flow){
+                    while(max_count<flow[d]) max_count+=5;
                 }
 
 
-                // var max_count=Math.max.apply(Math,scope.data.flow.flow.map(function(o){return o.count;}))
-                var max_count=Math.max(...flow_total);
-
-                // 3.for players
-                var flow_player1=scope.data.flow_player1;
-                var flow_player2=scope.data.flow_player2;
-                if(flow_player1.b)
-                {
-                    var nodes1=[
-                        {x:middle-400   ,y:000,name:"S"}
-                        ,{x:middle-450  ,y:160,name:"B"}
-                        ,{x:middle-350  ,y:160,name:"F"}
-                        ,{x:middle-480  ,y:320,name:"1"}
-                        ,{x:middle-400  ,y:320,name:"B"}
-                        ,{x:middle-320  ,y:320,name:"2"}
-                    ]
-                    var nodes2=[
-                        {x:middle+400   ,y:000,name:"S"}
-                        ,{x:middle+450  ,y:160,name:"B"}
-                        ,{x:middle+350  ,y:160,name:"F"}
-                        ,{x:middle+480  ,y:320,name:"1"}
-                        ,{x:middle+400  ,y:320,name:"B"}
-                        ,{x:middle+320  ,y:320,name:"2"}
-                    ]
-                    var lines1=[
-                        {s:0,d:1,width:flow_player1.b, w1:0,w2:0,selectedw:0,focused:false,name:"b"}
-                        ,{s:0,d:2,width:flow_player1.f, w1:0,w2:0,selectedw:0,focused:false,name:"f"}
-                        ,{s:1,d:3,width:flow_player1.b1,w1:0,w2:0,selectedw:0,focused:false,name:"b1"}
-                        ,{s:1,d:4,width:flow_player1.bb,w1:0,w2:0,selectedw:0,focused:false,name:"bb"}
-                        ,{s:1,d:5,width:flow_player1.b2,w1:0,w2:0,selectedw:0,focused:false,name:"b2"}
-                        ,{s:2,d:3,width:flow_player1.f1,w1:0,w2:0,selectedw:0,focused:false,name:"f1"}
-                        ,{s:2,d:4,width:flow_player1.fb,w1:0,w2:0,selectedw:0,focused:false,name:"fb"}
-                        ,{s:2,d:5,width:flow_player1.f2,w1:0,w2:0,selectedw:0,focused:false,name:"f2"}
-                    ]
-                    var lines2=[
-                        {s:0,d:1,width:flow_player2.b, w1:0,w2:0,selectedw:0,focused:false,name:"b"}
-                        ,{s:0,d:2,width:flow_player2.f, w1:0,w2:0,selectedw:0,focused:false,name:"f"}
-                        ,{s:1,d:3,width:flow_player2.b1,w1:0,w2:0,selectedw:0,focused:false,name:"b1"}
-                        ,{s:1,d:4,width:flow_player2.bb,w1:0,w2:0,selectedw:0,focused:false,name:"bb"}
-                        ,{s:1,d:5,width:flow_player2.b2,w1:0,w2:0,selectedw:0,focused:false,name:"b2"}
-                        ,{s:2,d:3,width:flow_player2.f1,w1:0,w2:0,selectedw:0,focused:false,name:"f1"}
-                        ,{s:2,d:4,width:flow_player2.fb,w1:0,w2:0,selectedw:0,focused:false,name:"fb"}
-                        ,{s:2,d:5,width:flow_player2.f2,w1:0,w2:0,selectedw:0,focused:false,name:"f2"}
-                    ]
-                    if(!scope.data.Show_individual){
-                        nodes1=[];
-                        nodes2=[];
-                        lines1=[];
-                        lines2=[];
-                    }
-                    else{
-                        max_count=flow_player1.b+flow_player1.f;
-                    }
-                    function playerDiagnal(nodeS,nodeD){
-                        var s={x:nodeS.x,y:nodeS.y+r}
-                        var d={x:nodeD.x,y:nodeD.y-r}
-                        var path = `M ${s.x} ${s.y}
-                                C ${s.x} ${(s.y + d.y) / 2},
-                                  ${d.x} ${(s.y + d.y) / 2},
-                                  ${d.x} ${d.y}`
-                        return path;
-                    }
-                    var svgNodes1 = svg.selectAll(".node1").data(nodes1);
-                    svgNodes1.enter().append("rect")
-                        .attr("class","node1")
-                        .attr("width",function(d){return r*2;})
-                        .attr("height",function(d){return r*2;})
-                        .attr("x",function(d){return d.x-r})
-                        .attr("y",function(d){return d.y-r})
-                    svgNodes1
-                        .attr("width",function(d){return r*2;})
-                        .attr("height",function(d){return r*2;})
-                        .attr("x",function(d){return d.x-r})
-                        .attr("y",function(d){return d.y-r})
-                    svgNodes1.exit().remove();
-
-                    var svgLinkplayer1 = svg.selectAll(".linkplayer1").data(lines1);
-                    svgLinkplayer1.enter().append('path', "g")
-                        .attr("class", "linkplayer1")
-                        .attr('d', function(d){
-                            return playerDiagnal(nodes1[d.s], nodes1[d.d])
-                        })
-                        .style("stroke-width", function(d){return d.width})
-                    svgLinkplayer1
-                        .attr('d', function(d){
-                            return playerDiagnal(nodes1[d.s], nodes1[d.d])
-                        })
-                        .style("stroke-width", function(d){return d.width})
-                    svgLinkplayer1.exit().remove();
-
-
-                    var svgNodes2 = svg.selectAll(".node2").data(nodes2);
-                    svgNodes2.enter().append("rect")
-                        .attr("class","node2")
-                        .attr("width",function(d){return r*2;})
-                        .attr("height",function(d){return r*2;})
-                        .attr("x",function(d){return d.x-r})
-                        .attr("y",function(d){return d.y-r})
-                    svgNodes2
-                        .attr("width",function(d){return r*2;})
-                        .attr("height",function(d){return r*2;})
-                        .attr("x",function(d){return d.x-r})
-                        .attr("y",function(d){return d.y-r})
-                    svgNodes2.exit().remove();
-
-                    var svgLinkplayer2 = svg.selectAll(".linkplayer2").data(lines2);
-                    svgLinkplayer2.enter().append('path', "g")
-                        .attr("class", "linkplayer2")
-                        .attr('d', function(d){
-                            return playerDiagnal(nodes2[d.s], nodes2[d.d])
-                        })
-                        .style("stroke-width", function(d){return d.width})
-                    svgLinkplayer2
-                        .attr('d', function(d){
-                            return playerDiagnal(nodes2[d.s], nodes2[d.d])
-                        })
-                        .style("stroke-width", function(d){return d.width})
-                    svgLinkplayer2.exit().remove();
-
-
-                    var svgText1 = svg.selectAll(".text1").data(nodes1);
-                    svgText1.enter()
-                        .append("text")
-                        .attr("class", "text1")
-                        .text(function(d){return d.name})
-                        .attr("x", function(d) {
-                            return d.x;
-                        })
-                        .attr("y", function(d) {
-                            return d.y+r/2;
-                        })
-                    svgText1
-                        .text(function(d){return d.name})
-                        .attr("x", function(d) {
-                            return d.x;
-                        })
-                        .attr("y", function(d) {
-                            return d.y+r/2;
-                        })
-
-                    svgText1.exit().remove();
-
-                    var svgText2 = svg.selectAll(".text2").data(nodes2);
-                    svgText2.enter()
-                        .append("text")
-                        .attr("class", "text2")
-                        .text(function(d){return d.name})
-                        .attr("x", function(d) {
-                            return d.x;
-                        })
-                        .attr("y", function(d) {
-                            return d.y+r/2;
-                        })
-                    svgText2
-                        .text(function(d){return d.name})
-                        .attr("x", function(d) {
-                            return d.x;
-                        })
-                        .attr("y", function(d) {
-                            return d.y+r/2;
-                        })
-
-                    svgText2.exit().remove();
+                function getFlow_width(d){
+                    return scope.data.Sum_flow?flowRange*flow[d.name]/max_count:0;
                 }
-                //console.log(flow_total,max_count);
-                if(max_count)
-                    lines.forEach(function(d,i){
-                        if(scope.data.Sum_flow){
-                            lines[i].width=flowRange*flow_total[i]/max_count;
-                            lines[i].focused=(flow_focused[i]>0)
-                            lines[i].selectedw=flowRange*flow_selected[i]/max_count;
+                function getFlow_focused(d){
+                    return focused_flow[d.name]>0;}
+                function getFlow_width_selected(d){
+                    return scope.data.Sum_flow?flowRange*selected_flow[d.name]/max_count:0;}
+                function getFlow_width_1(d){
+                    return scope.data.Sum_flow?0:flowRange*flow1[d.name]/max_count;}
+                function getFlow_width_2(d){
+                    return scope.data.Sum_flow?0:flowRange*flow2[d.name]/max_count;}
+
+                // draw orthogonal layout
+                function drawOrthogonal(){
+                    // 0.build the graph
+                    nodes=[
+                         {x:+0,y:-2,name:"FF"}  //0
+                        ,{x:-1,y:-1,name:"FB"}  //1
+                        ,{x:+0,y:-1,name:"BB"}  //2
+                        ,{x:+1,y:-1,name:"BF"}  //3
+                        ,{x:-2,y:+0,name:"1" }  //4
+                        ,{x:-1,y:+0,name:"BF"}  //5
+                        ,{x:+0,y:+0,name:"S" }  //6
+                        ,{x:+1,y:+0,name:"FB"}  //7
+                        ,{x:+2,y:+0,name:"2" }  //8
+                        ,{x:-1,y:+1,name:"2" }  //9
+                        ,{x:+0,y:+1,name:"FF"}  //10
+                        ,{x:+1,y:+1,name:"1" }  //11
+                        ,{x:+0,y:+2,name:"=" }  //12
+                    ]
+                    lines=[
+                         {s:6,d:2,name:"sbb"}      //0    S-BB
+                        ,{s:6,d:7,name:"sfb"}      //1    S-FB
+                        ,{s:6,d:10,name:"sff"}      //2    S-FF
+                        ,{s:6,d:5,name:"sbf"}      //3    S-BF
+                        ,{s:2,d:1,name:"bbfb"}      //4    BB-FB
+                        ,{s:2,d:0,name:"bbff"}      //5    BB-FF
+                        ,{s:2,d:3,name:"bbbf"}      //6    BB-BF
+                        ,{s:7,d:11,name:"fb1"}      //7    FBF
+                        ,{s:7,d:8,name:"fb2"}      //8    FBR\FBA
+                        ,{s:10,d:11,name:"ff1"}      //9    FF1
+                        ,{s:10,d:12,name:"ffb"}      //10   FFB
+                        ,{s:10,d:9,name:"ff2"}      //11   FF2
+                        ,{s:5,d:4,name:"bf1"}      //12   BFR\BFA
+                        ,{s:5,d:9,name:"bf2"}      //13   BFF
+                        ,{s:7,d:3,name:"fbb"}      //14   FBB
+                        ,{s:5,d:1,name:"bfb"}      //15   BFB
+                        ,{s:2,d:2,name:"fbfb"}      //16   FBFB
+                        ,{s:4,d:4,name:"bfbf"}      //17   BFBF
+                    ]
+
+                    // 2.draw links
+                    drawLinks(funLine);
+
+                    // function to generate the path
+                    // link: the binded link
+                    // part: the part 1,2
+                    function funLine(link,part) {
+                        var indexS=link.s;
+                        var indexD=link.d;
+                        var path;
+                        var s={x:mapX(nodes[indexS]),y:mapY(nodes[indexS])}
+                        var d={x:mapX(nodes[indexD]),y:mapY(nodes[indexD])}
+                        // adjust the parts
+                        var w1=getFlow_width_1(link);
+                        var w2=getFlow_width_2(link);
+                        if(part==1){
+                            if(s.x==d.x){
+                                s.x-=w2/2;
+                                d.x-=w2/2;
+                            }
+                            else{
+                                s.y-=w2/2;
+                                d.y-=w2/2;
+                            }
+                        }
+                        else if(part==2){
+                            if(s.x==d.x){
+                                s.x+=w1/2;
+                                d.x+=w1/2;
+                            }
+                            else{
+                                s.y+=w1/2;
+                                d.y+=w1/2;
+                            }
+                        }
+
+                        // adjust the node radius
+                        if(s.x==d.x){
+                            if(s.y>d.y){
+                                s.y-=radius_node;
+                                d.y+=radius_node;
+                            }
+                            else if(s.y<d.y){
+                                s.y+=radius_node;
+                                d.y-=radius_node;
+                            }
                         }
                         else{
-                            lines[i].w1=flowRange*flow_1st[i]/max_count;
-                            lines[i].w2=flowRange*flow_2nd[i]/max_count;
+                            if(s.x>d.x){
+                                s.x-=radius_node;
+                                d.x+=radius_node;
+                            }
+                            else{
+                                s.x+=radius_node;
+                                d.x-=radius_node;
+                            }
                         }
-                    })
-
-                // Switch Position
-                if (scope.data.Switch_pos){
-                    switchFlow(lines,1,3);
-                    switchFlow(lines,4,6);
-                    switchFlow(lines,7,13);
-                    switchFlow(lines,8,12);
-                    switchFlow(lines,9,11);
-                    switchFlow(lines,14,15);
-                    switchFlow(lines,16,17);
-                }
-
-                var svgNodes = svg.selectAll(".node").data(nodes);
-
-                // 1.nodes
-
-                /*
-                svgNodes.enter().append("circle")
-                    .attr("class","node")
-                    .attr("r",function(d){return r;})
-                    .attr("cx",function(d){return d.x})
-                    .attr("cy",function(d){return d.y})
-                    */
-                svgNodes.enter().append("rect")
-                    .attr("class","node")
-                    .attr("width",function(d){return r*2;})
-                    .attr("height",function(d){return r*2;})
-                    .attr("x",function(d){return d.x-r})
-                    .attr("y",function(d){return d.y-r})
-                    .on('mouseover', function (d) {
-                        // console.log("mouse over");
-                        scope.$apply(function(){
-                            scope.data.onSelectedFlowNode(d, redraw);
-                        });
-                    })
-                    .on('mouseleave', function (d) {
-                        // console.log("mouse leave");
-                        scope.data.onUnSelectedFlowNode();
-                        redraw();
-                    })
-                svgNodes
-                    .attr("width",function(d){return r*2;})
-                    .attr("height",function(d){return r*2;})
-                    .attr("x",function(d){return d.x-r})
-                    .attr("y",function(d){return d.y-r})
-                svgNodes.exit().remove();
-
-                var svgText = svg.selectAll(".text").data(nodes);
-                svgText.enter()
-                    .append("text")
-                    .attr("class","text")
-                    .text(function(d){return d.name})
-                    .attr("x", function(d) {
-                        return d.x;
-                    })
-                    .attr("y", function(d) {
-                        return d.y+r/2;
-                    })
-                svgText
-                    .text(function(d){return d.name})
-                    .attr("x", function(d) {
-                        return d.x;
-                    })
-                    .attr("y", function(d) {
-                        return d.y+r/2;
-                    })
-
-                svgText.exit().remove();
-
-                function diagonal(indexS, indexD) {
-                    var topBias=14;
-                    var bottomBias=14;
-                    var path;
-                    if(indexS==4&&indexD==2){
-                        /*
-                        var s={x:nodes[indexS].x-r,y:nodes[indexS].y}
-                        var d={x:nodes[indexD].x+r,y:nodes[indexD].y}
-                        path = `M ${s.x} ${s.y}
-                                C ${s.x-3*r} ${s.y},
-                                  ${s.x-3*r} ${s.y-topBias*r},
-                                  ${(s.x+d.x)/2} ${s.y-topBias*r}
-                                C ${d.x+3*r} ${d.y-topBias*r},
-                                  ${d.x+3*r} ${d.y},
-                                  ${d.x} ${d.y}`
-                        */
-                        var s={x:nodes[indexS].x,y:nodes[indexS].y-r}
-                        var d={x:nodes[indexD].x,y:nodes[indexD].y-r}
-                        path = `M ${s.x} ${s.y}
-                                C ${s.x} ${s.y-topBias*r},
-                                  ${d.x} ${d.y-topBias*r},
-                                  ${d.x} ${d.y}`
-
-                    }
-                    else if(indexS==2&&indexD==4){
-                        var s={x:nodes[indexS].x+r,y:nodes[indexS].y}
-                        var d={x:nodes[indexD].x-r,y:nodes[indexD].y}
-                        path = `M ${s.x                 } ${s.y}
-                                C ${s.x+biasBottomW     } ${s.y},
-                                  ${s.x+biasBottomW     } ${s.y+bottomBias*r},
-                                  ${(s.x+d.x)/2         } ${s.y+bottomBias*r}
-                                C ${d.x-biasBottomW     } ${d.y+bottomBias*r},
-                                  ${d.x-biasBottomW     } ${d.y},
-                                  ${d.x                 } ${d.y}`
-
-                    }
-                    else if(indexS==0&&indexD==1){
-                        var s={x:nodes[indexS].x+r,y:nodes[indexS].y}
-                        var d={x:nodes[indexD].x-r,y:nodes[indexD].y}
                         path = `M ${s.x} ${s.y}
                                 L  ${d.x} ${d.y}`
 
+                        return path
                     }
-                    else if(indexS==4&&indexD==4){
-                        var x=nodes[indexS].x;
-                        var y=nodes[indexS].y;
-                        path = `M ${x         } ${y+r}
+
+
+                }
+
+                // draw common layout
+                function drawCommon(){
+                    nodes=[
+                         {x:-0.5 ,y:-1.7, name:"S" }
+                        ,{x:+0.5 ,y:-1.7, name:"BB"}
+                        ,{x:+2.0 ,y:-0.2,name:"FB"}
+                        ,{x:+0.0 ,y:-0.2,name:"FF"}
+                        ,{x:-2.0 ,y:-0.2,name:"BF"}
+                        ,{x:+2.0 ,y:+1.2,name:"1" }
+                        ,{x:+0.0 ,y:+1.2,name:"=" }
+                        ,{x:-2.0 ,y:+1.2,name:"2" }
+                    ]
+                    lines=[
+                        {s:0,d:1,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"sbb"}      //0    S-BB
+                        ,{s:0,d:2,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"sfb"}      //1    S-FB
+                        ,{s:0,d:3,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"sff"}      //2    S-FF
+                        ,{s:0,d:4,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"sbf"}      //3    S-BF
+                        ,{s:1,d:2,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"bbfb"}      //4    BB-FB
+                        ,{s:1,d:3,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"bbff"}      //5    BB-FF
+                        ,{s:1,d:4,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"bbbf"}      //6    BB-BF
+                        ,{s:2,d:5,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"fb1"}      //7    FBF
+                        ,{s:2,d:7,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"fb2"}      //8    FBR\FBA
+                        ,{s:3,d:5,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"ff1"}      //9    FF1
+                        ,{s:3,d:6,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"ffb"}      //10   FFB
+                        ,{s:3,d:7,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"ff2"}      //11   FF2
+                        ,{s:4,d:5,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"bf1"}      //12   BFR\BFA
+                        ,{s:4,d:7,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"bf2"}      //13   BFF
+                        ,{s:2,d:4,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"fbb"}      //14   FBB
+                        ,{s:4,d:2,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"bfb"}      //15   BFB
+                        ,{s:2,d:2,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"fbfb"}      //16   FBFB
+                        ,{s:4,d:4,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"bfbf"}      //17   BFBF
+                    ]
+
+                    // 3.for players
+                    var flow_player1=scope.data.flow_player1;
+                    var flow_player2=scope.data.flow_player2;
+                    if(flow_player1.b)
+                    {
+                        var nodes1=[
+                             {x:-4.0   ,y:-1.6,name:"S"}
+                            ,{x:-4.5   ,y:+0.0,name:"B"}
+                            ,{x:-3.5   ,y:+0.0,name:"F"}
+                            ,{x:-4.8   ,y:+1.6,name:"1"}
+                            ,{x:-4.0   ,y:+1.6,name:"B"}
+                            ,{x:-3.2   ,y:+1.6,name:"2"}
+                        ]
+                        var nodes2=[
+                             {x:+4.00   ,y:-1.6,name:"S"}
+                            ,{x:+4.50  ,y:+0.0,name:"B"}
+                            ,{x:+3.50  ,y:+0.0,name:"F"}
+                            ,{x:+4.80  ,y:+1.6,name:"1"}
+                            ,{x:+4.00  ,y:+1.6,name:"B"}
+                            ,{x:+3.20  ,y:+1.6,name:"2"}
+                        ]
+                        var lines1=[
+                            {s:0,d:1,width:flow_player1.b, w1:0,w2:0,selectedw:0,focused:false,name:"b"}
+                            ,{s:0,d:2,width:flow_player1.f, w1:0,w2:0,selectedw:0,focused:false,name:"f"}
+                            ,{s:1,d:3,width:flow_player1.b1,w1:0,w2:0,selectedw:0,focused:false,name:"b1"}
+                            ,{s:1,d:4,width:flow_player1.bb,w1:0,w2:0,selectedw:0,focused:false,name:"bb"}
+                            ,{s:1,d:5,width:flow_player1.b2,w1:0,w2:0,selectedw:0,focused:false,name:"b2"}
+                            ,{s:2,d:3,width:flow_player1.f1,w1:0,w2:0,selectedw:0,focused:false,name:"f1"}
+                            ,{s:2,d:4,width:flow_player1.fb,w1:0,w2:0,selectedw:0,focused:false,name:"fb"}
+                            ,{s:2,d:5,width:flow_player1.f2,w1:0,w2:0,selectedw:0,focused:false,name:"f2"}
+                        ]
+                        var lines2=[
+                            {s:0,d:1,width:flow_player2.b, w1:0,w2:0,selectedw:0,focused:false,name:"b"}
+                            ,{s:0,d:2,width:flow_player2.f, w1:0,w2:0,selectedw:0,focused:false,name:"f"}
+                            ,{s:1,d:3,width:flow_player2.b1,w1:0,w2:0,selectedw:0,focused:false,name:"b1"}
+                            ,{s:1,d:4,width:flow_player2.bb,w1:0,w2:0,selectedw:0,focused:false,name:"bb"}
+                            ,{s:1,d:5,width:flow_player2.b2,w1:0,w2:0,selectedw:0,focused:false,name:"b2"}
+                            ,{s:2,d:3,width:flow_player2.f1,w1:0,w2:0,selectedw:0,focused:false,name:"f1"}
+                            ,{s:2,d:4,width:flow_player2.fb,w1:0,w2:0,selectedw:0,focused:false,name:"fb"}
+                            ,{s:2,d:5,width:flow_player2.f2,w1:0,w2:0,selectedw:0,focused:false,name:"f2"}
+                        ]
+                        if(!scope.data.Show_individual){
+                            nodes1=[];
+                            nodes2=[];
+                            lines1=[];
+                            lines2=[];
+                        }
+                        else{
+                            max_count=flow_player1.b+flow_player1.f;
+                        }
+                        function playerDiagnal(nodeS,nodeD){
+                            var s={x:nodeS.x,y:nodeS.y+r}
+                            var d={x:nodeD.x,y:nodeD.y-r}
+                            var path = `M ${s.x} ${s.y}
+                                C ${s.x} ${(s.y + d.y) / 2},
+                                  ${d.x} ${(s.y + d.y) / 2},
+                                  ${d.x} ${d.y}`
+                            return path;
+                        }
+                        var svgNodes1 = svg.selectAll(".node1").data(nodes1);
+                        svgNodes1.enter().append("rect")
+                            .attr("class","node1")
+                            .attr("width",function(d){return r*2;})
+                            .attr("height",function(d){return r*2;})
+                            .attr("x",function(d){return d.x-r})
+                            .attr("y",function(d){return d.y-r})
+                        svgNodes1
+                            .attr("width",function(d){return r*2;})
+                            .attr("height",function(d){return r*2;})
+                            .attr("x",function(d){return d.x-r})
+                            .attr("y",function(d){return d.y-r})
+                        svgNodes1.exit().remove();
+
+                        var svgLinkplayer1 = svg.selectAll(".linkplayer1").data(lines1);
+                        svgLinkplayer1.enter().append('path', "g")
+                            .attr("class", "linkplayer1")
+                            .attr('d', function(d){
+                                return playerDiagnal(nodes1[d.s], nodes1[d.d])
+                            })
+                            .style("stroke-width", function(d){return d.width})
+                        svgLinkplayer1
+                            .attr('d', function(d){
+                                return playerDiagnal(nodes1[d.s], nodes1[d.d])
+                            })
+                            .style("stroke-width", function(d){return d.width})
+                        svgLinkplayer1.exit().remove();
+
+
+                        var svgNodes2 = svg.selectAll(".node2").data(nodes2);
+                        svgNodes2.enter().append("rect")
+                            .attr("class","node2")
+                            .attr("width",function(d){return r*2;})
+                            .attr("height",function(d){return r*2;})
+                            .attr("x",function(d){return d.x-r})
+                            .attr("y",function(d){return d.y-r})
+                        svgNodes2
+                            .attr("width",function(d){return r*2;})
+                            .attr("height",function(d){return r*2;})
+                            .attr("x",function(d){return d.x-r})
+                            .attr("y",function(d){return d.y-r})
+                        svgNodes2.exit().remove();
+
+                        var svgLinkplayer2 = svg.selectAll(".linkplayer2").data(lines2);
+                        svgLinkplayer2.enter().append('path', "g")
+                            .attr("class", "linkplayer2")
+                            .attr('d', function(d){
+                                return playerDiagnal(nodes2[d.s], nodes2[d.d])
+                            })
+                            .style("stroke-width", function(d){return d.width})
+                        svgLinkplayer2
+                            .attr('d', function(d){
+                                return playerDiagnal(nodes2[d.s], nodes2[d.d])
+                            })
+                            .style("stroke-width", function(d){return d.width})
+                        svgLinkplayer2.exit().remove();
+
+
+                        var svgText1 = svg.selectAll(".text1").data(nodes1);
+                        svgText1.enter()
+                            .append("text")
+                            .attr("class", "text1")
+                            .text(function(d){return d.name})
+                            .attr("x", function(d) {
+                                return d.x;
+                            })
+                            .attr("y", function(d) {
+                                return d.y+r/2;
+                            })
+                        svgText1
+                            .text(function(d){return d.name})
+                            .attr("x", function(d) {
+                                return d.x;
+                            })
+                            .attr("y", function(d) {
+                                return d.y+r/2;
+                            })
+
+                        svgText1.exit().remove();
+
+                        var svgText2 = svg.selectAll(".text2").data(nodes2);
+                        svgText2.enter()
+                            .append("text")
+                            .attr("class", "text2")
+                            .text(function(d){return d.name})
+                            .attr("x", function(d) {
+                                return d.x;
+                            })
+                            .attr("y", function(d) {
+                                return d.y+r/2;
+                            })
+                        svgText2
+                            .text(function(d){return d.name})
+                            .attr("x", function(d) {
+                                return d.x;
+                            })
+                            .attr("y", function(d) {
+                                return d.y+r/2;
+                            })
+
+                        svgText2.exit().remove();
+                    }
+                    //console.log(flow_total,max_count);
+
+                    // Switch Position
+                    if (scope.data.Switch_pos){
+                        switchFlow(lines,1,3);
+                        switchFlow(lines,4,6);
+                        switchFlow(lines,7,13);
+                        switchFlow(lines,8,12);
+                        switchFlow(lines,9,11);
+                        switchFlow(lines,14,15);
+                        switchFlow(lines,16,17);
+                    }
+
+                    function diagonal(link) {
+                        var indexS=link.s;
+                        var indexD=link.d;
+                        var biasEarW=spanY*.5;//60;
+                        var biasEarH=spanY*.5;//60;
+                        var biasTopW=spanY*.7;//80;
+                        var biasTopH=spanY*1.3;//150;
+                        var biasBottomW=spanY*.9;//100;
+                        var biasBottomH=spanY*.9;//200;
+                        var topBias=spanY*2.4;//280;
+                        var bottomBias=spanY*2.4;//280;
+
+                        var path;
+                        if(indexS==0&&indexD==1){
+                            var s={x:mapX(nodes[indexS])+radius_node,y:mapY(nodes[indexS])}
+                            var d={x:mapX(nodes[indexD])-radius_node,y:mapY(nodes[indexD])}
+                            path = `M ${s.x} ${s.y}
+                                L  ${d.x} ${d.y}`
+
+                        }//S-BB
+                        else if(indexS==4&&indexD==2){
+                            var s={x:mapX(nodes[indexS]),y:mapY(nodes[indexS])-radius_node}
+                            var d={x:mapX(nodes[indexD]),y:mapY(nodes[indexD])-radius_node}
+                            path = `M ${s.x} ${s.y}
+                                C ${s.x} ${s.y-topBias},
+                                  ${d.x} ${d.y-topBias},
+                                  ${d.x} ${d.y}`
+
+                        }//BFB
+                        else if(indexS==2&&indexD==4){
+                            var s={x:mapX(nodes[indexS])+radius_node,y:mapY(nodes[indexS])}
+                            var d={x:mapX(nodes[indexD])-radius_node,y:mapY(nodes[indexD])}
+                            path = `M ${s.x                 } ${s.y}
+                                C ${s.x+biasBottomW     } ${s.y},
+                                  ${s.x+biasBottomW     } ${s.y+bottomBias},
+                                  ${(s.x+d.x)/2         } ${s.y+bottomBias}
+                                C ${d.x-biasBottomW     } ${d.y+bottomBias},
+                                  ${d.x-biasBottomW     } ${d.y},
+                                  ${d.x                 } ${d.y}`
+
+                        }//FBB
+                        else if(indexS==4&&indexD==4){
+                            var x=mapX(nodes[indexS]);
+                            var y=mapY(nodes[indexS]);
+                            path = `M ${x         } ${y+radius_node}
                                 C ${x         } ${y+biasEarH},
                                   ${x-biasEarW} ${y+biasEarH},
                                   ${x-biasEarW} ${y}
                                 C ${x-biasEarW} ${y-biasEarH},
                                   ${x         } ${y-biasEarH},
-                                  ${x         } ${y-r}`
-                    }
-                    else if(indexS==2&&indexD==2){
-                        var x=nodes[indexS].x;
-                        var y=nodes[indexS].y;
-                        path = `M ${x         } ${y+r}
+                                  ${x         } ${y-radius_node}`
+                        }//BFBF
+                        else if(indexS==2&&indexD==2){
+                            var x=mapX(nodes[indexS]);
+                            var y=mapY(nodes[indexS]);
+                            path = `M ${x         } ${y+radius_node}
                                 C ${x         } ${y+biasEarH},
                                   ${x+biasEarW} ${y+biasEarH},
                                   ${x+biasEarW} ${y}
                                 C ${x+biasEarW} ${y-biasEarH},
                                   ${x         } ${y-biasEarH},
-                                  ${x         } ${y-r}`
-                    }
-                    else{
-                        var s={x:nodes[indexS].x,y:nodes[indexS].y+r}
-                        var d={x:nodes[indexD].x,y:nodes[indexD].y-r}
-                        path = `M ${s.x} ${s.y}
+                                  ${x         } ${y-radius_node}`
+                        }//FBFB
+                        else{
+                            var s={x:mapX(nodes[indexS]),y:mapY(nodes[indexS])+radius_node}
+                            var d={x:mapX(nodes[indexD]),y:mapY(nodes[indexD])-radius_node}
+                            path = `M ${s.x} ${s.y}
                                 C ${s.x} ${(s.y + d.y) / 2},
                                   ${d.x} ${(s.y + d.y) / 2},
                                   ${d.x} ${d.y}`
+                        }
+                        return path
                     }
-                    return path
+
+                    drawTube();
+                    drawLinks(diagonal);
+
+                    function drawTube(){
+                        var svgLinkTube = svg.selectAll(".linktube").data(scope.data.Show_tube?lines:[]);
+                        svgLinkTube.enter().insert('path', "g")
+                            .attr("class", "linktube")
+                            .attr('d', function(d){
+                                return diagonal(d)
+                            })
+                        svgLinkTube
+                            .attr('d', function(d){
+                                return diagonal(d)
+                            })
+                        svgLinkTube.exit().remove();
+                    }
+
+
                 }
 
-                function drawTube(b){
-                    var svgLinkTube = svg.selectAll(".linktube").data(b?lines:[]);
-                    svgLinkTube.enter().insert('path', "g")
-                        .attr("class", "linktube")
-                        .attr('d', function(d){
-                            return diagonal(d.s, d.d)
+                // draw the matrix of attack position
+                function drawAttackPos(){
+                    var data=[];
+                    var text=[];
+                    if(scope.data.selected_node=="FF"){
+                        data=[
+                            {x:0,y:0,s1:0,s2:0,s:0}
+                            ,{x:1,y:0,s1:0,s2:0,s:0}
+                            ,{x:2,y:0,s1:0,s2:0,s:0}
+                            ,{x:0,y:1,s1:0,s2:0,s:0}
+                            ,{x:1,y:1,s1:0,s2:0,s:0}
+                            ,{x:2,y:1,s1:0,s2:0,s:0}
+                            ,{x:0,y:2,s1:0,s2:0,s:0}
+                            ,{x:1,y:2,s1:0,s2:0,s:0}
+                            ,{x:2,y:2,s1:0,s2:0,s:0}
+                        ]
+                        scope.data.selected_phrases.forEach(function(d){
+                            var pos1=d.pos1[d.pos1.length-1];
+                            var pos2=d.pos2[d.pos2.length-1];
+                            var index=(pos2-3)*3+(pos1-3);
+                            if(d.score==1) data[index].s1++;
+                            else if(d.score==2) data[index].s2++;
+                            else data[index].s++;
                         })
-                    svgLinkTube
-                        .attr('d', function(d){
-                            return diagonal(d.s, d.d)
-                        })
-                    svgLinkTube.exit().remove();
+
+                        text=[
+                            {x:0,y:-.5,name:"3"}
+                            ,{x:1,y:-.5,name:"4"}
+                            ,{x:2,y:-.5,name:"5"}
+                            ,{x:-.5,y:0.1,name:"3"}
+                            ,{x:-.5,y:1.1,name:"4"}
+                            ,{x:-.5,y:2.1,name:"5"}
+                        ]
+                    }
+                    var svgNodes = svg.selectAll(".node_pos").data(data);
+
+                    // 1.nodes
+
+                    var x0=40;
+                    var y0=50;
+                    var r=3;
+                    var scale=50;
+                    svgNodes.enter().append("circle")
+                        .attr("class","node_pos")
+                        .attr("r",function(d){return r*(d.s1+d.s2+d.s);})
+                        .attr("cx",function(d){return x0+d.x*scale})
+                        .attr("cy",function(d){return y0+d.y*scale})
+                    svgNodes
+                        .attr("r",function(d){return r*(d.s1+d.s2+d.s);})
+                        .attr("cx",function(d){return x0+d.x*scale})
+                        .attr("cy",function(d){return y0+d.y*scale})
+                    svgNodes.exit().remove();
+
+
+                    var svgText = svg.selectAll(".text_pos").data(text);
+                    svgText.enter()
+                        .append("text")
+                        .attr("class","text_pos")
+                        .text(function(d){return d.name})
+                        .attr("x",function(d){return x0+d.x*scale})
+                        .attr("y",function(d){return y0+d.y*scale})
+                    svgText
+                        .text(function(d){return d.name})
+                        .attr("x",function(d){return x0+d.x*scale})
+                        .attr("y",function(d){return y0+d.y*scale})
+
+                    svgText.exit().remove();
+
+
                 }
 
-                drawTube(scope.data.Show_tube);
+                // draw the matrix of attack steps
+                function drawAttackSteps(){
+                    var data=[];
+                    var text=[];
+                    if(scope.data.selected_node=="FF"){
+                        data=[
+                            {x:0,y:0,s1:0,s2:0,s:0}
+                            ,{x:1,y:0,s1:0,s2:0,s:0}
+                            ,{x:0,y:1,s1:0,s2:0,s:0}
+                            ,{x:1,y:1,s1:0,s2:0,s:0}
+                        ]
+
+                        scope.data.selected_phrases.forEach(function(d){
+                            var steps1=0;
+                            var steps2=0;
+                            var forward=true;
+                            d.feet1.forEach(function(md){
+                                if(md.type=='f' && forward) steps1++;
+                                else forward=false;
+                            })
+                            forward=true;
+                            d.feet2.forEach(function(md){
+                                if(md.type=='f' && forward) steps2++;
+                                else forward=false;
+                            })
+                            var index=(steps2-1)*2+steps1-1;
+                            if(d.score==1) data[index].s1++;
+                            else if(d.score==2) data[index].s2++;
+                            else data[index].s++;
+                        })
+
+                        text=[
+                            {x:0,y:-.5,name:"1"}
+                            ,{x:1,y:-.5,name:"2"}
+                            ,{x:-.5,y:0.1,name:"1"}
+                            ,{x:-.5,y:1.1,name:"2"}
+                        ]
+                    }
+                    var svgNodes = svg.selectAll(".node_step").data(data);
+
+                    // 1.nodes
+                    var x0=40;
+                    var y0=svgH-100;
+                    var r=3;
+                    var scale=50;
+                    svgNodes.enter().append("circle")
+                        .attr("class","node_step")
+                        .attr("r",function(d){return r*(d.s1+d.s2+d.s);})
+                        .attr("cx",function(d){return x0+d.x*scale})
+                        .attr("cy",function(d){return y0+d.y*scale})
+                    svgNodes
+                        .attr("r",function(d){return r*(d.s1+d.s2+d.s);})
+                        .attr("cx",function(d){return x0+d.x*scale})
+                        .attr("cy",function(d){return y0+d.y*scale})
+                    svgNodes.exit().remove();
 
 
-                // 2.links
-                var svgLink = svg.selectAll(".link").data(lines);
-                svgLink.enter().append('path', "g")
-                    .attr("class", "link")
-                    .attr('d', function(d){
-                        return diagonal(d.s, d.d)
-                    })
-                    .style("stroke-width", function(d){return d.width})
-                    .on('mouseover', function (d) {
-                        // console.log("mouse over");
-                        scope.data.onSelectedFlow(d, redraw);
-                        redraw();
+                    var svgText = svg.selectAll(".text_step").data(text);
+                    svgText.enter()
+                        .append("text")
+                        .attr("class","text_step")
+                        .text(function(d){return d.name})
+                        .attr("x",function(d){return x0+d.x*scale})
+                        .attr("y",function(d){return y0+d.y*scale})
+                    svgText
+                        .text(function(d){return d.name})
+                        .attr("x",function(d){return x0+d.x*scale})
+                        .attr("y",function(d){return y0+d.y*scale})
 
-                    })
-                    .on('mouseleave', function (d) {
-                        // console.log("mouse leave");
-                        scope.data.onUnSelectedFlow();
-                        redraw();
-                    })
-                svgLink
-                    .attr('d', function(d){
-                        return diagonal(d.s, d.d)
-                    })
-                    .style("stroke-width", function(d){
-                        return d.width})
-                svgLink.exit().remove();
+                    svgText.exit().remove();
 
-                var svgFocusedLink = svg.selectAll(".linkfocused").data(lines);
-                svgFocusedLink.enter().append('path', "g")
-                    .attr("class", "linkfocused")
-                    .attr('d', function(d){
-                        return diagonal(d.s, d.d)
-                    })
-                    .style("stroke-width", function(d){
-                        return d.focused? flowRange/max_count:0
-                    })
-                svgFocusedLink
-                    .attr('d', function(d){
-                        return diagonal(d.s, d.d)
-                    })
-                    .style("stroke-width", function(d){
-                        return d.focused? flowRange/max_count:0
-                    })
-                svgFocusedLink.exit().remove();
+                }
+                // draw the nodes: node, leftpart, rightpart, text
+                function drawNodes(){
+                    var svgNodes = svg.selectAll(".node").data(nodes);
 
-                var svgLink1 = svg.selectAll(".link1").data(lines);
-                svgLink1.enter().append('path', "g")
-                    .attr("class", "link1")
-                    .attr('d', function(d){
-                        return diagonal(d.s, d.d)
-                    })
-                    .style("stroke-width", function(d){return d.w1})
-                svgLink1
-                    .attr('d', function(d){
-                        return diagonal(d.s, d.d)
-                    })
-                    .style("stroke-width", function(d){
-                        return d.w1})
-                svgLink1.exit().remove();
-
-                var svgLink2 = svg.selectAll(".link2").data(lines);
-                svgLink2.enter().append('path', "g")
-                    .attr("class", "link2")
-                    .attr('d', function(d){
-                        return diagonal(d.s, d.d)
-                    })
-                    .style("stroke-width", function(d){return d.w2})
-                svgLink2
-                    .attr('d', function(d){
-                        return diagonal(d.s, d.d)
-                    })
-                    .style("stroke-width", function(d){
-                        return d.w2})
-                svgLink2.exit().remove();
-
-                var svgLinkSelected = svg.selectAll(".linkselected").data(lines);
-                svgLinkSelected.enter().append('path', "g")
-                    .attr("class", "linkselected")
-                    .attr('d', function(d){
-                        return diagonal(d.s, d.d)
-                    })
-                    .style("stroke-width", function(d){
-                        return d.selectedw})
-                svgLinkSelected
-                    .attr('d', function(d){
-                        return diagonal(d.s, d.d)
-                    })
-                    .style("stroke-width", function(d){
-                        return d.selectedw})
-                svgLinkSelected.exit().remove();
+                    // 1.nodes
+                    /*
+                    svgNodes.enter().append("circle")
+                        .attr("class","node")
+                        .attr("r",function(d){return r;})
+                        .attr("cx",function(d){return d.x})
+                        .attr("cy",function(d){return d.y})
+                        */
+                    svgNodes.enter().append("rect")
+                        .attr("class","node")
+                        .classed("simultaneous",function(d){return d.name=="="})
+                        .attr("width",function(d){return radius_node*2;})
+                        .attr("height",function(d){return radius_node*2;})
+                        .attr("x",function(d){return mapX(d)-radius_node})
+                        .attr("y",function(d){return mapY(d)-radius_node})
+                        .on('mouseover', function (d) {
+                            // console.log("mouse over");
+                            scope.$apply(function(){
+                                scope.data.onSelectedFlowNode(d, redraw);
+                            });
+                        })
+                        .on('mouseleave', function (d) {
+                            // console.log("mouse leave");
+                            scope.data.onUnSelectedFlowNode();
+                            redraw();
+                        })
+                    svgNodes
+                        .classed("selected",function(d){
+                            return d.name==scope.data.selected_node;
+                        })
+                        .classed("simultaneous",function(d){return d.name=="="})
+                        .attr("width",function(d){return radius_node*2;})
+                        .attr("height",function(d){return radius_node*2;})
+                        .attr("x",function(d){return mapX(d)-radius_node})
+                        .attr("y",function(d){return mapY(d)-radius_node})
+                    svgNodes.exit().remove();
 
 
+                    var svgLeftParts = svg.selectAll(".node_left").data(nodes);
+                    var svgRightParts = svg.selectAll(".node_right").data(nodes);
+                    svgLeftParts.enter().append("rect")
+                        .attr("class","node_left")
+                        .attr("width",function(d){return radius_node*2*nodeBias[d.name].w1;})
+                        .attr("height",function(d){return radius_node*2;})
+                        .attr("x",function(d){return mapX(d)-radius_node})
+                        .attr("y",function(d){return mapY(d)-radius_node})
+                        .on('mouseover', function (d) {
+                            // console.log("mouse over");
+                            scope.$apply(function(){
+                                scope.data.onSelectedFlowNode(d, redraw);
+                            });
+                        })
+                        .on('mouseleave', function (d) {
+                            // console.log("mouse leave");
+                            scope.data.onUnSelectedFlowNode();
+                            redraw();
+                        })
+                    svgLeftParts
+                        .attr("width",function(d){return radius_node*2*nodeBias[d.name].w1;})
+                        .attr("height",function(d){return radius_node*2;})
+                        .attr("x",function(d){return mapX(d)-radius_node})
+                        .attr("y",function(d){return mapY(d)-radius_node})
+                    svgLeftParts.exit().remove();
 
 
+                    svgRightParts.enter().append("rect")
+                        .attr("class","node_right")
+                        .attr("width",function(d){return radius_node*2*nodeBias[d.name].w2;})
+                        .attr("height",function(d){return radius_node*2;})
+                        .attr("x",function(d){return mapX(d)+radius_node-radius_node*2*nodeBias[d.name].w2})
+                        .attr("y",function(d){return mapY(d)-radius_node})
+                        .on('mouseover', function (d) {
+                            // console.log("mouse over");
+                            scope.$apply(function(){
+                                scope.data.onSelectedFlowNode(d, redraw);
+                            });
+                        })
+                        .on('mouseleave', function (d) {
+                            // console.log("mouse leave");
+                            scope.data.onUnSelectedFlowNode();
+                            redraw();
+                        })
+                    svgRightParts
+                        .attr("width",function(d){return radius_node*2*nodeBias[d.name].w2;})
+                        .attr("height",function(d){return radius_node*2;})
+                        .attr("x",function(d){return mapX(d)+radius_node-radius_node*2*nodeBias[d.name].w2})
+                        .attr("y",function(d){return mapY(d)-radius_node})
+                    svgRightParts.exit().remove();
 
 
+                    var labels=[];
+                    if(scope.data.Show_node_label)
+                        nodes.forEach(function(d){labels.push(d);});
+                    var svgText = svg.selectAll(".text").data(labels);
+                    svgText.enter()
+                        .append("text")
+                        .attr("class","text")
+                        .text(function(d){return d.name})
+                        .attr("x",function(d){return mapX(d)})
+                        .attr("y",function(d){return mapY(d)+radius_node/2})
+                    svgText
+                        .text(function(d){return d.name})
+                        .attr("x",function(d){return mapX(d)})
+                        .attr("y",function(d){return mapY(d)+radius_node/2})
+
+                    svgText.exit().remove();
+                }
+
+                // draw links of the graph
+                function drawLinks(funPath){
+                    // 1.links
+                    var svgLink = svg.selectAll(".link").data(lines);
+                    svgLink.enter().append('path', "g")
+                        .attr("class", "link")
+                        .attr('d', function(d){return funPath(d)})
+                        .style("stroke-width", function(d){return getFlow_width(d)})
+                        .on('mouseover', function (d) {
+                            // console.log("mouse over");
+                            scope.data.onSelectedFlow(d, redraw);
+                            redraw();
+
+                        })
+                        .on('mouseleave', function (d) {
+                            // console.log("mouse leave");
+                            scope.data.onUnSelectedFlow();
+                            redraw();
+                        })
+                    svgLink
+                        .attr('d', function(d){return funPath(d)})
+                        .style("stroke-width", function(d){return getFlow_width(d)})
+                    svgLink.exit().remove();
+
+                    // 2.focused links
+                    var svgFocusedLink = svg.selectAll(".linkfocused").data(lines);
+                    svgFocusedLink.enter().append('path', "g")
+                        .attr("class", "linkfocused")
+                        .attr('d', function(d){return funPath(d)})
+                        .style("stroke-width", function(d){return getFlow_focused(d)? flowRange/max_count:0})
+                    svgFocusedLink
+                        .attr('d', function(d){return funPath(d)})
+                        .style("stroke-width", function(d){return getFlow_focused(d)? flowRange/max_count:0})
+                    svgFocusedLink.exit().remove();
+
+                    // 3.two parts
+                    var svgLink1 = svg.selectAll(".link1").data(lines);
+                    svgLink1.enter().append('path', "g")
+                        .attr("class", "link1")
+                        .attr('d', function(d){return funPath(d,1)})
+                        .style("stroke-width", function(d){return getFlow_width_1(d);})
+                    svgLink1
+                        .attr('d', function(d){return funPath(d,1)})
+                        .style("stroke-width", function(d){return getFlow_width_1(d);})
+                    svgLink1.exit().remove();
+
+                    var svgLink2 = svg.selectAll(".link2").data(lines);
+                    svgLink2.enter().append('path', "g")
+                        .attr("class", "link2")
+                        .attr('d', function(d){return funPath(d,2)})
+                        .style("stroke-width", function(d){return getFlow_width_2(d);})
+                    svgLink2
+                        .attr('d', function(d){return funPath(d,2)})
+                        .style("stroke-width", function(d){return getFlow_width_2(d);})
+                    svgLink2.exit().remove();
+
+                    // 4.selected
+                    var svgLinkSelected = svg.selectAll(".linkselected").data(lines);
+                    svgLinkSelected.enter().append('path', "g")
+                        .attr("class", "linkselected")
+                        .attr('d', function(d){return funPath(d)})
+                        .style("stroke-width", function(d){ return getFlow_width_selected(d);});
+                    svgLinkSelected
+                        .attr('d', function(d){return funPath(d)})
+                        .style("stroke-width", function(d){ return getFlow_width_selected(d);});
+                    svgLinkSelected.exit().remove();
+                }
+
+                // draw the background, should be called before other rendering
+                function drawBG(){
+                    var arrCircles=[
+                        {level:1,r:spanY*0.5},
+                        {level:2,r:spanY*1.1},
+                        {level:3,r:spanY*2.3}
+                    ]
+
+                    var svgCircle = svg.selectAll(".bg").data(arrCircles);
+
+                    svgCircle.enter().append("circle")
+                        .attr("class","bg")
+                        .attr("r",function(d){return d.r;})
+                        .attr("cx",function(d){return middleX})
+                        .attr("cy",function(d){return middleY})
+                        .style("fill","yellow")
+                        .style("opacity",.2)
+                    svgCircle
+                        .attr("r",function(d){return d.r;})
+                        .attr("cx",function(d){return middleX})
+                        .attr("cy",function(d){return middleY})
+                        .style("fill","yellow")
+                        .style("opacity",.3)
+                        .style("visibility",function(d){return scope.data.orthogonal? "visible":"hidden"})
+                    svgCircle.exit().remove();
+                }
+
+                // 2.draw
+                //drawBG();
+                if(scope.data.orthogonal){
+                    drawOrthogonal();
+                }
+                else{
+                    drawCommon();
+                }
+
+                drawNodes();
+                drawAttackPos();
+                drawAttackSteps();
             }
+
             redraw();
 
             scope.$watch('data', redraw);
@@ -754,7 +892,9 @@ mainApp.directive('tacticFlowChart', function () {
             scope.$watch('data.Sum_flow', redraw);
             scope.$watch('data.Switch_pos', redraw);
             scope.$watch('data.Show_tube', redraw);
+            scope.$watch('data.orthogonal', redraw);
             scope.$watch('data.Show_individual', redraw);
+            scope.$watch('data.Show_node_label', redraw);
         }
         tacticFlowChart();
     }

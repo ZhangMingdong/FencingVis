@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2016.3.8)  9 MAR 2018 15:08
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2016.3.8)  14 MAR 2018 10:12
 entering extended mode
 **FencingVis.tex
 (E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.tex
@@ -400,9 +400,6 @@ Package hyperref Info: Option `linktocpage' set `true' on input line 143.
 
 LaTeX Warning: Label `fig:sample' multiply defined.
 
-
-LaTeX Warning: Label `fig:sample' multiply defined.
-
 )
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 149.
 LaTeX Font Info:    ... okay on input line 149.
@@ -517,7 +514,7 @@ LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <10> not available
 (Font)              Font shape `OT1/phv/m/sl' tried instead on input line 158.
 \abstractwidth=\skip53
 
-<pictures/main.png, id=83, 1908.12875pt x 943.525pt>
+<pictures/main.png, id=87, 1908.12875pt x 943.525pt>
 File: pictures/main.png Graphic file (type png)
  <use pictures/main.png>
 Package pdftex.def Info: pictures/main.png used on input line 158.
@@ -525,7 +522,7 @@ Package pdftex.def Info: pictures/main.png used on input line 158.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <8> not available
 (Font)              Font shape `OT1/phv/b/n' tried instead on input line 158.
 
-<diamondrule.pdf, id=84, 213.79875pt x 12.045pt>
+<diamondrule.pdf, id=88, 213.79875pt x 12.045pt>
 File: diamondrule.pdf Graphic file (type pdf)
  <use diamondrule.pdf>
 Package pdftex.def Info: diamondrule.pdf used on input line 158.
@@ -548,74 +545,110 @@ File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 
  <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/main.png> <E:/FencingVis/F
 encingVis/Paper/FencingVis/diamondrule.pdf>]
-[2]
+
+LaTeX Warning: No positions in optional float specifier.
+               Default added (so using `tbp') on input line 251.
+
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 267.
- <pictures/motionview.png, id=131, 1263.21938pt x 791.20593pt>
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 255.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 255.
+
+Underfull \hbox (badness 10000) in paragraph at lines 260--260
+[]|\OT1/ptm/m/n/9 (+20) Footwork of
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 261--261
+[]|\OT1/ptm/m/n/9 (+20) Footwork of
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 262--262
+[]|\OT1/ptm/m/n/9 (+20) Bladework of
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 263--263
+[]|\OT1/ptm/m/n/9 (+20) Bladework of
+ []
+
+
+Underfull \hbox (badness 4505) in paragraph at lines 266--266
+[]|\OT1/ptm/m/n/9 (+20) Parry Po-si-tion
+ []
+
+
+Underfull \hbox (badness 4505) in paragraph at lines 267--267
+[]|\OT1/ptm/m/n/9 (+20) Parry Po-si-tion
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 268--268
+[]|\OT1/ptm/m/n/9 (+20) Confrontation
+ []
+
+[2]
+
+LaTeX Warning: Reference `fig:teaser' on page 3 undefined on input line 291.
+
+<pictures/motionview.png, id=133, 1263.21938pt x 791.20593pt>
 File: pictures/motionview.png Graphic file (type png)
 
 <use pictures/motionview.png>
-Package pdftex.def Info: pictures/motionview.png used on input line 305.
+Package pdftex.def Info: pictures/motionview.png used on input line 321.
 (pdftex.def)             Requested size: 514.92374pt x 322.51317pt.
 
-<pictures/glyph.png, id=132, 953.06062pt x 393.72093pt>
+<pictures/flowchart.png, id=135, 776.14969pt x 405.01312pt>
+File: pictures/flowchart.png Graphic file (type png)
+
+<use pictures/flowchart.png>
+Package pdftex.def Info: pictures/flowchart.png used on input line 345.
+(pdftex.def)             Requested size: 514.92374pt x 268.70615pt.
+ [3]
+<pictures/glyph.png, id=146, 953.06062pt x 393.72093pt>
 File: pictures/glyph.png Graphic file (type png)
 
 <use pictures/glyph.png>
-Package pdftex.def Info: pictures/glyph.png used on input line 314.
-(pdftex.def)             Requested size: 251.31898pt x 103.81888pt.
+Package pdftex.def Info: pictures/glyph.png used on input line 402.
+(pdftex.def)             Requested size: 514.92374pt x 212.7323pt.
+ [4 <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/motionview.png>] <pictu
+res/case1.png, id=161, 904.1278pt x 430.60875pt>
+File: pictures/case1.png Graphic file (type png)
 
-
-LaTeX Warning: Reference `tab:vis_papers' on page 3 undefined on input line 315
-.
-
-
-LaTeX Warning: Citation `Isenberg:2017:VMC' on page 3 undefined on input line 3
-15.
-
-
-LaTeX Warning: Reference `tab:vis_papers' on page 3 undefined on input line 315
-.
-
-
-LaTeX Warning: Citation `Isenberg:2017:VMC' on page 3 undefined on input line 3
-15.
-
-<pictures/ScorePhrases.png, id=133, 992.95969pt x 429.10312pt>
+<use pictures/case1.png>
+Package pdftex.def Info: pictures/case1.png used on input line 458.
+(pdftex.def)             Requested size: 514.92374pt x 245.23927pt.
+ [5 <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/flowchart.png>]
+<pictures/ScorePhrases.png, id=167, 992.95969pt x 429.10312pt>
 File: pictures/ScorePhrases.png Graphic file (type png)
 
 <use pictures/ScorePhrases.png>
-Package pdftex.def Info: pictures/ScorePhrases.png used on input line 328.
+Package pdftex.def Info: pictures/ScorePhrases.png used on input line 508.
 (pdftex.def)             Requested size: 514.92374pt x 222.52597pt.
-
-<pictures/threeBout.png, id=134, 1343.0175pt x 434.37282pt>
+ [6 <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/glyph.png>]
+<pictures/threeBout.png, id=187, 1343.0175pt x 434.37282pt>
 File: pictures/threeBout.png Graphic file (type png)
 
 <use pictures/threeBout.png>
-Package pdftex.def Info: pictures/threeBout.png used on input line 334.
+Package pdftex.def Info: pictures/threeBout.png used on input line 520.
 (pdftex.def)             Requested size: 514.92374pt x 166.54141pt.
 
 
-LaTeX Warning: Reference `tab:vis_papers' on page 3 undefined on input line 335
-.
-
-
-LaTeX Warning: Citation `Isenberg:2017:VMC' on page 3 undefined on input line 3
-35.
+LaTeX Warning: Citation `Wu2018iTTVis' on page 7 undefined on input line 536.
 
 (E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 357.
- [3 <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/glyph.png>] [4 <E:/Fenc
-ingVis/FencingVis/Paper/FencingVis/pictures/motionview.png> <E:/FencingVis/Fenc
-ingVis/Paper/FencingVis/pictures/ScorePhrases.png>] [5 <E:/FencingVis/FencingVi
-s/Paper/FencingVis/pictures/threeBout.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 357.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 568.
+ [7 <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/case1.png>] [8 <E:/Fenc
+ingVis/FencingVis/Paper/FencingVis/pictures/ScorePhrases.png> <E:/FencingVis/Fe
+ncingVis/Paper/FencingVis/pictures/threeBout.png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 568.
 
 (E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 357.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 357.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 568.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 568.
 Package rerunfilecheck Info: File `FencingVis.out' has not changed.
-(rerunfilecheck)             Checksum: 8ABDC4620352E91864CAAFED2185A0EC;1310.
+(rerunfilecheck)             Checksum: 520DB7DA567D0D6C4BC90E90DB6B773E;1374.
 
 
 LaTeX Warning: There were undefined references.
@@ -625,21 +658,21 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 8207 strings out of 495354
- 122412 string characters out of 3183860
- 245604 words of memory out of 3000000
- 11015 multiletter control sequences out of 15000+200000
- 48340 words of font info for 203 fonts, out of 3000000 for 9000
+ 8289 strings out of 495354
+ 123504 string characters out of 3183860
+ 250798 words of memory out of 3000000
+ 11052 multiletter control sequences out of 15000+200000
+ 53075 words of font info for 227 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 33i,7n,35p,1153b,399s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 33i,9n,35p,1153b,399s stack positions out of 5000i,500n,10000p,200000b,50000s
 {D:/CTEX/MiKTeX/fonts/enc/dvips/fontname/8r.enc}<D:/CTEX/MiKTeX/fonts/type1/u
 rw/helvetic/uhvb8a.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><D:/
 CTEX/MiKTeX/fonts/type1/urw/helvetic/uhvro8a.pfb><D:/CTEX/MiKTeX/fonts/type1/ur
 w/times/utmb8a.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><D:/CTEX/Mi
 KTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on FencingVis.pdf (5 pages, 1084350 bytes).
+Output written on FencingVis.pdf (8 pages, 1255699 bytes).
 PDF statistics:
- 193 PDF objects out of 1000 (max. 8388607)
- 54 named destinations out of 1000 (max. 500000)
- 45759 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 241 PDF objects out of 1000 (max. 8388607)
+ 75 named destinations out of 1000 (max. 500000)
+ 51409 words of extra memory for PDF output out of 51595 (max. 10000000)
 
