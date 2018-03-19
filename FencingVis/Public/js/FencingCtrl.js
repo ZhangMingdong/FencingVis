@@ -29,8 +29,7 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
         , flow:{}                 // data of the tactic flow
         , selected_flow:{}        // flow of the selected part
         , focused_flow:{}         // flow of the focused bout
-        , flow_1st:{}             // flow of the first half
-        , flow_2nd:{}             // flow of the second half
+        , flow_groups:[]          // groups of flows, first and 2nd halves or different bouts
         , Sum_flow:true          // show sum of the flow
         , flow_player1:{}         // show flow of player 1
         , flow_player2:{}         // show flow of player 2
@@ -42,6 +41,7 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
         , selected_node:""         // nodes in the tactic flow chart with mouse hover
         , selected_phrases:[]       // phrases of the selected nodes or flow in flowchart
         , orthogonal:false             // whether show orthogonal layout
+        , asymmetric:false          // if show asymmetric layout
     }
 
     // 2. definition of the functions
@@ -95,8 +95,7 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
             $scope.fencingData.flow=arrFlow[0];
             $scope.fencingData.flow_player1=arrFlow[1];
             $scope.fencingData.flow_player2=arrFlow[2];
-            $scope.fencingData.flow_1st=arrFlow[3];
-            $scope.fencingData.flow_2nd=arrFlow[4];
+            $scope.fencingData.flow_groups=[arrFlow[3],arrFlow[4]]
             // initiate selected flow to 0
             $scope.fencingData.selected_flow={
                 sbb:0
@@ -126,6 +125,7 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
             if (error) throw error;
         });
     }
+
     // add a motion to the first argument
     function addMotion(motion,bout,seq,player,start,end,type){
         motion.push({
@@ -133,9 +133,9 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
             player:player,
             seq:+seq,
             frame_start:start,
-            frame_end:end,
+            frame_end:end+1,
             bias_start:start,
-            bias_end:end,
+            bias_end:end+1,
             type:type
         });
 
@@ -447,6 +447,26 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
                 phrases[d.bout-1].hands2.push(d);
         })
 
+
+
+        // print the motion sequence
+        var printMotionSeq=true;
+        if(printMotionSeq){
+            var arrMotionType=[]
+            phrases.forEach(function(ph){
+                var phrase=[[],[]]
+                ph.feet1.forEach(function(d){
+                    phrase[0].push(d.type);
+                })
+                ph.feet2.forEach(function(d){
+                    phrase[1].push(d.type);
+                })
+                arrMotionType.push(phrase);
+            //    console.log(phrase);
+            })
+            //console.log(JSON.stringify(arrMotionType))
+        }
+
         return phrases;
 
     }
@@ -723,6 +743,127 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
         $scope.fencingData.filtered_phrase=arrFilter.filter(function(d){return d==0}).length;
     }
 
+    // generate a sequence from the flow
+    function generateFlowSequence(str){
+        function generateFBSeq(str){
+            var sequence=[];
+            if(str[2]=='f'||str.substring(2,4)=="rr"){
+                sequence.push("1");
+            }
+            else if(str[2]=='b'){
+                if(str.substring(3,5)=="fb"){
+                    sequence.push("FB");
+                    generateFBSeq(str.substring(3)).forEach(function(d){
+                        sequence.push(d);
+                    })
+                }
+                else if(str.substring(3,5)=="bf"){
+                    sequence.push("BF");
+                    generateBFSeq(str.substring(3)).forEach(function(d){
+                        sequence.push(d);
+                    })
+                }
+                else{
+                    console.log("error in the string")
+                    console.log(str.substring(3,5))
+                }
+            }
+            else if(str[2]=='a'||str[2]=='r'||str[2]=='c'){
+                sequence.push("2");
+            }
+            else{
+                console.log(str)
+                console.log("error in the string")
+            }
+            return sequence;
+        }
+        function generateBFSeq(str){
+            if(str[2]=='f'||str.substring(2,4)=="rr"){
+                sequence.push("2");
+            }
+            else if(str[2]=='b'){
+                if(str.substring(3,5)=="bf"){
+                    sequence.push("BF");
+                    generateBFSeq(str.substring(3)).forEach(function(d){
+                        sequence.push(d);
+                    })
+                }
+                else if(str.substring(3,5)=="fb"){
+                    sequence.push("FB");
+                    generateFBSeq(str.substring(3)).forEach(function(d){
+                        sequence.push(d);
+                    })
+                }
+                else{
+                    console.log("error in the string")
+                }
+            }
+            else if(str[2]=='a'||str[2]=='r'||str[2]=='c'){
+                sequence.push("1");
+
+            }
+            else{
+                console.log("error in the string")
+            }
+        }
+
+        var sequence=[];
+        var seg=str.substring(0,2)
+        if(seg=="ff"){
+            sequence.push("FF");
+            if(str[2]=='1')sequence.push("1");
+            if(str[2]=='b')sequence.push("0");
+            if(str[2]=='2')sequence.push("2");
+        }
+        else if(seg=="bb"){
+            sequence.push("BB");
+            generateFlowSequence(str.substring(2)).forEach(function(d){
+                sequence.push(d);
+            })
+        }
+        else if(seg=="fb") {
+            sequence.push("FB");
+            if(str[2]=='f'||str.substring(2,4)=="rr"){
+                sequence.push("1");
+            }
+            else if(str[2]=='b'){
+                generateFlowSequence(str.substring(3)).forEach(function(d){
+                    sequence.push(d);
+                })
+            }
+            else if(str[2]=='a'||str[2]=='r'||str[2]=='c'){
+                sequence.push("2");
+            }
+            else{
+                console.log(str)
+                console.log("error in the string")
+            }
+        }
+        else if(seg=="bf") {
+            sequence.push("BF");
+            if(str[2]=='f'||str.substring(2,4)=="rr"){
+                sequence.push("2");
+            }
+            else if(str[2]=='b'){
+                generateFlowSequence(str.substring(3)).forEach(function(d){
+                    sequence.push(d);
+                })
+            }
+            else if(str[2]=='a'||str[2]=='r'||str[2]=='c'){
+                sequence.push("1");
+            }
+            else{
+                console.log(str)
+                console.log("error in the string")
+            }
+        }
+        else{
+            console.log(str);
+            console.log("error in the string")
+        }
+        return sequence;
+    }
+
     // read in the default file
     readDataV2();
 
@@ -920,7 +1061,7 @@ mainApp.controller('FencingCtrl', function ($scope, $http,$window) {
         selectedPhrases.forEach(function(d){
         //    console.log(d);
             //console.log(d.bout,d.pos1,d.pos2);
-            parseFlow(newFlow,d.flow);
+            if(d.flow) parseFlow(newFlow,d.flow);
         })
 
         $scope.fencingData.selected_phrases=selectedPhrases;

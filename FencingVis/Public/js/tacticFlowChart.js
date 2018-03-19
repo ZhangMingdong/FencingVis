@@ -32,21 +32,7 @@ mainApp.directive('tacticFlowChart', function () {
                 return svgBGW + svgBGH;
             }, resize);
 
-            // switch element in the array of index1 and index 2
-            function switchFlow(arr,index1,index2){
-                var width=arr[index1].width;
-                var focused=arr[index1].focused;
-                var w1=arr[index1].w1;
-                var w2=arr[index1].w2;
-                arr[index1].width=arr[index2].width;
-                arr[index1].focused=arr[index2].focused;
-                arr[index1].w1=arr[index2].w1;
-                arr[index1].w2=arr[index2].w2;
-                arr[index2].width=width;
-                arr[index2].focused=focused;
-                arr[index2].w1=w1;
-                arr[index2].w2=w2;
-            }
+
 
             // response the size-change
             function resize(){
@@ -62,6 +48,7 @@ mainApp.directive('tacticFlowChart', function () {
             }
 
             function redraw(){
+                if(scope.data.flow_groups.length==0) return;
                 // 1.definitions
                 var radius_node=0.055*svgH;//30;         // radius of nodes
                 var flowRange=radius_node*2;//60;           // range of the flow width
@@ -91,8 +78,7 @@ mainApp.directive('tacticFlowChart', function () {
                 // flow and mapping
                 var flow=scope.data.flow;
                 var focused_flow=scope.data.focused_flow;
-                var flow1=scope.data.flow_1st;
-                var flow2=scope.data.flow_2nd;
+                var flow_groups=scope.data.flow_groups;
                 var selected_flow=scope.data.selected_flow;
 
                 // calculate max count
@@ -103,16 +89,14 @@ mainApp.directive('tacticFlowChart', function () {
 
 
                 function getFlow_width(d){
-                    return scope.data.Sum_flow?flowRange*flow[d.name]/max_count:0;
+                    return flowRange*flow[d.name]/max_count;
                 }
                 function getFlow_focused(d){
                     return focused_flow[d.name]>0;}
                 function getFlow_width_selected(d){
-                    return scope.data.Sum_flow?flowRange*selected_flow[d.name]/max_count:0;}
-                function getFlow_width_1(d){
-                    return scope.data.Sum_flow?0:flowRange*flow1[d.name]/max_count;}
-                function getFlow_width_2(d){
-                    return scope.data.Sum_flow?0:flowRange*flow2[d.name]/max_count;}
+                    return flowRange*selected_flow[d.name]/max_count;}
+                function getFlow_group_width(d,group){
+                    return flowRange*flow_groups[group][d.name]/max_count;}
 
                 // draw orthogonal layout
                 function drawOrthogonal(){
@@ -166,28 +150,19 @@ mainApp.directive('tacticFlowChart', function () {
                         var s={x:mapX(nodes[indexS]),y:mapY(nodes[indexS])}
                         var d={x:mapX(nodes[indexD]),y:mapY(nodes[indexD])}
                         // adjust the parts
-                        var w1=getFlow_width_1(link);
-                        var w2=getFlow_width_2(link);
-                        if(part==1){
+                        if(part!=undefined){
+                            var bias=-getFlow_width(link)/2;
+                            for(var i=0;i<part;i++) bias+=getFlow_group_width(link,i);
+                            bias+=getFlow_group_width(link,part)/2;
                             if(s.x==d.x){
-                                s.x-=w2/2;
-                                d.x-=w2/2;
+                                s.x+=bias;
+                                d.x+=bias;
                             }
                             else{
-                                s.y-=w2/2;
-                                d.y-=w2/2;
+                                s.y+=bias;
+                                d.y+=bias;
                             }
-                        }
-                        else if(part==2){
-                            if(s.x==d.x){
-                                s.x+=w1/2;
-                                d.x+=w1/2;
-                            }
-                            else{
-                                s.y+=w1/2;
-                                d.y+=w1/2;
-                            }
-                        }
+                    }
 
                         // adjust the node radius
                         if(s.x==d.x){
@@ -221,36 +196,219 @@ mainApp.directive('tacticFlowChart', function () {
 
                 // draw common layout
                 function drawCommon(){
-                    nodes=[
-                         {x:-0.5 ,y:-1.7, name:"S" }
-                        ,{x:+0.5 ,y:-1.7, name:"BB"}
-                        ,{x:+2.0 ,y:-0.2,name:"FB"}
-                        ,{x:+0.0 ,y:-0.2,name:"FF"}
-                        ,{x:-2.0 ,y:-0.2,name:"BF"}
-                        ,{x:+2.0 ,y:+1.2,name:"1" }
-                        ,{x:+0.0 ,y:+1.2,name:"=" }
-                        ,{x:-2.0 ,y:+1.2,name:"2" }
-                    ]
+                    // variables used in diagonal
+                    var biasEarW=spanY*.5;//60;
+                    var biasEarH=spanY*.5;//60;
+                    var biasTopW=spanY*.7;//80;
+                    var biasTopH=spanY*1.3;//150;
+                    var biasBottomW=spanY*.9;//100;
+                    var biasBottomH=spanY*.9;//200;
+                    var topBias=spanY*2.4;//280;
+                    var bottomBias=spanY*2.4;//280;
+
                     lines=[
-                        {s:0,d:1,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"sbb"}      //0    S-BB
-                        ,{s:0,d:2,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"sfb"}      //1    S-FB
-                        ,{s:0,d:3,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"sff"}      //2    S-FF
-                        ,{s:0,d:4,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"sbf"}      //3    S-BF
-                        ,{s:1,d:2,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"bbfb"}      //4    BB-FB
-                        ,{s:1,d:3,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"bbff"}      //5    BB-FF
-                        ,{s:1,d:4,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"bbbf"}      //6    BB-BF
-                        ,{s:2,d:5,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"fb1"}      //7    FBF
-                        ,{s:2,d:7,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"fb2"}      //8    FBR\FBA
-                        ,{s:3,d:5,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"ff1"}      //9    FF1
-                        ,{s:3,d:6,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"ffb"}      //10   FFB
-                        ,{s:3,d:7,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"ff2"}      //11   FF2
-                        ,{s:4,d:5,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"bf1"}      //12   BFR\BFA
-                        ,{s:4,d:7,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"bf2"}      //13   BFF
-                        ,{s:2,d:4,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"fbb"}      //14   FBB
-                        ,{s:4,d:2,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"bfb"}      //15   BFB
-                        ,{s:2,d:2,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"fbfb"}      //16   FBFB
-                        ,{s:4,d:4,width:0,w1:0,w2:0,selectedw:0,focused:false,name:"bfbf"}      //17   BFBF
+                        {s:0,d:1,name:"sbb"}      //0    S-BB
+                        ,{s:0,d:2,name:"sfb"}      //1    S-FB
+                        ,{s:0,d:3,name:"sff"}      //2    S-FF
+                        ,{s:0,d:4,name:"sbf"}      //3    S-BF
+                        ,{s:1,d:2,name:"bbfb"}      //4    BB-FB
+                        ,{s:1,d:3,name:"bbff"}      //5    BB-FF
+                        ,{s:1,d:4,name:"bbbf"}      //6    BB-BF
+                        ,{s:2,d:5,name:"fb1"}      //7    FBF
+                        ,{s:2,d:7,name:"fb2"}      //8    FBR\FBA
+                        ,{s:3,d:5,name:"ff1"}      //9    FF1
+                        ,{s:3,d:6,name:"ffb"}      //10   FFB
+                        ,{s:3,d:7,name:"ff2"}      //11   FF2
+                        ,{s:4,d:5,name:"bf1"}      //12   BFR\BFA
+                        ,{s:4,d:7,name:"bf2"}      //13   BFF
+                        ,{s:2,d:4,name:"fbb"}      //14   FBB
+                        ,{s:4,d:2,name:"bfb"}      //15   BFB
+                        ,{s:2,d:2,name:"fbfb"}      //16   FBFB
+                        ,{s:4,d:4,name:"bfbf"}      //17   BFBF
                     ]
+                    // Switch Position
+                    if (scope.data.Switch_pos){
+                        switchFlow(lines,1,3);
+                        switchFlow(lines,4,6);
+                        switchFlow(lines,7,13);
+                        switchFlow(lines,8,12);
+                        switchFlow(lines,9,11);
+                        switchFlow(lines,14,15);
+                        switchFlow(lines,16,17);
+                    }
+
+                    function drawAsymmetric(){
+                        nodes=[
+                            {x:-0.5 ,y:-1.7, name:"S" }
+                            ,{x:+0.5 ,y:-1.7, name:"BB"}
+                            ,{x:+2.0 ,y:-0.2,name:"FB"}
+                            ,{x:-2.0 ,y:-0.2,name:"FF"}
+                            ,{x:-0.0 ,y:-0.2,name:"BF"}
+                            ,{x:+2.0 ,y:+1.2,name:"1" }
+                            ,{x:-2.0 ,y:+1.2,name:"=" }
+                            ,{x:-0.0 ,y:+1.2,name:"2" }
+                        ]
+                        function diagonal(link) {
+                            var indexS=link.s;
+                            var indexD=link.d;
+
+                            var path;
+                            if(indexS==0&&indexD==1){
+                                var s={x:mapX(nodes[indexS])+radius_node,y:mapY(nodes[indexS])}
+                                var d={x:mapX(nodes[indexD])-radius_node,y:mapY(nodes[indexD])}
+                                path = `M ${s.x} ${s.y}
+                                L  ${d.x} ${d.y}`
+
+                            }//S-BB
+                            else if(indexS==4&&indexD==2){
+                                var s={x:mapX(nodes[indexS])+radius_node,y:mapY(nodes[indexS])+radius_node/2}
+                                var d={x:mapX(nodes[indexD])-radius_node,y:mapY(nodes[indexD])+radius_node/2}
+                                path = `M ${s.x} ${s.y}
+                                        L  ${d.x} ${d.y}`
+
+                            }//BFB
+                            else if(indexS==2&&indexD==4){
+                                var s={x:mapX(nodes[indexS])+radius_node,y:mapY(nodes[indexS])-radius_node/2}
+                                var d={x:mapX(nodes[indexD])-radius_node,y:mapY(nodes[indexD])-radius_node/2}
+                                path = `M ${s.x} ${s.y}
+                                        L  ${d.x} ${d.y}`
+
+                            }//FBB
+                            else if(indexS==4&&indexD==4){
+                                var x=mapX(nodes[indexS]);
+                                var y=mapY(nodes[indexS]);
+                                path = `M ${x         } ${y+radius_node}
+                                C ${x         } ${y+biasEarH},
+                                  ${x-biasEarW} ${y+biasEarH},
+                                  ${x-biasEarW} ${y}
+                                C ${x-biasEarW} ${y-biasEarH},
+                                  ${x         } ${y-biasEarH},
+                                  ${x         } ${y-radius_node}`
+                            }//BFBF
+                            else if(indexS==2&&indexD==2){
+                                var x=mapX(nodes[indexS]);
+                                var y=mapY(nodes[indexS]);
+                                path = `M ${x         } ${y+radius_node}
+                                C ${x         } ${y+biasEarH},
+                                  ${x+biasEarW} ${y+biasEarH},
+                                  ${x+biasEarW} ${y}
+                                C ${x+biasEarW} ${y-biasEarH},
+                                  ${x         } ${y-biasEarH},
+                                  ${x         } ${y-radius_node}`
+                            }//FBFB
+                            else{
+                                var s={x:mapX(nodes[indexS]),y:mapY(nodes[indexS])+radius_node}
+                                var d={x:mapX(nodes[indexD]),y:mapY(nodes[indexD])-radius_node}
+                                path = `M ${s.x} ${s.y}
+                                C ${s.x} ${(s.y + d.y) / 2},
+                                  ${d.x} ${(s.y + d.y) / 2},
+                                  ${d.x} ${d.y}`
+                            }
+                            return path
+                        }
+
+                        drawTube(diagonal);
+                        drawLinks(diagonal);
+                    }
+
+                    function drawSymmetric(){
+                        nodes=[
+                            {x:-0.5 ,y:-1.7, name:"S" }
+                            ,{x:+0.5 ,y:-1.7, name:"BB"}
+                            ,{x:+2.0 ,y:-0.2,name:"FB"}
+                            ,{x:+0.0 ,y:-0.2,name:"FF"}
+                            ,{x:-2.0 ,y:-0.2,name:"BF"}
+                            ,{x:+2.0 ,y:+1.2,name:"1" }
+                            ,{x:+0.0 ,y:+1.2,name:"=" }
+                            ,{x:-2.0 ,y:+1.2,name:"2" }
+                        ]
+                        function diagonal(link) {
+                            var indexS=link.s;
+                            var indexD=link.d;
+
+                            var path;
+                            if(indexS==0&&indexD==1){
+                                var s={x:mapX(nodes[indexS])+radius_node,y:mapY(nodes[indexS])}
+                                var d={x:mapX(nodes[indexD])-radius_node,y:mapY(nodes[indexD])}
+                                path = `M ${s.x} ${s.y}
+                                L  ${d.x} ${d.y}`
+
+                            }//S-BB
+                            else if(indexS==4&&indexD==2){
+                                var s={x:mapX(nodes[indexS]),y:mapY(nodes[indexS])-radius_node}
+                                var d={x:mapX(nodes[indexD]),y:mapY(nodes[indexD])-radius_node}
+                                path = `M ${s.x} ${s.y}
+                                C ${s.x} ${s.y-topBias},
+                                  ${d.x} ${d.y-topBias},
+                                  ${d.x} ${d.y}`
+
+                            }//BFB
+                            else if(indexS==2&&indexD==4){
+                                var s={x:mapX(nodes[indexS])+radius_node,y:mapY(nodes[indexS])}
+                                var d={x:mapX(nodes[indexD])-radius_node,y:mapY(nodes[indexD])}
+                                path = `M ${s.x                 } ${s.y}
+                                C ${s.x+biasBottomW     } ${s.y},
+                                  ${s.x+biasBottomW     } ${s.y+bottomBias},
+                                  ${(s.x+d.x)/2         } ${s.y+bottomBias}
+                                C ${d.x-biasBottomW     } ${d.y+bottomBias},
+                                  ${d.x-biasBottomW     } ${d.y},
+                                  ${d.x                 } ${d.y}`
+
+                            }//FBB
+                            else if(indexS==4&&indexD==4){
+                                var x=mapX(nodes[indexS]);
+                                var y=mapY(nodes[indexS]);
+                                path = `M ${x         } ${y+radius_node}
+                                C ${x         } ${y+biasEarH},
+                                  ${x-biasEarW} ${y+biasEarH},
+                                  ${x-biasEarW} ${y}
+                                C ${x-biasEarW} ${y-biasEarH},
+                                  ${x         } ${y-biasEarH},
+                                  ${x         } ${y-radius_node}`
+                            }//BFBF
+                            else if(indexS==2&&indexD==2){
+                                var x=mapX(nodes[indexS]);
+                                var y=mapY(nodes[indexS]);
+                                path = `M ${x         } ${y+radius_node}
+                                C ${x         } ${y+biasEarH},
+                                  ${x+biasEarW} ${y+biasEarH},
+                                  ${x+biasEarW} ${y}
+                                C ${x+biasEarW} ${y-biasEarH},
+                                  ${x         } ${y-biasEarH},
+                                  ${x         } ${y-radius_node}`
+                            }//FBFB
+                            else{
+                                var s={x:mapX(nodes[indexS]),y:mapY(nodes[indexS])+radius_node}
+                                var d={x:mapX(nodes[indexD]),y:mapY(nodes[indexD])-radius_node}
+                                path = `M ${s.x} ${s.y}
+                                C ${s.x} ${(s.y + d.y) / 2},
+                                  ${d.x} ${(s.y + d.y) / 2},
+                                  ${d.x} ${d.y}`
+                            }
+                            return path
+                        }
+
+                        drawTube(diagonal);
+                        drawLinks(diagonal);
+                    }
+
+                    if(scope.data.asymmetric) drawAsymmetric();
+                    else drawSymmetric();
+
+                    function drawTube(diagonal){
+                        var svgLinkTube = svg.selectAll(".linktube").data(scope.data.Show_tube?lines:[]);
+                        svgLinkTube.enter().insert('path', "g")
+                            .attr("class", "linktube")
+                            .attr('d', function(d){
+                                return diagonal(d)
+                            })
+                        svgLinkTube
+                            .attr('d', function(d){
+                                return diagonal(d)
+                            })
+                        svgLinkTube.exit().remove();
+                    }
+
 
                     // 3.for players
                     var flow_player1=scope.data.flow_player1;
@@ -258,7 +416,7 @@ mainApp.directive('tacticFlowChart', function () {
                     if(flow_player1.b)
                     {
                         var nodes1=[
-                             {x:-4.0   ,y:-1.6,name:"S"}
+                            {x:-4.0   ,y:-1.6,name:"S"}
                             ,{x:-4.5   ,y:+0.0,name:"B"}
                             ,{x:-3.5   ,y:+0.0,name:"F"}
                             ,{x:-4.8   ,y:+1.6,name:"1"}
@@ -266,7 +424,7 @@ mainApp.directive('tacticFlowChart', function () {
                             ,{x:-3.2   ,y:+1.6,name:"2"}
                         ]
                         var nodes2=[
-                             {x:+4.00   ,y:-1.6,name:"S"}
+                            {x:+4.00   ,y:-1.6,name:"S"}
                             ,{x:+4.50  ,y:+0.0,name:"B"}
                             ,{x:+3.50  ,y:+0.0,name:"F"}
                             ,{x:+4.80  ,y:+1.6,name:"1"}
@@ -413,110 +571,9 @@ mainApp.directive('tacticFlowChart', function () {
 
                         svgText2.exit().remove();
                     }
-                    //console.log(flow_total,max_count);
-
-                    // Switch Position
-                    if (scope.data.Switch_pos){
-                        switchFlow(lines,1,3);
-                        switchFlow(lines,4,6);
-                        switchFlow(lines,7,13);
-                        switchFlow(lines,8,12);
-                        switchFlow(lines,9,11);
-                        switchFlow(lines,14,15);
-                        switchFlow(lines,16,17);
-                    }
-
-                    function diagonal(link) {
-                        var indexS=link.s;
-                        var indexD=link.d;
-                        var biasEarW=spanY*.5;//60;
-                        var biasEarH=spanY*.5;//60;
-                        var biasTopW=spanY*.7;//80;
-                        var biasTopH=spanY*1.3;//150;
-                        var biasBottomW=spanY*.9;//100;
-                        var biasBottomH=spanY*.9;//200;
-                        var topBias=spanY*2.4;//280;
-                        var bottomBias=spanY*2.4;//280;
-
-                        var path;
-                        if(indexS==0&&indexD==1){
-                            var s={x:mapX(nodes[indexS])+radius_node,y:mapY(nodes[indexS])}
-                            var d={x:mapX(nodes[indexD])-radius_node,y:mapY(nodes[indexD])}
-                            path = `M ${s.x} ${s.y}
-                                L  ${d.x} ${d.y}`
-
-                        }//S-BB
-                        else if(indexS==4&&indexD==2){
-                            var s={x:mapX(nodes[indexS]),y:mapY(nodes[indexS])-radius_node}
-                            var d={x:mapX(nodes[indexD]),y:mapY(nodes[indexD])-radius_node}
-                            path = `M ${s.x} ${s.y}
-                                C ${s.x} ${s.y-topBias},
-                                  ${d.x} ${d.y-topBias},
-                                  ${d.x} ${d.y}`
-
-                        }//BFB
-                        else if(indexS==2&&indexD==4){
-                            var s={x:mapX(nodes[indexS])+radius_node,y:mapY(nodes[indexS])}
-                            var d={x:mapX(nodes[indexD])-radius_node,y:mapY(nodes[indexD])}
-                            path = `M ${s.x                 } ${s.y}
-                                C ${s.x+biasBottomW     } ${s.y},
-                                  ${s.x+biasBottomW     } ${s.y+bottomBias},
-                                  ${(s.x+d.x)/2         } ${s.y+bottomBias}
-                                C ${d.x-biasBottomW     } ${d.y+bottomBias},
-                                  ${d.x-biasBottomW     } ${d.y},
-                                  ${d.x                 } ${d.y}`
-
-                        }//FBB
-                        else if(indexS==4&&indexD==4){
-                            var x=mapX(nodes[indexS]);
-                            var y=mapY(nodes[indexS]);
-                            path = `M ${x         } ${y+radius_node}
-                                C ${x         } ${y+biasEarH},
-                                  ${x-biasEarW} ${y+biasEarH},
-                                  ${x-biasEarW} ${y}
-                                C ${x-biasEarW} ${y-biasEarH},
-                                  ${x         } ${y-biasEarH},
-                                  ${x         } ${y-radius_node}`
-                        }//BFBF
-                        else if(indexS==2&&indexD==2){
-                            var x=mapX(nodes[indexS]);
-                            var y=mapY(nodes[indexS]);
-                            path = `M ${x         } ${y+radius_node}
-                                C ${x         } ${y+biasEarH},
-                                  ${x+biasEarW} ${y+biasEarH},
-                                  ${x+biasEarW} ${y}
-                                C ${x+biasEarW} ${y-biasEarH},
-                                  ${x         } ${y-biasEarH},
-                                  ${x         } ${y-radius_node}`
-                        }//FBFB
-                        else{
-                            var s={x:mapX(nodes[indexS]),y:mapY(nodes[indexS])+radius_node}
-                            var d={x:mapX(nodes[indexD]),y:mapY(nodes[indexD])-radius_node}
-                            path = `M ${s.x} ${s.y}
-                                C ${s.x} ${(s.y + d.y) / 2},
-                                  ${d.x} ${(s.y + d.y) / 2},
-                                  ${d.x} ${d.y}`
-                        }
-                        return path
-                    }
-
-                    drawTube();
-                    drawLinks(diagonal);
-
-                    function drawTube(){
-                        var svgLinkTube = svg.selectAll(".linktube").data(scope.data.Show_tube?lines:[]);
-                        svgLinkTube.enter().insert('path', "g")
-                            .attr("class", "linktube")
-                            .attr('d', function(d){
-                                return diagonal(d)
-                            })
-                        svgLinkTube
-                            .attr('d', function(d){
-                                return diagonal(d)
-                            })
-                        svgLinkTube.exit().remove();
-                    }
-
+                //    console.log(JSON.stringify(nodes))
+                //    console.log(JSON.stringify(lines))
+                //    console.log(JSON.stringify(flow))
 
                 }
 
@@ -683,7 +740,7 @@ mainApp.directive('tacticFlowChart', function () {
                         .attr("x",function(d){return mapX(d)-radius_node})
                         .attr("y",function(d){return mapY(d)-radius_node})
                         .on('mouseover', function (d) {
-                            // console.log("mouse over");
+                            //console.log("mouse over");
                             scope.$apply(function(){
                                 scope.data.onSelectedFlowNode(d, redraw);
                             });
@@ -777,26 +834,27 @@ mainApp.directive('tacticFlowChart', function () {
 
                 // draw links of the graph
                 function drawLinks(funPath){
+                    var colorScale = d3.scaleOrdinal(d3["schemeCategory10"]);
                     // 1.links
                     var svgLink = svg.selectAll(".link").data(lines);
                     svgLink.enter().append('path', "g")
                         .attr("class", "link")
                         .attr('d', function(d){return funPath(d)})
-                        .style("stroke-width", function(d){return getFlow_width(d)})
-                        .on('mouseover', function (d) {
-                            // console.log("mouse over");
+                        .style("stroke-width", function(d){return scope.data.Sum_flow?getFlow_width(d):0})
+                        .on('mouseenter', function (d) {
+                        //    console.log("mouse over");
                             scope.data.onSelectedFlow(d, redraw);
                             redraw();
 
                         })
                         .on('mouseleave', function (d) {
-                            // console.log("mouse leave");
+                        //    console.log("mouse leave");
                             scope.data.onUnSelectedFlow();
                             redraw();
                         })
                     svgLink
                         .attr('d', function(d){return funPath(d)})
-                        .style("stroke-width", function(d){return getFlow_width(d)})
+                        .style("stroke-width", function(d){return scope.data.Sum_flow?getFlow_width(d):0})
                     svgLink.exit().remove();
 
                     // 2.focused links
@@ -804,42 +862,38 @@ mainApp.directive('tacticFlowChart', function () {
                     svgFocusedLink.enter().append('path', "g")
                         .attr("class", "linkfocused")
                         .attr('d', function(d){return funPath(d)})
-                        .style("stroke-width", function(d){return getFlow_focused(d)? flowRange/max_count:0})
+                        .style("stroke-width", function(d){return scope.data.Sum_flow&&getFlow_focused(d)? flowRange/max_count:0})
                     svgFocusedLink
                         .attr('d', function(d){return funPath(d)})
-                        .style("stroke-width", function(d){return getFlow_focused(d)? flowRange/max_count:0})
+                        .style("stroke-width", function(d){return scope.data.Sum_flow&&getFlow_focused(d)? flowRange/max_count:0})
                     svgFocusedLink.exit().remove();
 
                     // 3.two parts
-                    var svgLink1 = svg.selectAll(".link1").data(lines);
-                    svgLink1.enter().append('path', "g")
-                        .attr("class", "link1")
-                        .attr('d', function(d){return funPath(d,1)})
-                        .style("stroke-width", function(d){return getFlow_width_1(d);})
-                    svgLink1
-                        .attr('d', function(d){return funPath(d,1)})
-                        .style("stroke-width", function(d){return getFlow_width_1(d);})
-                    svgLink1.exit().remove();
+                    for(var i=0;i<flow_groups.length;i++){
+                        var svgLink1 = svg.selectAll(".link"+i).data(lines);
+                        svgLink1.enter().append('path', "g")
+                            .attr("class", "link"+i)
+                            .attr('d', function(d){return funPath(d,i)})
+                            .style("stroke-width", function(d){return scope.data.Sum_flow?0:getFlow_group_width(d,i);})
+                            .style("stroke",colorScale(i))
+                        svgLink1
+                            .attr('d', function(d){return funPath(d,i)})
+                            .style("stroke-width", function(d){return scope.data.Sum_flow?0:getFlow_group_width(d,i);})
+                            .style("stroke",colorScale(i))
+                        svgLink1.exit().remove();
 
-                    var svgLink2 = svg.selectAll(".link2").data(lines);
-                    svgLink2.enter().append('path', "g")
-                        .attr("class", "link2")
-                        .attr('d', function(d){return funPath(d,2)})
-                        .style("stroke-width", function(d){return getFlow_width_2(d);})
-                    svgLink2
-                        .attr('d', function(d){return funPath(d,2)})
-                        .style("stroke-width", function(d){return getFlow_width_2(d);})
-                    svgLink2.exit().remove();
+                    }
+
 
                     // 4.selected
                     var svgLinkSelected = svg.selectAll(".linkselected").data(lines);
                     svgLinkSelected.enter().append('path', "g")
                         .attr("class", "linkselected")
                         .attr('d', function(d){return funPath(d)})
-                        .style("stroke-width", function(d){ return getFlow_width_selected(d);});
+                        .style("stroke-width", function(d){ return scope.data.Sum_flow?getFlow_width_selected(d):0;});
                     svgLinkSelected
                         .attr('d', function(d){return funPath(d)})
-                        .style("stroke-width", function(d){ return getFlow_width_selected(d);});
+                        .style("stroke-width", function(d){ return scope.data.Sum_flow?getFlow_width_selected(d):0;});
                     svgLinkSelected.exit().remove();
                 }
 
@@ -870,6 +924,16 @@ mainApp.directive('tacticFlowChart', function () {
                     svgCircle.exit().remove();
                 }
 
+                // switch element in the array of index1 and index 2
+                function switchFlow(arr,index1,index2){
+                    var s=arr[index1].s;
+                    var d=arr[index1].d;
+                    arr[index1].s=arr[index2].s;
+                    arr[index1].d=arr[index2].d;
+                    arr[index2].s=s;
+                    arr[index2].d=d;
+                }
+
                 // 2.draw
                 //drawBG();
                 if(scope.data.orthogonal){
@@ -893,6 +957,7 @@ mainApp.directive('tacticFlowChart', function () {
             scope.$watch('data.Switch_pos', redraw);
             scope.$watch('data.Show_tube', redraw);
             scope.$watch('data.orthogonal', redraw);
+            scope.$watch('data.asymmetric', redraw);
             scope.$watch('data.Show_individual', redraw);
             scope.$watch('data.Show_node_label', redraw);
         }

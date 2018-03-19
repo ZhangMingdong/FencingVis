@@ -30,8 +30,7 @@ mainApp.controller('ComparisonCtrl', function ($scope, $http,$window) {
         , flow:{}                 // data of the tactic flow
         , selected_flow:{}        // flow of the selected part
         , focused_flow:{}         // flow of the focused bout
-        , flow_1st:{}             // flow of the first half
-        , flow_2nd:{}             // flow of the second half
+        , flow_groups:[]          // groups of flows, first and 2nd halves or different bouts
         , Sum_flow:false           // show sum of the flow
         , flow_player1:{}         // show flow of player 1
         , flow_player2:{}         // show flow of player 2
@@ -42,7 +41,7 @@ mainApp.controller('ComparisonCtrl', function ($scope, $http,$window) {
         , filters:[]               // filters of the index, 0 means kept
         , selected_node:""         // nodes in the tactic flow chart with mouse hover
         , selected_phrases:[]       // phrases of the selected nodes or flow in flowchart
-        , orthogonal:true           // whether show orthogonal layout
+        , orthogonal:false           // whether show orthogonal layout
     }
 
     // 2. definition of the functions
@@ -62,10 +61,12 @@ mainApp.controller('ComparisonCtrl', function ($scope, $http,$window) {
     // function of reading data of version 2
     function readDataV2(){
         var bout_name1="../data/men_semifinal_1_v2.csv";
-        var bout_name2="../data/men_final_v2.csv";
+        var bout_name2="../data/men_semifinal_2_v2.csv";
+        var bout_name3="../data/men_final_v2.csv";
         //console.log("read data v2");
         var series1=[];
         var series2=[];
+        var series3=[];
         d3.csv(bout_name1, function(d) {
             var frame=parseFrame(d.time);
             series1.push({
@@ -104,29 +105,79 @@ mainApp.controller('ComparisonCtrl', function ($scope, $http,$window) {
                 });
             }, function(error, classes) {
 
-                // generate motion data of hands and feet
-                var arrMotion=[[],[]];
-                // generate bout data
-                var phrases1=generatePhrases(series1,arrMotion);
-                var phrases2=generatePhrases(series2,arrMotion);
-                // generate tactic flow data
-                var arrFlow1=generateFlow(phrases1);
-                var arrFlow2=generateFlow(phrases2);
-                var flow=combineFlows(arrFlow1[0],arrFlow2[0]);
-                //console.log(flow,arrFlow1[0],arrFlow2[0]);
 
-                $scope.fencingData.motion_hands=arrMotion[0];
-                $scope.fencingData.motion=arrMotion[1];
-                $scope.fencingData.series=series1;
-                $scope.fencingData.phrases=phrases1;
-                $scope.fencingData.flow=flow;
-                $scope.fencingData.flow_player1=arrFlow1[1];
-                $scope.fencingData.flow_player2=arrFlow1[2];
-                $scope.fencingData.flow_1st=arrFlow1[0];
-                $scope.fencingData.flow_2nd=arrFlow2[0];
-                // 4.update filters after read csv files
-                updateFilter();
-                $scope.$apply();
+                d3.csv(bout_name3, function(d) {
+                    var frame=parseFrame(d.time);
+                    series3.push({
+                        frame:frame
+                        ,foot1:d.foot1
+                        ,foot2:d.foot2
+                        ,hand1:d.hand1
+                        ,hand2:d.hand2
+                        ,pos1:d.pos1
+                        ,pos2:d.pos2
+                        ,parry_pos1:d.parry_pos1
+                        ,parry_pos2:d.parry_pos2
+                        ,result:d.result
+                        ,score:d.score
+                        ,bout:d.bout
+                        ,flow:d.flow
+                    });
+                }, function(error, classes) {
+
+                    // generate motion data of hands and feet
+                    var arrMotion=[[],[]];
+                    // generate bout data
+                    var phrases1=generatePhrases(series1,arrMotion);
+                    var phrases2=generatePhrases(series2,arrMotion);
+                    var phrases3=generatePhrases(series3,arrMotion);
+                    // generate tactic flow data
+                    var arrFlow1=generateFlow(phrases1);
+                    var arrFlow2=generateFlow(phrases2);
+                    var arrFlow3=generateFlow(phrases3);
+                    var flow=combineFlows(arrFlow1[0],arrFlow3[0]);
+                    var player1Only=true;
+                    if(player1Only){
+                        $scope.fencingData.flow_groups=[arrFlow1[0],arrFlow3[0]];
+
+                        // generate flow sequence
+                        var arrSeq=[];
+                        phrases1.forEach(function(d){
+                            if(d.flow){
+
+                                var seq=generateFlowSequence(d.flow);
+                                arrSeq.push(["S"].concat(seq));
+                            }
+                        })
+                        phrases3.forEach(function(d){
+                            if(d.flow){
+
+                                var seq=generateFlowSequence(d.flow);
+                                arrSeq.push(["S"].concat(seq));
+                            }
+                        })
+                        console.log(JSON.stringify(arrSeq))
+
+                    }
+                    else{
+                        flow=combineFlows(flow,arrFlow2[0]);
+                        $scope.fencingData.flow_groups=[arrFlow1[0],arrFlow2[0],arrFlow3[0]];
+
+                    }
+                    //console.log(flow,arrFlow1[0],arrFlow2[0]);
+
+                    $scope.fencingData.motion_hands=arrMotion[0];
+                    $scope.fencingData.motion=arrMotion[1];
+                    $scope.fencingData.series=series1;
+                    $scope.fencingData.phrases=phrases1;
+                    $scope.fencingData.flow=flow;
+                    $scope.fencingData.flow_player1=arrFlow1[1];
+                    $scope.fencingData.flow_player2=arrFlow1[2];
+                    // 4.update filters after read csv files
+                    updateFilter();
+                    $scope.$apply();
+                });
+
             });
 
 
@@ -730,8 +781,131 @@ mainApp.controller('ComparisonCtrl', function ($scope, $http,$window) {
         $scope.fencingData.filtered_phrase=arrFilter.filter(function(d){return d==0}).length;
     }
 
+    // generate a sequence from the flow
+    function generateFlowSequence(str){
+        function generateFBSeq(str){
+            var sequence=[];
+            if(str[2]=='f'||str.substring(2,4)=="rr"){
+                sequence.push("1");
+            }
+            else if(str[2]=='b'){
+                if(str.substring(3,5)=="fb"){
+                    sequence.push("FB");
+                    generateFBSeq(str.substring(3)).forEach(function(d){
+                        sequence.push(d);
+                    })
+                }
+                else if(str.substring(3,5)=="bf"){
+                    sequence.push("BF");
+                    generateBFSeq(str.substring(3)).forEach(function(d){
+                        sequence.push(d);
+                    })
+                }
+                else{
+                    console.log("error in the string")
+                    console.log(str.substring(3,5))
+                }
+            }
+            else if(str[2]=='a'||str[2]=='r'||str[2]=='c'){
+                sequence.push("2");
+            }
+            else{
+                console.log(str)
+                console.log("error in the string")
+            }
+            return sequence;
+        }
+        function generateBFSeq(str){
+            if(str[2]=='f'||str.substring(2,4)=="rr"){
+                sequence.push("2");
+            }
+            else if(str[2]=='b'){
+                if(str.substring(3,5)=="bf"){
+                    sequence.push("BF");
+                    generateBFSeq(str.substring(3)).forEach(function(d){
+                        sequence.push(d);
+                    })
+                }
+                else if(str.substring(3,5)=="fb"){
+                    sequence.push("FB");
+                    generateFBSeq(str.substring(3)).forEach(function(d){
+                        sequence.push(d);
+                    })
+                }
+                else{
+                    console.log("error in the string")
+                }
+            }
+            else if(str[2]=='a'||str[2]=='r'||str[2]=='c'){
+                sequence.push("1");
+
+            }
+            else{
+                console.log("error in the string")
+            }
+        }
+
+        var sequence=[];
+        var seg=str.substring(0,2)
+        if(seg=="ff"){
+            sequence.push("FF");
+            if(str[2]=='1')sequence.push("1");
+            if(str[2]=='b')sequence.push("0");
+            if(str[2]=='2')sequence.push("2");
+        }
+        else if(seg=="bb"){
+            sequence.push("BB");
+            generateFlowSequence(str.substring(2)).forEach(function(d){
+                sequence.push(d);
+            })
+        }
+        else if(seg=="fb") {
+            sequence.push("FB");
+            if(str[2]=='f'||str.substring(2,4)=="rr"){
+                sequence.push("1");
+            }
+            else if(str[2]=='b'){
+                generateFlowSequence(str.substring(3)).forEach(function(d){
+                    sequence.push(d);
+                })
+            }
+            else if(str[2]=='a'||str[2]=='r'||str[2]=='c'){
+                sequence.push("2");
+            }
+            else{
+                console.log(str)
+                console.log("error in the string")
+            }
+        }
+        else if(seg=="bf") {
+            sequence.push("BF");
+            if(str[2]=='f'||str.substring(2,4)=="rr"){
+                sequence.push("2");
+            }
+            else if(str[2]=='b'){
+                generateFlowSequence(str.substring(3)).forEach(function(d){
+                    sequence.push(d);
+                })
+            }
+            else if(str[2]=='a'||str[2]=='r'||str[2]=='c'){
+                sequence.push("1");
+            }
+            else{
+                console.log(str)
+                console.log("error in the string")
+            }
+        }
+        else{
+            console.log(str);
+            console.log("error in the string")
+        }
+        return sequence;
+    }
+
     // read in the default file
     readDataV2();
+
+
 
     // functions
     $scope.fencingData.onSelectedNode=function(node,callback){

@@ -66,8 +66,13 @@ mainApp.directive('phraseChart', function () {
                     {x:-30,y:40},
                     {x:10,y:20},
                     {x:15,y:40}
-                ]   // reposte
+                ]   // riposte
             ]
+            // map motion to index
+            function mapMotion(motion){
+                if(motion=="a") return 1;
+                else return 0;
+            }
             // radius of the head
             var radius_head=9;
 
@@ -369,7 +374,7 @@ mainApp.directive('phraseChart', function () {
                         {x:-30,y:40},
                         {x:+10,y:20},
                         {x:+15,y:40}
-                    ]   // reposte
+                    ]   // riposte
                 ]
                 // radius of the head
                 radius_head=svgH/9;
@@ -379,14 +384,17 @@ mainApp.directive('phraseChart', function () {
             // position sequence
             var arrPositionSequence={
                 attack:[2.5,2,1.5,.5]
-                ,reposte:[2.5,2,1.0,.8,.4]
-                ,anti_reposte:[2.5,2,1.5,.5,.8,.5]
+                ,attack1:[2.5,1.5,.5]       // one step attack
+                ,drawback2:[2.5,2,1.5,2.5]  // two step drawback
+                ,drawback1:[2.5,1.5,2.5]    // one step drawback
+                ,riposte:[2.5,2,1.0,.8,.4]
+                ,anti_riposte:[2.5,2,1.5,.5,.8,.5]
             }
             // motion sequence
             var arrMotionSequence={
                 attack:[0,0,0,1,1]
-                ,reposte:[0,0,0,2,3]
-                ,anti_reposte:[0,0,0,1,2,3]
+                ,riposte:[0,0,0,2,3]
+                ,anti_riposte:[0,0,0,1,2,3]
             }
             // generate sequence for player1 and player2
             function generateP1Sequence(seq){
@@ -420,11 +428,14 @@ mainApp.directive('phraseChart', function () {
                 var duration=500;
                 var arrTime1=[duration,duration,duration,duration,duration,duration,duration,duration,duration,duration];
                 var arrTime2=[duration,duration,duration,duration,duration,duration,duration,duration,duration,duration];
+
                 // result text
                 var resultText=""
 
-                var bout=scope.data.phrases[scope.data.selected_phrase-1];
-                if(bout.result=="b"){
+                // get the phrase
+                var phrase=scope.data.phrases[scope.data.selected_phrase-1];
+
+                if(phrase.result=="b"){
                     arrPos1=generateP1Sequence(arrPositionSequence.attack)
                     arrPos2=generateP2Sequence(arrPositionSequence.attack)
                     arrMotion1=arrMotionSequence.attack;
@@ -432,55 +443,55 @@ mainApp.directive('phraseChart', function () {
                     resultText="同时互中"
                     stepLen=4;
                 }
-                else if(bout.result=="r"){
+                else if(phrase.result=="r"){
                     if(scope.data.exchange){
-                        arrPos1=generateP1Sequence(arrPositionSequence.reposte)
+                        arrPos1=generateP1Sequence(arrPositionSequence.riposte)
                         arrPos2=generateP2Sequence(arrPositionSequence.attack)
-                        arrMotion1=arrMotionSequence.reposte;
+                        arrMotion1=arrMotionSequence.riposte;
                         arrMotion2=arrMotionSequence.attack;
                     }
                     else{
                         arrPos1=generateP1Sequence(arrPositionSequence.attack)
-                        arrPos2=generateP2Sequence(arrPositionSequence.reposte)
+                        arrPos2=generateP2Sequence(arrPositionSequence.riposte)
                         arrMotion1=arrMotionSequence.attack;
-                        arrMotion2=arrMotionSequence.reposte;
+                        arrMotion2=arrMotionSequence.riposte;
 
                     }
                     resultText="防守还击"
                     stepLen=5;
                 }
-                else if(bout.result=="rr"){
+                else if(phrase.result=="rr"){
                     if(scope.data.exchange){
-                        arrPos1=generateP1Sequence(arrPositionSequence.reposte)
-                        arrPos2=generateP2Sequence(arrPositionSequence.anti_reposte)
-                        arrMotion1=arrMotionSequence.reposte;
-                        arrMotion2=arrMotionSequence.anti_reposte;
+                        arrPos1=generateP1Sequence(arrPositionSequence.riposte)
+                        arrPos2=generateP2Sequence(arrPositionSequence.anti_riposte)
+                        arrMotion1=arrMotionSequence.riposte;
+                        arrMotion2=arrMotionSequence.anti_riposte;
                     }
                     else{
-                        arrPos1=generateP1Sequence(arrPositionSequence.anti_reposte)
-                        arrPos2=generateP2Sequence(arrPositionSequence.reposte)
-                        arrMotion1=arrMotionSequence.anti_reposte;
-                        arrMotion2=arrMotionSequence.reposte;
+                        arrPos1=generateP1Sequence(arrPositionSequence.anti_riposte)
+                        arrPos2=generateP2Sequence(arrPositionSequence.riposte)
+                        arrMotion1=arrMotionSequence.anti_riposte;
+                        arrMotion2=arrMotionSequence.riposte;
                     }
                     resultText="反还击"
                     stepLen=6;
 
                 }
-                else if(bout.result=="a1"){
+                else if(phrase.result=="a1"){
                     arrPos1=[4.5,5,5.5,6,7.5];
                     arrPos2=[9.5,9,8.5,8.2,8.5];
                     arrMotion1=[0,0,0,0,1];
                     arrMotion2=[0,0,0,0,2];
                     resultText="进攻反攻"
                 }
-                else if(bout.result=="a3"){
+                else if(phrase.result=="a3"){
                     arrPos1=[4.5,5,5.5,6,7,8,9.5];
                     arrPos2=[9.5,9,8.5,8.2,8.5,9.5,10.5];
                     arrMotion1=[0,0,0,0,0,0,1];
                     arrMotion2=[0,0,0,0,0,0,2];
                     resultText="进攻反攻"
                 }
-                else if(bout.result=="a"){
+                else if(phrase.result=="a"){
                     arrPos1=generateP1Sequence(arrPositionSequence.attack)
                     arrPos2=generateP2Sequence(arrPositionSequence.attack)
                     arrMotion1=arrMotionSequence.attack;
@@ -488,7 +499,7 @@ mainApp.directive('phraseChart', function () {
                     resultText="进攻反攻"
                     stepLen=4;
                 }
-                else if(bout.result=="ra"){
+                else if(phrase.result=="ra"){
                     arrPos1=[4.5,5,5.5,6,7,8,9.5,9,8];
                     arrPos2=[9.5,9,8.5,8.2,8.5,9.5,11,10.8,9];
                     arrMotion1=[0,0,0,0,0,0,1,0,2];
@@ -503,6 +514,14 @@ mainApp.directive('phraseChart', function () {
                 var arrTime=[arrTime1,arrTime2]
                 var arrMotion=[arrMotion1,arrMotion2]
                 var arrPos=[arrPos1,arrPos2];
+                animation1();
+                animation2();
+                // elements
+                for(var i=0;i<11;i++){
+                    animationPart(1,i,arrGlyphIndices[i][0],arrGlyphIndices[i][1])
+                    animationPart(2,i,arrGlyphIndices[i][0],arrGlyphIndices[i][1])
+                }
+
                 // animation of fencer1
                 function animation1(){
                     var index=1;
@@ -535,7 +554,6 @@ mainApp.directive('phraseChart', function () {
                             }
                         });
                 }
-                animation1();
                 // fencer2
                 function animation2(){
 
@@ -561,8 +579,6 @@ mainApp.directive('phraseChart', function () {
                             }
                         });
                 }
-                animation2();
-                // elements
                 // animation functions for each part
                 // player: 1,2
                 // indexPart: index of the part of the body
@@ -615,15 +631,212 @@ mainApp.directive('phraseChart', function () {
 
                     }
                 }
+            }
+
+            // 2nd version of show bout, using the sequence instead of patterns
+            function showBout_2(){
+                //    console.log("show bout");
+                if(scope.data.selected_phrase<0) return;
+                // length of steps
+                var stepLen1=1;
+                var stepLen2=1;
+                // array of positions
+                var arrPos1=[];
+                var arrPos2=[];
+                // array of motions
+                var arrMotion1=[];
+                var arrMotion2=[];
+                // array of durations
+                var duration=500;
+                var arrTime1=[duration,duration,duration,duration,duration,duration,duration,duration,duration,duration];
+                var arrTime2=[duration,duration,duration,duration,duration,duration,duration,duration,duration,duration];
+
+                // result text
+                var resultText=""
+
+                // get the phrase
+                var phrase=scope.data.phrases[scope.data.selected_phrase-1];
+
+                // scale of frame to duration
+                var frameScale=60;
+                console.log(phrase.feet1.length,phrase.feet2.length);
+                // for the short phrases
+                if(phrase.feet1.length<4 && phrase.feet2.length<4){
+                    // 1.length
+                    stepLen1=phrase.feet1.length+1;
+                    stepLen2=phrase.feet2.length+1;
+                    // 2.time
+                    arrTime1=[];
+                    arrTime2=[];
+                    phrase.feet1.forEach(function(d){arrTime1.push(d.bias_end*frameScale)})
+                    arrTime1.push(duration);
+                    phrase.feet2.forEach(function(d){arrTime2.push(d.bias_end*frameScale)})
+                    arrTime2.push(duration);
+                    // 3.position
+                    if(stepLen1==3) {
+                        if(phrase.feet1[phrase.feet1.length-1].type=="a")
+                            arrPos1=generateP1Sequence(arrPositionSequence.attack1)
+                        else
+                            arrPos1=generateP1Sequence(arrPositionSequence.drawback1)
+                    }
+                    else if(stepLen1==4) {
+                        if(phrase.feet1[phrase.feet1.length-1].type=="a")
+                            arrPos1=generateP1Sequence(arrPositionSequence.attack)
+                        else
+                            arrPos1=generateP1Sequence(arrPositionSequence.drawback2)
+                    }
+                    if(stepLen2==3) {
+                        if(phrase.feet2[phrase.feet2.length-1].type=="a")
+                            arrPos2=generateP2Sequence(arrPositionSequence.attack1)
+                        else
+                            arrPos2=generateP2Sequence(arrPositionSequence.drawback1)
+                    }
+                    else if(stepLen2==4) {
+                        if(phrase.feet2[phrase.feet2.length-1].type=="a")
+                            arrPos2=generateP2Sequence(arrPositionSequence.attack)
+                        else
+                            arrPos2=generateP2Sequence(arrPositionSequence.drawback2)
+                    }
+
+                    // 4.motion
+                    arrMotion1=[0];
+                    arrMotion2=[0];
+                    phrase.feet1.forEach(function(d){arrMotion1.push(mapMotion(d.type))})
+                    arrMotion1.push(arrMotion1[stepLen1-2]);
+                    phrase.feet2.forEach(function(d){arrMotion2.push(mapMotion(d.type))})
+                    arrMotion2.push(arrMotion1[stepLen2-2]);
+                    resultText="进攻反攻"
+
+                }
+
+
+
+                var arrTime=[arrTime1,arrTime2]
+                var arrMotion=[arrMotion1,arrMotion2]
+                var arrPos=[arrPos1,arrPos2];
+                animation1();
+                animation2();
+                // elements
                 for(var i=0;i<11;i++){
-                    animationPart(1,i,arrGlyphIndices[i][0],arrGlyphIndices[i][1])
-                    animationPart(2,i,arrGlyphIndices[i][0],arrGlyphIndices[i][1])
+                    animationPart(1,i,arrGlyphIndices[i][0],arrGlyphIndices[i][1],stepLen1)
+                    animationPart(2,i,arrGlyphIndices[i][0],arrGlyphIndices[i][1],stepLen2)
+                }
+
+                // animation of fencer1
+                function animation1(){
+                    var index=1;
+                    svgFencer1
+                        .style("opacity", 1)
+                        .attr("transform", "translate("+xScale(arrPos1[0])+", "+svgH/2+")")
+                        .transition()           // apply a transition
+                        .duration(arrTime1[0])         // apply it over 4000 milliseconds
+                        .on("start", function repeat() {
+                            if(index==stepLen1){
+                                svgFencer1.style("opacity", 0)
+                                svgResultText
+                                    .text(resultText)
+                                    .attr("x",xScale(7))
+                                    .attr("y",svgH/2)
+                                    .style("opacity",1)
+                                    .transition()           // apply a transition
+                                    .duration(1000)         // apply it over 4000 milliseconds
+                                    .delay(0)
+                                    .style("opacity",0)
+                            }
+                            else{
+                                var pos=index<arrPos1.length?arrPos1[index]:arrPos1[arrPos1.length-1];
+                                var time=index<arrTime1.length?arrTime1[index]:arrTime1[arrTime1.length-1];
+                                index++;
+                                d3.active(this)
+                                    .attr("transform", "translate("+xScale(pos)+", "+svgH/2+")")
+                                    .transition()
+                                    .duration(time)
+                                    .on("start", repeat);
+                            }
+                        });
+                }
+                // fencer2
+                function animation2(){
+                    console.log(stepLen2);
+                    var index=1;
+                    svgFencer2
+                        .style("opacity", 1)
+                        .attr("transform", "translate("+xScale(arrPos2[0])+", "+svgH/2+")")
+                        .transition()           // apply a transition
+                        .duration(arrTime2[0])         // apply it over 4000 milliseconds
+                        .on("start", function repeat() {
+                            if(index==stepLen2){
+                                svgFencer2.style("opacity", 0)
+                            }
+                            else{
+                                var pos=index<arrPos2.length?arrPos2[index]:arrPos2[arrPos2.length-1];
+                                var time=index<arrTime2.length?arrTime2[index]:arrTime2[arrTime2.length-1];
+                                index++;
+                                d3.active(this)
+                                    .attr("transform", "translate("+xScale(pos)+", "+svgH/2+")")
+                                    .transition()
+                                    .duration(time)
+                                    .on("start", repeat);
+                            }
+                        });
+                }
+                // animation functions for each part
+                // player: 1,2
+                // indexPart: index of the part of the body
+                // index1,index2: two indices of the critical point
+                function animationPart(player,indexPart,index1,index2,stepLen){
+                    var revert=player==2?-1:1;
+                    var index=1;
+                    if(indexPart==0){
+                        arrSVGFencer[player-1][indexPart]
+                            .attr("cx",svgH/81*arrGlyphCoords[arrMotion[player-1][0]][0].x*revert)
+                            .attr("cy",svgH/81*arrGlyphCoords[arrMotion[player-1][0]][0].y)
+                            .transition()           // apply a transition
+                            .duration(arrTime[player-1][0])         // apply it over 4000 milliseconds
+                            .on("start", function repeat() {
+                                if(index<stepLen){
+                                    var playerMotion=arrMotion[player-1]
+                                    var motion=index<playerMotion.length?playerMotion[index]:playerMotion[playerMotion.length-1];
+                                    var playerTime=arrTime[player-1]
+                                    var time=index<playerTime.length?playerTime[index]:playerTime[playerTime.length-1]
+                                    index++;
+                                    d3.active(this)
+                                        .attr("cx",svgH/81*arrGlyphCoords[motion][0].x*revert)
+                                        .attr("cy",svgH/81*arrGlyphCoords[motion][0].y)
+                                        .transition()
+                                        .duration(time)         // apply it over 4000 milliseconds
+                                        .on("start", repeat);
+                                }
+                            });
+                    }
+                    else{
+                        arrSVGFencer[player-1][indexPart]
+                            .attr("x1",svgH/81*arrGlyphCoords[arrMotion[player-1][0]][index1].x*revert)
+                            .attr("y1",svgH/81*arrGlyphCoords[arrMotion[player-1][0]][index1].y)
+                            .attr("x2",svgH/81*arrGlyphCoords[arrMotion[player-1][0]][index2].x*revert)
+                            .attr("y2",svgH/81*arrGlyphCoords[arrMotion[player-1][0]][index2].y)
+                            .transition()           // apply a transition
+                            .duration(arrTime[player-1][0])         // apply it over 4000 milliseconds
+                            .on("start", function repeat() {
+                                if(index<arrMotion[player-1].length){
+                                    d3.active(this)
+                                        .attr("x1",svgH/81*arrGlyphCoords[arrMotion[player-1][index]][index1].x*revert)
+                                        .attr("y1",svgH/81*arrGlyphCoords[arrMotion[player-1][index]][index1].y)
+                                        .attr("x2",svgH/81*arrGlyphCoords[arrMotion[player-1][index]][index2].x*revert)
+                                        .attr("y2",svgH/81*arrGlyphCoords[arrMotion[player-1][index]][index2].y)
+                                        .transition()
+                                        .duration(arrTime[player-1][index++])         // apply it over 4000 milliseconds
+                                        .on("start", repeat);
+                                }
+                            });
+
+                    }
                 }
             }
 
 
             scope.$watch('data', redraw);
-            scope.$watch('data.selected_phrase', showBout);
+            scope.$watch('data.selected_phrase', showBout_2);
         }
         phraseChart();
     }
