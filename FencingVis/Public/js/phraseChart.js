@@ -1,5 +1,5 @@
 ﻿/*
-    dsp: directive to show the animation of a bout
+    dsp: directive to show the animation of a phrase
     author: Mingdong
     logs:
         created
@@ -33,7 +33,7 @@ mainApp.directive('phraseChart', function () {
                     {x:-30,y:-30},
                     {x:20,y:0},
                     {x:30,y:0},
-                    {x:70,y:0},      // sword tip
+                    {x:90,y:0},      // sword tip
                     {x:-20,y:20},
                     {x:-40,y:40},
                     {x:20,y:10},
@@ -61,7 +61,7 @@ mainApp.directive('phraseChart', function () {
                     {x:-20,y:10},
                     {x:10,y:-20},
                     {x:20,y:-20},
-                    {x:60,y:-20},      // sword tip
+                    {x:80,y:-20},      // sword tip
                     {x:-20,y:20},
                     {x:-30,y:40},
                     {x:10,y:20},
@@ -71,8 +71,27 @@ mainApp.directive('phraseChart', function () {
             // map motion to index
             function mapMotion(motion){
                 if(motion=="a") return 1;
+                else if(motion=="r") return 3;
                 else return 0;
             }
+
+
+            function generatePositionSequence(seq,right){
+                var result=[];
+                var direct=right? 1:-1;
+                seq.forEach(function(d){
+                    result.push(7+direct*d);
+                })
+                return result;
+            }
+            function generateP1Sequence(seq){
+                return generatePositionSequence(seq,0);
+            }
+            function generateP2Sequence(seq){
+                return generatePositionSequence(seq,1);
+
+            }
+
             // radius of the head
             var radius_head=9;
 
@@ -316,66 +335,6 @@ mainApp.directive('phraseChart', function () {
                     .attr("height", function(d) { return svgH; })
                 rects.exit().remove();
 
-                // update glyph coordinates
-                // coordinates of every critical point of the glyph for every motion
-                arrGlyphCoords=[
-                    [
-                        {x:+00  ,y:-30},
-                        {x:+00  ,y:-20},
-                        {x:+00  ,y:10},
-                        {x:-20  ,y:0},
-                        {x:-10  ,y:10},
-                        {x:+20  ,y:0},
-                        {x:+30  ,y:0},
-                        {x:+30  ,y:-40},       // sword tip
-                        {x:-20  ,y:20},
-                        {x:-20  ,y:40},
-                        {x:+20  ,y:20},
-                        {x:+25  ,y:40}
-                    ],  // en garde
-                    [
-                        {x:+08,y:-12},
-                        {x:+00,y:0},
-                        {x:-10,y:10},
-                        {x:-20,y:-20},
-                        {x:-30,y:-30},
-                        {x:+20,y:0},
-                        {x:+30,y:0},
-                        {x:+70,y:0},      // sword tip
-                        {x:-20,y:20},
-                        {x:-40,y:40},
-                        {x:+20,y:10},
-                        {x:+30,y:40}
-                    ],  // lunge
-                    [
-                        {x:-10,y:-30},
-                        {x:-10,y:-20},
-                        {x:-10,y:10},
-                        {x:-30,y:0},
-                        {x:-20,y:10},
-                        {x:+00,y:0},
-                        {x:+10,y:0},
-                        {x:+10,y:-40},      // sword tip
-                        {x:-20,y:20},
-                        {x:-30,y:40},
-                        {x:+10,y:20},
-                        {x:+15,y:40}
-                    ],  // parry
-                    [
-                        {x:-10,y:-30},
-                        {x:-10,y:-20},
-                        {x:-10,y:10},
-                        {x:-30,y:0},
-                        {x:-20,y:10},
-                        {x:+10,y:-20},
-                        {x:+20,y:-20},
-                        {x:+60,y:-20},      // sword tip
-                        {x:-20,y:20},
-                        {x:-30,y:40},
-                        {x:+10,y:20},
-                        {x:+15,y:40}
-                    ]   // riposte
-                ]
                 // radius of the head
                 radius_head=svgH/9;
                 svg.selectAll("circle").attr("r",radius_head);
@@ -383,11 +342,12 @@ mainApp.directive('phraseChart', function () {
             redraw();
             // position sequence
             var arrPositionSequence={
-                attack:[2.5,2,1.5,.5]
-                ,attack1:[2.5,1.5,.5]       // one step attack
-                ,drawback2:[2.5,2,1.5,2.5]  // two step drawback
+                attack:[2.5,2,1.5,.2]
+                ,attack1:[2.5,1.8,.2]       // one step attack
+                ,drawback2:[2.5,2,1.2,2.5]  // two step drawback
                 ,drawback1:[2.5,1.5,2.5]    // one step drawback
                 ,riposte:[2.5,2,1.0,.8,.4]
+                ,drawback2:[2.5,2,1.2,2]  // two step draw back
                 ,anti_riposte:[2.5,2,1.5,.5,.8,.5]
             }
             // motion sequence
@@ -396,25 +356,9 @@ mainApp.directive('phraseChart', function () {
                 ,riposte:[0,0,0,2,3]
                 ,anti_riposte:[0,0,0,1,2,3]
             }
-            // generate sequence for player1 and player2
-            function generateP1Sequence(seq){
-                var result=[];
-                seq.forEach(function(d){
-                    result.push(7-d);
-                })
-                return result;
-            }
-            function generateP2Sequence(seq){
-                var result=[];
-                seq.forEach(function(d){
-                    result.push(7+d);
-                })
-                return result;
-
-            }
-            // show the animation of a bout
-            function showBout(){
-            //    console.log("show bout");
+            // show the animation of a phrase
+            function showPhrase(){
+            //    console.log("show phrase");
                 if(scope.data.selected_phrase<0) return;
                 // length of steps
                 var stepLen=0;
@@ -634,8 +578,8 @@ mainApp.directive('phraseChart', function () {
             }
 
             // 2nd version of show bout, using the sequence instead of patterns
-            function showBout_2(){
-                //    console.log("show bout");
+            function showPhrase_2(){
+                //    console.log("show phrase");
                 if(scope.data.selected_phrase<0) return;
                 // length of steps
                 var stepLen1=1;
@@ -658,7 +602,7 @@ mainApp.directive('phraseChart', function () {
                 var phrase=scope.data.phrases[scope.data.selected_phrase-1];
 
                 // scale of frame to duration
-                var frameScale=60;
+                var frameScale=100;
                 console.log(phrase.feet1.length,phrase.feet2.length);
                 // for the short phrases
                 if(phrase.feet1.length<4 && phrase.feet2.length<4){
@@ -668,9 +612,18 @@ mainApp.directive('phraseChart', function () {
                     // 2.time
                     arrTime1=[];
                     arrTime2=[];
-                    phrase.feet1.forEach(function(d){arrTime1.push(d.bias_end*frameScale)})
+                    var bias_start=0;
+                    phrase.feet1.forEach(function(d){
+                        arrTime1.push((d.bias_end-bias_start)*frameScale)
+                        bias_start=d.bias_end;
+                    })
                     arrTime1.push(duration);
-                    phrase.feet2.forEach(function(d){arrTime2.push(d.bias_end*frameScale)})
+
+                    bias_start=0;
+                    phrase.feet2.forEach(function(d){
+                        arrTime2.push((d.bias_end-bias_start)*frameScale)
+                        bias_start=d.bias_end;
+                    })
                     arrTime2.push(duration);
                     // 3.position
                     if(stepLen1==3) {
@@ -685,6 +638,7 @@ mainApp.directive('phraseChart', function () {
                         else
                             arrPos1=generateP1Sequence(arrPositionSequence.drawback2)
                     }
+
                     if(stepLen2==3) {
                         if(phrase.feet2[phrase.feet2.length-1].type=="a")
                             arrPos2=generateP2Sequence(arrPositionSequence.attack1)
@@ -705,7 +659,12 @@ mainApp.directive('phraseChart', function () {
                     arrMotion1.push(arrMotion1[stepLen1-2]);
                     phrase.feet2.forEach(function(d){arrMotion2.push(mapMotion(d.type))})
                     arrMotion2.push(arrMotion1[stepLen2-2]);
-                    resultText="进攻反攻"
+                    if(phrase.result=="a")
+                        resultText="进攻反攻"
+                    else if(phrase.result=="b")
+                        resultText="同时互中"
+                    else if(phrase.result=="r")
+                        resultText="防守还击"
 
                 }
 
@@ -834,9 +793,244 @@ mainApp.directive('phraseChart', function () {
                 }
             }
 
+            // 3rd version, handle case beside a and b
+            function showPhrase_3(){
+                //    console.log("show phrase");
+                if(scope.data.selected_phrase<0) return;
+                // length of steps
+                var stepLen1=1;
+                var stepLen2=1;
+                // array of positions
+                var arrPos1=[];
+                var arrPos2=[];
+                // array of motions
+                var arrMotion1=[];
+                var arrMotion2=[];
+                // array of durations
+                var duration=500;
+                var arrTime1=[duration,duration,duration,duration,duration,duration,duration,duration,duration,duration];
+                var arrTime2=[duration,duration,duration,duration,duration,duration,duration,duration,duration,duration];
+
+                // result text
+                var resultText=""
+
+                // get the phrase
+                var phrase=scope.data.phrases[scope.data.selected_phrase-1];
+
+                // scale of frame to duration
+                var frameScale=50;
+
+                // for the short phrases
+                if(phrase.feet1.length<4 && phrase.feet2.length<4){
+                    // 1.length
+                    stepLen1=phrase.feet1.length+1;
+                    stepLen2=phrase.feet2.length+1;
+                    // 2.time
+                    arrTime1=[];
+                    arrTime2=[];
+                    var bias_start=0;
+                    phrase.feet1.forEach(function(d){
+                        arrTime1.push((d.bias_end-bias_start)*frameScale)
+                        bias_start=d.bias_end;
+                    })
+                    arrTime1.push(duration);
+
+                    bias_start=0;
+                    phrase.feet2.forEach(function(d){
+                        arrTime2.push((d.bias_end-bias_start)*frameScale)
+                        bias_start=d.bias_end;
+                    })
+                    arrTime2.push(duration);
+                    // 3.position
+                    function generatePositionArray(feet,right){
+                        var result=[];
+                        if(feet[feet.length-1].type=="a"){
+                            if(feet.length==2)
+                                result=generatePositionSequence(arrPositionSequence.attack1,right)
+                            else if(feet.length==3)
+                                result=generatePositionSequence(arrPositionSequence.attack,right)
+                        }
+                        else if(feet[feet.length-1].type=="b"){
+                            if(feet.length==2)
+                                result=generatePositionSequence(arrPositionSequence.drawback1,right)
+                            else if(feet.length==3)
+                                result=generatePositionSequence(arrPositionSequence.drawback2,right)
+                        }
+                        else if(feet[feet.length-1].type=="r"){
+                            result=generatePositionSequence(arrPositionSequence.riposte,right);
+                        }
+                        return result;
+                    }
+                    arrPos1=generatePositionArray(phrase.feet1,0);
+                    arrPos2=generatePositionArray(phrase.feet2,1);
+
+                    // 4.motion
+                    arrMotion1=[0];
+                    arrMotion2=[0];
+                    phrase.feet1.forEach(function(d){arrMotion1.push(mapMotion(d.type))})
+                    arrMotion1.push(arrMotion1[stepLen1-2]);
+                    phrase.feet2.forEach(function(d){arrMotion2.push(mapMotion(d.type))})
+                    arrMotion2.push(arrMotion1[stepLen2-2]);
+                    if(phrase.result=="a")
+                        resultText="进攻反攻"
+                    else if(phrase.result=="b")
+                        resultText="同时互中"
+                    else if(phrase.result=="r"){
+                        if(phrase.feet1[phrase.feet1.length-1].type=="b"){
+                            arrMotion1[arrMotion1.length-2]=mapMotion("r")
+                        }
+                        else{
+                            arrMotion2[arrMotion2.length-2]=mapMotion("r")
+                        }
+
+                        resultText="防守还击"
+                    }
+                    console.log(arrMotion1);
+                }
+
+                var durationSum1=0;
+                var durationSum2=0;
+                arrTime1.forEach(function(d){durationSum1+=d;})
+                arrTime2.forEach(function(d){durationSum2+=d;})
+                var durationSum=Math.max(durationSum1,durationSum2);
+                var arrPhraseTime=[durationSum,duration];
+
+                var arrTime=[arrTime1,arrTime2]
+                var arrMotion=[arrMotion1,arrMotion2]
+                var arrPos=[arrPos1,arrPos2];
+
+                animationPhrase();
+                animation1();
+                animation2();
+                // elements
+                for(var i=0;i<11;i++){
+                    animationPart(1,i,arrGlyphIndices[i][0],arrGlyphIndices[i][1],stepLen1)
+                    animationPart(2,i,arrGlyphIndices[i][0],arrGlyphIndices[i][1],stepLen2)
+                }
+
+                // animation of the phrase.
+                // step1.hide fencers, and show text
+                // step2.hide text
+                function animationPhrase(){
+                    svgResultText
+                        .transition()
+                        .duration(0)
+                        .delay(durationSum)
+                        .text(resultText)
+                        .attr("x",xScale(7))
+                        .attr("y",svgH/2)
+                        .style("opacity",1)
+                        .on("start",function(d){
+                            svgFencer1.style("opacity", 0)
+                            svgFencer2.style("opacity", 0)
+                        })
+                        .transition()           // apply a transition
+                        .duration(1000)         // apply it over 4000 milliseconds
+                        .delay(0)
+                        .style("opacity",0)
+
+                }
+                // animation of position of fencer1
+                function animation1(){
+                    var index=1;
+                    svgFencer1
+                        .style("opacity", 1)
+                        .attr("transform", "translate("+xScale(arrPos1[0])+", "+svgH/2+")")
+                        .transition()
+                        .duration(arrTime1[0])
+                        .on("start", function repeat() {
+                            if(index<stepLen1){
+                                var pos=index<arrPos1.length?arrPos1[index]:arrPos1[arrPos1.length-1];
+                                var time=index<arrTime1.length?arrTime1[index]:arrTime1[arrTime1.length-1];
+                                index++;
+                                d3.active(this)
+                                    .attr("transform", "translate("+xScale(pos)+", "+svgH/2+")")
+                                    .transition()
+                                    .duration(time)
+                                    .on("start", repeat);
+                            }
+                        });
+                }
+                // animation of fencer2
+                function animation2(){
+                    console.log(stepLen2);
+                    var index=1;
+                    svgFencer2
+                        .style("opacity", 1)
+                        .attr("transform", "translate("+xScale(arrPos2[0])+", "+svgH/2+")")
+                        .transition()           // apply a transition
+                        .duration(arrTime2[0])         // apply it over 4000 milliseconds
+                        .on("start", function repeat() {
+                            if(index<stepLen2){
+                                var pos=index<arrPos2.length?arrPos2[index]:arrPos2[arrPos2.length-1];
+                                var time=index<arrTime2.length?arrTime2[index]:arrTime2[arrTime2.length-1];
+                                index++;
+                                d3.active(this)
+                                    .attr("transform", "translate("+xScale(pos)+", "+svgH/2+")")
+                                    .transition()
+                                    .duration(time)
+                                    .on("start", repeat);
+                            }
+                        });
+                }
+                // animation functions for each part
+                // player: 1,2
+                // indexPart: index of the part of the body
+                // index1,index2: two indices of the critical point
+                function animationPart(player,indexPart,index1,index2,stepLen){
+                    var revert=player==2?-1:1;
+                    var index=1;
+                    if(indexPart==0){
+                        arrSVGFencer[player-1][indexPart]
+                            .attr("cx",svgH/81*arrGlyphCoords[arrMotion[player-1][0]][0].x*revert)
+                            .attr("cy",svgH/81*arrGlyphCoords[arrMotion[player-1][0]][0].y)
+                            .transition()           // apply a transition
+                            .duration(arrTime[player-1][0])         // apply it over 4000 milliseconds
+                            .on("start", function repeat() {
+                                if(index<stepLen){
+                                    var playerMotion=arrMotion[player-1]
+                                    var motion=index<playerMotion.length?playerMotion[index]:playerMotion[playerMotion.length-1];
+                                    var playerTime=arrTime[player-1]
+                                    var time=index<playerTime.length?playerTime[index]:playerTime[playerTime.length-1]
+                                    index++;
+                                    d3.active(this)
+                                        .attr("cx",svgH/81*arrGlyphCoords[motion][0].x*revert)
+                                        .attr("cy",svgH/81*arrGlyphCoords[motion][0].y)
+                                        .transition()
+                                        .duration(time)         // apply it over 4000 milliseconds
+                                        .on("start", repeat);
+                                }
+                            });
+                    }
+                    else{
+                        arrSVGFencer[player-1][indexPart]
+                            .attr("x1",svgH/81*arrGlyphCoords[arrMotion[player-1][0]][index1].x*revert)
+                            .attr("y1",svgH/81*arrGlyphCoords[arrMotion[player-1][0]][index1].y)
+                            .attr("x2",svgH/81*arrGlyphCoords[arrMotion[player-1][0]][index2].x*revert)
+                            .attr("y2",svgH/81*arrGlyphCoords[arrMotion[player-1][0]][index2].y)
+                            .transition()           // apply a transition
+                            .duration(arrTime[player-1][0])         // apply it over 4000 milliseconds
+                            .on("start", function repeat() {
+                                if(index<stepLen){
+                                    d3.active(this)
+                                        .attr("x1",svgH/81*arrGlyphCoords[arrMotion[player-1][index]][index1].x*revert)
+                                        .attr("y1",svgH/81*arrGlyphCoords[arrMotion[player-1][index]][index1].y)
+                                        .attr("x2",svgH/81*arrGlyphCoords[arrMotion[player-1][index]][index2].x*revert)
+                                        .attr("y2",svgH/81*arrGlyphCoords[arrMotion[player-1][index]][index2].y)
+                                        .transition()
+                                        .duration(arrTime[player-1][index++])         // apply it over 4000 milliseconds
+                                        .on("start", repeat);
+                                }
+                            });
+
+                    }
+                }
+            }
+
 
             scope.$watch('data', redraw);
-            scope.$watch('data.selected_phrase', showBout_2);
+            scope.$watch('data.show_phrase', showPhrase_3);
+            //scope.$watch('data.selected_phrase', showPhrase_2);
         }
         phraseChart();
     }

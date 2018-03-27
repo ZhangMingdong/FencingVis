@@ -58,16 +58,7 @@ mainApp.directive('tacticFlowChart', function () {
                 //var spanX=110;              // Y span
                 var spanY=(svgH-radius_node*3)/4;              // X span
                 var spanX=(svgH-radius_node*3)/4;              // Y span
-                var nodeBias={
-                    "S" :{w1:0.0,w2:0.0},
-                    "BB":{w1:0.2,w2:0.2},
-                    "FB":{w1:0.8,w2:0.2},
-                    "FF":{w1:0.5,w2:0.5},
-                    "BF":{w1:0.2,w2:0.8},
-                    "1" :{w1:1.0,w2:0.0},
-                    "=" :{w1:0.0,w2:0.0},
-                    "2" :{w1:0.0,w2:1.0}
-                }          // bias of left part and right part of the nodes
+                var nodeBias=scope.data.nodeBias;          // bias of left part and right part of the nodes
                 var nodes=[]                // data of nodes
                 var lines=[]                // data of lines
 
@@ -594,9 +585,11 @@ mainApp.directive('tacticFlowChart', function () {
                             ,{x:2,y:2,s1:0,s2:0,s:0}
                         ]
                         scope.data.selected_phrases.forEach(function(d){
+                            console.log(d)
                             var pos1=d.pos1[d.pos1.length-1];
                             var pos2=d.pos2[d.pos2.length-1];
                             var index=(pos2-3)*3+(pos1-3);
+                            console.log(index);
                             if(d.score==1) data[index].s1++;
                             else if(d.score==2) data[index].s2++;
                             else data[index].s++;

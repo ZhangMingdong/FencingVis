@@ -1,4 +1,19 @@
 % `vgtc' LaTeX class.
+% - modifications by Tobias Isenberg on 2017/07/05
+%   - updated the instructions for author footer in template.tex for the journal template
+% - modifications by Tobias Isenberg on 2017/06/14
+%   - improved handling of marginpars for conference style, added examples for both styles
+% - modifications by Tobias Isenberg on 2017/06/13
+%   - updated link to ACM CCS in conference template tex
+%   - transitioned to the updated 2012 system to be used with \CCScatTwelve (1998 still possible)
+%   - updated CCS examples in conference template tex
+%   - added statement in journal template tex to leave the copyright block untouched
+%   - updated the DOI links in the bst files to use shorter https version
+% - modifications by Filip Sadlo/Tobias Isenberg on 2017/03/16
+%   - revived latex mode (as opposed to pdflatex) by disabling \let\ifpdf\relax
+%   - note that packages that define \ifpdf (and thus lead to already defined
+%     \ifpdf) are obsolete and should be changed to use ifpdf package instead
+%   - added a comment to the actual tex template for those with compilation errors
 % - modifications by Tobias Isenberg on 2016/07/19
 %   - fixed a bug in the hyperref data (missing comma, thanks to Christian
 %     Tominski)
@@ -191,7 +206,6 @@
   \renewcommand{\sectionautorefname}{Sect.}
   \renewcommand{\subsectionautorefname}{Sect.}
   \renewcommand{\subsubsectionautorefname}{Sect.}
-	\let\ifpdf\relax % TI: to avoid compilation errors about ifpdf being included twice in some environments
  }
 \else%                     % else we use pure latex
  \renewcommand{\vgtcinsertpkg}{%
@@ -400,7 +414,12 @@ Manuscript received xx xxx. 201x; accepted xx xxx. 201x. Date of Publication xx 
 \setlength{\captionmargin}{0in}
 \fi
 
+% adjust marginpars so that they can be used for comments during editing
+\ifvgtcjournal % for journal style
 \addtolength{\marginparwidth}{-1.5mm} % fix margin
+\else % conference style
+\addtolength{\marginparwidth}{16mm}
+\fi
 \addtolength{\marginparsep}{-2mm} % fix margin
 
 \renewcommand{\ps@plain}%
@@ -630,6 +649,15 @@ Manuscript received xx xxx. 201x; accepted xx xxx. 201x. Date of Publication xx 
     \ifx#3\vgtc@empty \else : #3\fi%
     \ifx#4\vgtc@empty \else ---#4\fi%
 }
+
+\newcommand{\CCScatTwelve}[4]{%
+    #1%
+		\ifx#2\vgtc@empty \else ---#2\fi%%
+		\ifx#3\vgtc@empty \else ---#3\fi%
+    \ifx#4\vgtc@empty \else ---#4\fi%
+}
+
+
 
 % use any of the following to adjust spaces in title block
 \newlength{\titlespace}

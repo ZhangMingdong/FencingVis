@@ -10,6 +10,9 @@ fencing-game-vis {
     overflow: hidden;
     font-size: 10px;
 }
+fencing-game-vis .info{
+    font-size: 20px;
+}
 
 fencing-game-vis rect {
     stroke-width: 1;

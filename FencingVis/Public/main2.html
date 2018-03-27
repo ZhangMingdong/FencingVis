@@ -23,7 +23,7 @@
 <body ng-app="myApp" ng-controller="FencingCtrl">
     <!-- motion view -->
     <div style="float:left;width:30%;height:99%;overflow:auto;margin:2px">
-        <motion-chart data="fencingData"></motion-chart>
+        <motion-chart style="float:left;overflow:auto" data="fencingData"></motion-chart>
     </div>
     <!-- right of motion view -->
     <div style="float:left;width:69%;height:99%;overflow:auto;margin:2px">
@@ -67,6 +67,9 @@
                     <input type="checkbox" ng-model="fencingData.Show_node_label"><b>Show Nodes Labels</b><br>
                     <input type="checkbox" ng-model="fencingData.orthogonal"><b>Orthogonal Layout</b><br>
                     <input type="checkbox" ng-model="fencingData.asymmetric"><b>Asymmetric Layout</b><br>
+                    <input type="checkbox" ng-model="fencingData.Show_motions"><b>Show Motions</b><br>
+                    <input type="checkbox" ng-model="fencingData.Sort_phrases"><b>Sort Phrases</b><br>
+                    <input type="checkbox" ng-model="fencingData.Show_all_motions"><b>All Motions</b><br>
                 </fieldset>
             </div>
         </div>

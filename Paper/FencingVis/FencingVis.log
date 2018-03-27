@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2016.3.8)  14 MAR 2018 10:12
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2016.3.8)  27 MAR 2018 23:59
 entering extended mode
 **FencingVis.tex
 (E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.tex
@@ -376,53 +376,53 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 
 Package hyperref Warning: Option `pdftex' has already been used,
-(hyperref)                setting the option has no effect on input line 143.
+(hyperref)                setting the option has no effect on input line 131.
 
 
 Package hyperref Warning: Option `pagebackref' has already been used,
-(hyperref)                setting the option has no effect on input line 143.
+(hyperref)                setting the option has no effect on input line 131.
 
-Package hyperref Info: Option `pageanchor' set `true' on input line 143.
-Package hyperref Info: Option `plainpages' set `false' on input line 143.
-Package hyperref Info: Option `hypertexnames' set `false' on input line 143.
+Package hyperref Info: Option `pageanchor' set `true' on input line 131.
+Package hyperref Info: Option `plainpages' set `false' on input line 131.
+Package hyperref Info: Option `hypertexnames' set `false' on input line 131.
 
 Package hyperref Warning: Option `bookmarks' has already been used,
-(hyperref)                setting the option has no effect on input line 143.
+(hyperref)                setting the option has no effect on input line 131.
 
-Package hyperref Info: Option `bookmarksnumbered' set `false' on input line 143
+Package hyperref Info: Option `bookmarksnumbered' set `false' on input line 131
 .
-Package hyperref Info: Option `bookmarksopen' set `true' on input line 143.
-Package hyperref Info: Option `breaklinks' set `true' on input line 143.
-Package hyperref Info: Option `colorlinks' set `false' on input line 143.
-Package hyperref Info: Option `nesting' set `true' on input line 143.
-Package hyperref Info: Option `linktocpage' set `true' on input line 143.
+Package hyperref Info: Option `bookmarksopen' set `true' on input line 131.
+Package hyperref Info: Option `breaklinks' set `true' on input line 131.
+Package hyperref Info: Option `colorlinks' set `false' on input line 131.
+Package hyperref Info: Option `nesting' set `true' on input line 131.
+Package hyperref Info: Option `linktocpage' set `true' on input line 131.
 (E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.aux
 
 LaTeX Warning: Label `fig:sample' multiply defined.
 
 )
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 149.
-LaTeX Font Info:    ... okay on input line 149.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 149.
-LaTeX Font Info:    ... okay on input line 149.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 149.
-LaTeX Font Info:    ... okay on input line 149.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 149.
-LaTeX Font Info:    ... okay on input line 149.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 149.
-LaTeX Font Info:    ... okay on input line 149.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 149.
-LaTeX Font Info:    ... okay on input line 149.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 149.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 149.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 137.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 137.
 
  (D:\CTEX\MiKTeX\tex\latex\base\ts1cmr.fd
 File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 149.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 149.
-LaTeX Font Info:    ... okay on input line 149.
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 149.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 137.
 
 
 (D:\CTEX\MiKTeX\tex\latex\psnfss\ot1ptm.fd
@@ -442,7 +442,7 @@ File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 \makeMPintoPDFobject=\count115
 \everyMPtoPDFconversion=\toks20
 )
-LaTeX Info: Redefining \microtypecontext on input line 149.
+LaTeX Info: Redefining \microtypecontext on input line 137.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -457,7 +457,7 @@ File: mt-ptm.cfg 2006/04/20 v1.7 microtype config. file: Times (RS)
 )
 \big@size=\dimen139
 \AtBeginShipoutBox=\box32
-Package hyperref Info: Link coloring OFF on input line 149.
+Package hyperref Info: Link coloring OFF on input line 137.
 
 (D:\CTEX\MiKTeX\tex\latex\hyperref\nameref.sty
 Package: nameref 2010/04/30 v2.40 Cross-referencing by name of section
@@ -467,188 +467,203 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count116
 )
-LaTeX Info: Redefining \ref on input line 149.
-LaTeX Info: Redefining \pageref on input line 149.
-LaTeX Info: Redefining \nameref on input line 149.
+LaTeX Info: Redefining \ref on input line 137.
+LaTeX Info: Redefining \pageref on input line 137.
+LaTeX Info: Redefining \nameref on input line 137.
 
 (E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.out)
 (E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.out)
 \@outlinefile=\write3
-LaTeX Font Info:    Try loading font information for OT1+phv on input line 158.
+LaTeX Font Info:    Try loading font information for OT1+phv on input line 146.
 
 
 (D:\CTEX\MiKTeX\tex\latex\psnfss\ot1phv.fd
 File: ot1phv.fd 2001/06/04 scalable font definitions for OT1/phv.
 )
-LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 15
-8.
+\abstractwidth=\skip53
+
+<pictures/main.png, id=91, 1901.1025pt x 937.5025pt>
+File: pictures/main.png Graphic file (type png)
+ <use pictures/main.png>
+Package pdftex.def Info: pictures/main.png used on input line 146.
+(pdftex.def)             Requested size: 467.22528pt x 230.39822pt.
+LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 14
+6.
 
 (D:\CTEX\MiKTeX\tex\latex\psnfss\ot1ztmcm.fd
 File: ot1ztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OML+ztmcm on input line 15
-8.
+LaTeX Font Info:    Try loading font information for OML+ztmcm on input line 14
+6.
 
 (D:\CTEX\MiKTeX\tex\latex\psnfss\omlztmcm.fd
 File: omlztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OMS+ztmcm on input line 15
-8.
+LaTeX Font Info:    Try loading font information for OMS+ztmcm on input line 14
+6.
 
 (D:\CTEX\MiKTeX\tex\latex\psnfss\omsztmcm.fd
 File: omsztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OMX+ztmcm on input line 15
-8.
+LaTeX Font Info:    Try loading font information for OMX+ztmcm on input line 14
+6.
 
 (D:\CTEX\MiKTeX\tex\latex\psnfss\omxztmcm.fd
 File: omxztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/ztmcm.
 )
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 158.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 158.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 158.
-LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <10> not available
-(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 158.
-\abstractwidth=\skip53
-
-<pictures/main.png, id=87, 1908.12875pt x 943.525pt>
-File: pictures/main.png Graphic file (type png)
- <use pictures/main.png>
-Package pdftex.def Info: pictures/main.png used on input line 158.
-(pdftex.def)             Requested size: 467.22528pt x 231.02887pt.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 146.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 146.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 146.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <8> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 158.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 146.
+Missing character: There is no ¡ in font phvr7t!
+Missing character: There is no ¯ in font phvr7t!
 
-<diamondrule.pdf, id=88, 213.79875pt x 12.045pt>
+<diamondrule.pdf, id=92, 213.79875pt x 12.045pt>
 File: diamondrule.pdf Graphic file (type pdf)
  <use diamondrule.pdf>
-Package pdftex.def Info: diamondrule.pdf used on input line 158.
+Package pdftex.def Info: diamondrule.pdf used on input line 146.
 (pdftex.def)             Requested size: 213.79822pt x 12.04495pt.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <9> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 158.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 146.
 LaTeX Font Info:    Font shape `OT1/phv/bx/sc' in size <9> not available
-(Font)              Font shape `OT1/phv/b/sc' tried instead on input line 158.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 158.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 158.
-LaTeX Font Info:    Try loading font information for TS1+ptm on input line 158.
+(Font)              Font shape `OT1/phv/b/sc' tried instead on input line 146.
+
+Overfull \vbox (2.32803pt too high) has occurred while \output is active []
 
 
-(D:\CTEX\MiKTeX\tex\latex\psnfss\ts1ptm.fd
-File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
-) [1{D:/CTEX/UserData/pdftex/config/pdftex.map{Unicode.sfd}{UGBK.sfd}}
+[1{D:/CTEX/UserData/pdftex/config/pdftex.map{Unicode.sfd}{UGBK.sfd}}
 
 
  <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/main.png> <E:/FencingVis/F
 encingVis/Paper/FencingVis/diamondrule.pdf>]
+Missing character: There is no ¡ in font ptmr7t!
+Missing character: There is no ¯ in font ptmr7t!
+LaTeX Font Info:    Try loading font information for TS1+ptm on input line 221.
+
+ (D:\CTEX\MiKTeX\tex\latex\psnfss\ts1ptm.fd
+File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
+)
+[2]
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 251.
+               Default added (so using `tbp') on input line 257.
 
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 255.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 255.
 
-Underfull \hbox (badness 10000) in paragraph at lines 260--260
+Underfull \hbox (badness 10000) in paragraph at lines 266--266
 []|\OT1/ptm/m/n/9 (+20) Footwork of
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 261--261
+Underfull \hbox (badness 10000) in paragraph at lines 267--267
 []|\OT1/ptm/m/n/9 (+20) Footwork of
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 262--262
-[]|\OT1/ptm/m/n/9 (+20) Bladework of
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 263--263
-[]|\OT1/ptm/m/n/9 (+20) Bladework of
- []
-
-
-Underfull \hbox (badness 4505) in paragraph at lines 266--266
-[]|\OT1/ptm/m/n/9 (+20) Parry Po-si-tion
- []
-
-
-Underfull \hbox (badness 4505) in paragraph at lines 267--267
-[]|\OT1/ptm/m/n/9 (+20) Parry Po-si-tion
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 268--268
+[]|\OT1/ptm/m/n/9 (+20) Bladework of
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 269--269
+[]|\OT1/ptm/m/n/9 (+20) Bladework of
+ []
+
+
+Underfull \hbox (badness 4505) in paragraph at lines 272--272
+[]|\OT1/ptm/m/n/9 (+20) Parry Po-si-tion
+ []
+
+
+Underfull \hbox (badness 4505) in paragraph at lines 273--273
+[]|\OT1/ptm/m/n/9 (+20) Parry Po-si-tion
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 274--274
 []|\OT1/ptm/m/n/9 (+20) Confrontation
  []
 
-[2]
 
-LaTeX Warning: Reference `fig:teaser' on page 3 undefined on input line 291.
+Underfull \vbox (badness 3547) has occurred while \output is active []
 
-<pictures/motionview.png, id=133, 1263.21938pt x 791.20593pt>
+
+
+LaTeX Warning: Reference `fig:teaser' on page 3 undefined on input line 297.
+
+<pictures/motionview.png, id=138, 1263.21938pt x 791.20593pt>
 File: pictures/motionview.png Graphic file (type png)
 
 <use pictures/motionview.png>
-Package pdftex.def Info: pictures/motionview.png used on input line 321.
+Package pdftex.def Info: pictures/motionview.png used on input line 327.
 (pdftex.def)             Requested size: 514.92374pt x 322.51317pt.
 
-<pictures/flowchart.png, id=135, 776.14969pt x 405.01312pt>
+Overfull \vbox (2.32803pt too high) has occurred while \output is active []
+
+
+[3] <pictures/flowchart.png, id=146, 776.14969pt x 405.01312pt>
 File: pictures/flowchart.png Graphic file (type png)
 
 <use pictures/flowchart.png>
-Package pdftex.def Info: pictures/flowchart.png used on input line 345.
+Package pdftex.def Info: pictures/flowchart.png used on input line 351.
 (pdftex.def)             Requested size: 514.92374pt x 268.70615pt.
- [3]
-<pictures/glyph.png, id=146, 953.06062pt x 393.72093pt>
+ [4 <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/motionview.png>] <pictu
+res/glyph.png, id=163, 953.06062pt x 393.72093pt>
 File: pictures/glyph.png Graphic file (type png)
 
 <use pictures/glyph.png>
-Package pdftex.def Info: pictures/glyph.png used on input line 402.
+Package pdftex.def Info: pictures/glyph.png used on input line 408.
 (pdftex.def)             Requested size: 514.92374pt x 212.7323pt.
- [4 <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/motionview.png>] <pictu
-res/case1.png, id=161, 904.1278pt x 430.60875pt>
+
+Overfull \vbox (2.32803pt too high) has occurred while \output is active []
+
+
+[5 <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/flowchart.png>]
+<pictures/case1.png, id=170, 989.19562pt x 405.01312pt>
 File: pictures/case1.png Graphic file (type png)
 
 <use pictures/case1.png>
-Package pdftex.def Info: pictures/case1.png used on input line 458.
-(pdftex.def)             Requested size: 514.92374pt x 245.23927pt.
- [5 <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/flowchart.png>]
-<pictures/ScorePhrases.png, id=167, 992.95969pt x 429.10312pt>
+Package pdftex.def Info: pictures/case1.png used on input line 464.
+(pdftex.def)             Requested size: 514.92374pt x 210.82433pt.
+ [6 <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/glyph.png>] <pictures/S
+corePhrases.png, id=185, 992.95969pt x 429.10312pt>
 File: pictures/ScorePhrases.png Graphic file (type png)
 
 <use pictures/ScorePhrases.png>
-Package pdftex.def Info: pictures/ScorePhrases.png used on input line 508.
+Package pdftex.def Info: pictures/ScorePhrases.png used on input line 514.
 (pdftex.def)             Requested size: 514.92374pt x 222.52597pt.
- [6 <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/glyph.png>]
-<pictures/threeBout.png, id=187, 1343.0175pt x 434.37282pt>
+
+<pictures/threeBout.png, id=187, 1488.31032pt x 421.575pt>
 File: pictures/threeBout.png Graphic file (type png)
 
 <use pictures/threeBout.png>
-Package pdftex.def Info: pictures/threeBout.png used on input line 520.
-(pdftex.def)             Requested size: 514.92374pt x 166.54141pt.
+Package pdftex.def Info: pictures/threeBout.png used on input line 526.
+(pdftex.def)             Requested size: 514.92374pt x 145.85521pt.
+
+Overfull \vbox (2.32803pt too high) has occurred while \output is active []
 
 
-LaTeX Warning: Citation `Wu2018iTTVis' on page 7 undefined on input line 536.
+[7 <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/case1.png>]
+(E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.bbl [8 <E:/FencingVis/Fen
+cingVis/Paper/FencingVis/pictures/ScorePhrases.png> <E:/FencingVis/FencingVis/P
+aper/FencingVis/pictures/threeBout.png>])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 593.
 
-(E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 568.
- [7 <E:/FencingVis/FencingVis/Paper/FencingVis/pictures/case1.png>] [8 <E:/Fenc
-ingVis/FencingVis/Paper/FencingVis/pictures/ScorePhrases.png> <E:/FencingVis/Fe
-ncingVis/Paper/FencingVis/pictures/threeBout.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 568.
+Overfull \vbox (2.32803pt too high) has occurred while \output is active []
 
-(E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 568.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 568.
+
+[9
+
+]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 593.
+ (E:\FencingVis\FencingVis\Paper\FencingVis\FencingVis.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 593.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 593.
 Package rerunfilecheck Info: File `FencingVis.out' has not changed.
-(rerunfilecheck)             Checksum: 520DB7DA567D0D6C4BC90E90DB6B773E;1374.
+(rerunfilecheck)             Checksum: 7396696B1F6945389E908AC9E8B3201D;1421.
 
 
 LaTeX Warning: There were undefined references.
@@ -658,21 +673,20 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 8289 strings out of 495354
- 123504 string characters out of 3183860
- 250798 words of memory out of 3000000
- 11052 multiletter control sequences out of 15000+200000
- 53075 words of font info for 227 fonts, out of 3000000 for 9000
+ 8232 strings out of 495354
+ 122390 string characters out of 3183860
+ 251771 words of memory out of 3000000
+ 10993 multiletter control sequences out of 15000+200000
+ 38543 words of font info for 202 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 33i,9n,35p,1153b,399s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 34i,9n,35p,1543b,444s stack positions out of 5000i,500n,10000p,200000b,50000s
 {D:/CTEX/MiKTeX/fonts/enc/dvips/fontname/8r.enc}<D:/CTEX/MiKTeX/fonts/type1/u
 rw/helvetic/uhvb8a.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><D:/
-CTEX/MiKTeX/fonts/type1/urw/helvetic/uhvro8a.pfb><D:/CTEX/MiKTeX/fonts/type1/ur
-w/times/utmb8a.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><D:/CTEX/Mi
-KTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on FencingVis.pdf (8 pages, 1255699 bytes).
+CTEX/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/ti
+mes/utmr8a.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on FencingVis.pdf (9 pages, 1175453 bytes).
 PDF statistics:
- 241 PDF objects out of 1000 (max. 8388607)
- 75 named destinations out of 1000 (max. 500000)
- 51409 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 249 PDF objects out of 1000 (max. 8388607)
+ 78 named destinations out of 1000 (max. 500000)
+ 32985 words of extra memory for PDF output out of 35830 (max. 10000000)
 

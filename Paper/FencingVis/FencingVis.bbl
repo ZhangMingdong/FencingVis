@@ -5,6 +5,11 @@ R.~C. Basole and D.~Saupe.
 \newblock Sports data visualization [guest editors' introduction].
 \newblock {\em IEEE Computer Graphics and Applications}, 36(5):24--26, 2016.
 
+\bibitem{beck2016matrix}
+F.~Beck, M.~Burch, and D.~Weiskopf.
+\newblock A matrix-based visual comparison of time series sports data.
+\newblock In {\em VMV}, 2016.
+
 \bibitem{chen2017biomechanics}
 T.~L.-W. Chen, D.~W.-C. Wong, Y.~Wang, S.~Ren, F.~Yan, and M.~Zhang.
 \newblock Biomechanics of fencing sport: A scoping review.
@@ -39,6 +44,13 @@ D.~Sacha, M.~Stein, T.~Schreck, D.~A. Keim, O.~Deussen, et~al.
 \newblock In {\em Visual Analytics Science and Technology (VAST), 2014 IEEE
   Conference on}, pp. 13--22. IEEE, 2014.
 
+\bibitem{sedlmair2012design}
+M.~Sedlmair, M.~Meyer, and T.~Munzner.
+\newblock Design study methodology: Reflections from the trenches and the
+  stacks.
+\newblock {\em IEEE transactions on visualization and computer graphics},
+  18(12):2431--2440, 2012.
+
 \bibitem{tarrago2016complementary}
 R.~Tarrag{\'o}, X.~Iglesias, D.~Lapresa, and M.~T. Anguera.
 \newblock A complementary study of elite fencing tactics using lag sequential,
@@ -60,13 +72,7 @@ R.~Vuillemot and C.~Perin.
 \bibitem{wu2018ittvis}
 Y.~Wu, J.~Lan, X.~Shu, C.~Ji, K.~Zhao, J.~Wang, and H.~Zhang.
 \newblock ittvis: Interactive visualization of table tennis data.
-\newblock {\em IEEE Transactions on Visualization and Computer Graphics},
-  24(1):709--718, Jan 2018. doi: {{%
-10\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}1109\discretionary{/}{%
-}{/}TVCG\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}2017\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}2744218}}
-
+\newblock {\em IEEE transactions on visualization and computer graphics},
+  24(1):709--718, 2018.
 
 \end{thebibliography}

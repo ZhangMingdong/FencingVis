@@ -73,7 +73,7 @@ FUNCTION {add.link} % title
 	    {
 			  doi #1 #7 substring$ "http://" =
 				  { "\href{" doi * "}{" * t * "}" * }
-				  { "\href{http://dx.doi.org/" doi * "}{" * t * "}" * }
+				  { "\href{https://doi.org/" doi * "}{" * t * "}" * }
 				if$
 		  }
       if$ }
@@ -156,7 +156,7 @@ FUNCTION {add.doi}
           {
 					  #3 'nth.dash :=
 					  #1 'doi.string.pos :=
-						"https://dx.doi.org/" 'doi.urlstr :=
+						"https://doi.org/" 'doi.urlstr :=
 					}
           {}
         if$
@@ -172,7 +172,7 @@ FUNCTION {add.doi}
 					  {}
 					  {
 							#1 'doi.string.pos :=
-							"https://dx.doi.org/" 'doi.urlstr :=
+							"https://doi.org/" 'doi.urlstr :=
 						}
 					if$
 				}

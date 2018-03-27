@@ -148,6 +148,7 @@ mainApp.directive('fencingGameVis', function () {
                     .attr("x",5)
                     .attr("y",function(d,i){return 20+i*20;})
                     .text(function(d){return d;});
+
                 svgInfo.exit().remove();
 
             }

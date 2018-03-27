@@ -1,5 +1,5 @@
-\documentclass[journal]{vgtc}                % final (journal style)
-%\documentclass[review,journal]{vgtc}         % review (journal style)
+%\documentclass[journal]{vgtc}                % final (journal style)
+\documentclass[review,journal]{vgtc}         % review (journal style)
 %\documentclass[widereview]{vgtc}             % wide-spaced review
 %\documentclass[preprint,journal]{vgtc}       % preprint (journal style)
 
@@ -61,7 +61,7 @@
 %% If you are submitting a paper to a conference for review with a double
 %% blind reviewing process, please replace the value ``0'' below with your
 %% OnlineID. Otherwise, you may safely leave it at ``0''.
-\onlineid{0}
+\onlineid{1211}
 
 %% declare the category of your paper, only shown in review mode
 \vgtccategory{Research}
@@ -72,48 +72,35 @@
 %% * evaluation
 %% * system
 %% * theory/model
-\vgtcpapertype{please specify}
+\vgtcpapertype{application/design study}
 
 %% Paper title.
-\title{FencingVis}
+\title{Visualization of Technical and Tactical Characteristics in Fencing}
 
 %% This is how authors are specified in the journal style
 
 %% indicate IEEE Member or Student Member in form indicated below
-\author{Roy G. Biv, Ed Grimley, \textit{Member, IEEE}, and Martha Stewart}
+\author{Mingdong Zhang, Li Chen, Xiaoru Yuan, Renpei Huang, Shuang Liu, and Junhai Yong}
 \authorfooter{
-%% insert punctuation at end of each item
-\item
- Roy G. Biv is with Starbucks Research. E-mail: roy.g.biv@aol.com.
-\item
- Ed Grimley is with Grimley Widgets, Inc.. E-mail: ed.grimley@aol.com.
-\item
- Martha Stewart is with Martha Stewart Enterprises at Microsoft
- Research. E-mail: martha.stewart@marthastewart.com.
+	%% insert punctuation at end of each item
+	\item
+	Mingdong Zhang, Li Chen, Renpei Huang, Shuang Liu, and Junhai Yong is with Tsinghua University.
+	\item
+	Xiaoru Yuan is with Perking University.
 }
 
 %other entries to be set up for journal
-\shortauthortitle{Biv \MakeLowercase{\textit{et al.}}: Global Illumination for Fun and Profit}
+\shortauthortitle{Zhang \MakeLowercase{\textit{et al.}}: Visualization of Technical and Tactical Characteristics in Fencing}
 %\shortauthortitle{Firstauthor \MakeLowercase{\textit{et al.}}: Paper Title}
 
 %% Abstract section.
-\abstract{Duis autem vel eum iriure dolor in hendrerit in vulputate
-velit esse molestie consequat, vel illum dolore eu feugiat nulla
-facilisis at vero eros et accumsan et iusto odio dignissim qui blandit
-praesent luptatum zzril delenit augue duis dolore te feugait nulla
-facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
-suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem
-vel eum iriure dolor in hendrerit in vulputate velit esse molestie
-consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et
-accumsan et iusto odio dignissim qui blandit praesent luptatum zzril
-delenit augue duis dolore te feugait nulla facilisi.%
+\abstract{
+	Fencing is a sport that relies heavily on the use of tactics. However, almost all existing fencing data analysis methods are based on statistical models, which are difficult to discover hidden patterns. Unlike the sequential game such as tennis and table tennis, fencing is a kind of simultaneous game, thus the existing sports visualization methods cannot work well on it either. In this work, we cooperate with experts in fencing to analyze technical and tactical characteristics in fencing competition. To meet their requirements, we design and implement an interactive visualization system for fencing competition data - FencingVis. The sequences of the fencers¡¯ actions in the bout are first explored to find patterns of behaviors. Then a graph model is constructed to show the combination of the tactical behaviors. A tactical flow graph is further designed to show the graph model and multiple interactive ways are provided to explore it. We also provide a number of well-coordinated-views to supplement the tactical flow graph. They can display the information in the fencing competition from different perspectives and integrate organically with the tactical flow graph through consistent visual style and view coordination. We demonstrate the usability and effectiveness of the proposed system by two case studies. According to the expert feedback, our system can help analysts find not only the tactical patterns hidden in the fencing game, but also the technical and tactical characteristics of the contestant.%
 } % end of abstract
 
 %% Keywords that describe your work. Will show as 'Index Terms' in journal
 %% please capitalize first letter and insert punctuation after last keyword
-\keywords{Radiosity, global illumination, constant time}
+\keywords{Sports visualization, visual knowledge discovery, sports analytics}
 
 %% ACM Computing Classification System (CCS). 
 %% See <http://www.acm.org/class/1998/> for details.
@@ -127,11 +114,12 @@ delenit augue duis dolore te feugait nulla facilisi.%
 
 %% Uncomment below to include a teaser figure.
 \teaser{
-  \centering
-  \includegraphics[width=\linewidth]{main}
-  \caption{The main picture of FencingVis. A) Motion View. B) Tactic Flowchart View. C) Phrase View. D) Bout View. E Control Pannel}
+	\centering
+	\includegraphics[width=\linewidth]{main}
+	\caption{The main picture of FencingVis. A) Motion View. B) Tactic Flowchart View. C) Phrase View. D) Bout View. E Control Pannel}
 	\label{fig:main}
 }
+
 
 %% Uncomment below to disable the manuscript note
 %\renewcommand{\manuscriptnotetxt}{}
@@ -157,22 +145,40 @@ delenit augue duis dolore te feugait nulla facilisi.%
 \maketitle
 
 %% \section{Introduction} %for journal use above \firstsection{..} instead
+Fencing has a long history and is one of the five activities which have been featured in every modern Olympic Games, however, participation in fencing has been relatively low.
+This is due in part to the relatively high requirements for equipment and space and, more importantly, to the difficulty of learning.
+It is difficult to learn mainly because it is not easy to understand.
+Fencing is more abstract than other sports such as table tennis and tennis.
+Let's take table tennis as an example. A table tennis match consists severl 7 games, each game is divided into multiple rounds, each round is divided into multiple strokes, and different strokes shows different stroke techniques.
+But in a fencing bout, what happens in each phrase can't be clearly described.
+In addition, fencing is a sport that relies heavily on the use of tactics. 
+The adoption of reasonable strategies for different opponents can help the fencer increase the possibility of winning.
+However, little research has been down on fencing data analysis, except for some based on some statistical models, which is not suitable for discovering tactics.
+Therefore, visual methods are needed to help people better understand fencing competition, and find out the technical and tactical characteristics, so as to assist the training and the tactical arrangement of the competition.
 
-The development of information technology makes the data recorded in sports more and more comprehensive and detailed, which leads to the research on the visualization and visual analysis of sports data.
-Sports data visualization and visual analysis work for a wide range of groups, mainly can be divided into four categories.
-Methods for general sports enthusiasts focus on the display of big data, so that sports enthusiasts can more intuitive and quick access to their own information of interest, as well as provide some simple analysis and prediction results.
-Methods for professional teams of athletes and coaches focus on exploring the technical and tactical characteristics behind the data, thus providing guidance for training and tactical use.
-There are also efforts aimed at relevant sports associations and operators, often requiring analysis of larger-scale data to provide strategic guidance for their future operations.
-According to the design of sports researchers need to combine the knowledge of biomechanics, psychology and other fields, to assist researchers to complete their relevant experimental analysis.
-Previous data analysis and visualization efforts for fencing were relatively small.
-Although the sport has a long history and has been playing a role in major competition systems such as the Olympic games, it is more difficult to understand than other sports and therefore attracts fewer groups.
-In addition, fencing competition time is short, fast pace, many times even professional fencer and referee will produce different understanding.
-So for this sport, the display of the game not only for ordinary enthusiasts, professionals also exist in this aspect of the demand, this has been unified in the analysis of the demand.
-In addition, fencing competition data do not have the natural structure, need to extract its structural data, and this work is a basic work for the display and analysis of the game.
-In view of the above requirements, we design a visual analysis system.
-First, we extract the original data of fencing competition in a structured way.
-After that, we show from different dimensions of time, space, statistics and so on, and on this basis to provide professionals for technical and tactical analysis of interactive exploration.
-Our main contributions:
+There are many visualization methods for sports competition data before, but these methods can not be directly applied to fencing data.
+Most of the sports data visualization methods are targeted at multiplayer sports, such as football and basketball, whose data show completely differect characteristics with data in fencing, and their methods can not be applied to fencing data.
+For table tennis, tennis and other single-player sports, the characteristics of their back-to-back system lead to a clear hierarchy of data, which is not available in fencing data.
+This determines that the visualization methods for them cannot be used for fencing data either.
+As fencing competition data embodied in two related time series, we naturally think of some visual methods for time series comparison, such as that designed for bicycle sports\cite{beck2016matrix}.
+However, the timing sequence of fencing data is not as simple as bicycle light movement.
+The time series of fencing data contains the feature of tactics, and these features can not be extracted explicitly like in table tennis and tennis data, nor can they be extracted automatically from time series data like in bicycle data.
+Due to this nature of fencing data, none of the above methods can be used directly for fencing data.
+
+To fill this research gap, we cooperate with experts in fencing to analyze technical and tactical characteristics that are clear or fuzzy in fencing competition, and summarize the requirements of exploring these fuzzy problems through visual analysis. 
+To meet these requirement, we design and implement an interactive visualization system for fencing competition data - FencingVis. 
+We first analyze the sequences of the fencers¡¯ actions in the bout. 
+Then we extract the tactical behaviors and construct a graph model of these behaviors to express their tactical combinations. 
+We design a tactical flow graph to show the model we built and provide multiple interactive ways to explore the tactical model. 
+We also provide a number of well-coordinated-views to supplement the tactical flow chart. 
+They can display the information in the fencing competition from different perspectives and integrate organically with the tactical flow graph through consistent visual style and view coordination.
+
+We demonstrate the usability and effectiveness of the proposed system by two case studies. 
+According to the expert feedback, our system can help analysts find not only the tactical patterns hidden in the fencing game, but also the technical and tactical characteristics of the contestant.
+In addition to analyze professional competition, our system is able to use for the teaching to fencing beginners, and the tactical demonstration to fencing enthusiasts.
+
+
+Our main contributions are as follows:
 \begin{enumerate}
 	\item We have structured definitions of fencing competition data and provide conversion from raw data to structured data.
 	\item We design a variety of different views to present the transformed structured data in all directions and angles.
@@ -241,7 +247,7 @@ The individual's first 15 points out of the group game to win ( heavy sword or f
 After one player has scored eight points in the sabre match, the two sides will take a minute off.
 
 
-	
+
 \subsection{Data Description}
 Because of the fast pace of fencing, it is difficult to record the details of the match in real time.
 And in order to avoid interfering with the competitors, it is not convenient to install the sensor device.
@@ -435,8 +441,8 @@ Users can also choose to exchange the position of the fencers, which is used in 
 The background of the data stream can also be chosen to be presented or not.
 For users who have just come into contact with the system, the background presentation allows them to know more quickly which nodes can have data flow between them, although the current race under analysis may not have occurred.
 
-	
-	
+
+
 \subsection{Interaction}
 \subsection{Cross-View Analysis}
 The interactive exploration of data is mainly realized through the association of views.
@@ -533,10 +539,27 @@ In the other semi-final, Gu's main way to score against his opponent was by goin
 It can be found that the main winning means in the sword game is to attack and pull open direct attack, and the formation of long-distance attack is less and rarely reflects the obvious advantages.
 This show especially in high level competition, when the fencers' basic skills are equal.
 
-This case showed shat our system can easily compare different games, which was not available in previous work\cite{Wu2018iTTVis,polk2014tennivis}
+This case showed shat our system can easily compare different games, which was not available in previous work\cite{wu2018ittvis,polk2014tennivis}
 
 
 
+\section{Discussion}
+During the design and development of the whole system, we refer to the development process model proposed by Sedlmar et al.\cite{sedlmair2012design}
+But we still encountered a lot of problems.
+At first we saw that the fencing data were two related time series data, so we initially planned to use the time series data analysis method directly, which is the approach widely accepted by other previous analyses of fencing data.
+However, with the further understanding of the problem, we found that the time series data of fencing has a potential hierarchical structure.
+The same motion series in different stages of the phrase reflect different technical and tactical information.
+For example, two fencers always choose to move forward at the beginning of the phrase, and there are only one or two steps forwrd in this stage according to our statistics.
+One or two steps in the initial stage of the phrase are closely related to the technical characteristics and tactics chosen by the fencers, and will have a great influence on the following competitions.
+In contrast, after entering the long-distance attack and defense, the number of forward and backward steps is often not important, but the timing and depth of the lunge will have more important influence.
+
+So we analyze the data from two levels.
+We first represent the time series data of a phrase as a sequence of tactical combination behaviors from a higher level of abstraction, which reflects the tactical application of both fencers in this phrase.
+Then in each node of the sequence, we analyze the technical ability of both sides, such as reaction time, attack position, etc.
+Previous studies often analyze the technical capabilities of the entire sequence directly, however, according to our research, more detailed patterns and features in the data can be found by analyzing in this multi-layer framework.
+Based on this hierarchical structure, our data presentation and interaction is also designed as two abstract levels to show tactical information and technical information respectively .
+But our focus is still on the tactical level. 
+There has been a lot of work focus on analyzing the technical characteristics, and we hope to be able to give analysts a new perspective under the tactical framework to understand the technical characteristics of the fencers.
 
 
 \section{Conclusion}
@@ -555,8 +578,10 @@ Team events involve more players and the order between them adds new complexity 
 
 %% if specified like this the section will be committed in review mode
 \acknowledgments{
-The authors wish to thank A, B, C. This work was supported in part by
-a grant from XYZ.}
+The authors wish to thank A, B, and C. This work was supported in part by
+a grant from XYZ (\# 12345-67890).}
+
+
 
 %\bibliographystyle{abbrv}
 \bibliographystyle{abbrv-doi}
@@ -566,4 +591,19 @@ a grant from XYZ.}
 
 \bibliography{FencingVis}
 \end{document}
+The development of information technology makes the data recorded in sports more and more comprehensive and detailed, which leads to the research on the visualization and visual analysis of sports data.
+According to different user groups, the visualization and visual analysis of sports data can be divided into four categories.
+Methods for general sports enthusiasts focus on the presentation of sports data. These works can help them get their interested information more easily, and also provide some fundamental analysis and prediction tasks.
+Methods for professional athletes and coaches focus on exploring the technical and tactical characteristics behind the data, thus providing guidance for training and tactical use.
+There are also efforts aimed at relevant sports associations and operators, who often requiring analysis of larger-scale data to provide strategic guidance for their future operations.
+Sports researchers pay more attention to the content of biomechanics, psychology and other fields, the visual design for them should focus on helping them complete the relevant experimental analysis.
+
+Previous data analysis and visualization efforts for fencing were relatively small.
+Although the sport has a long history and has been playing a role in major competition systems such as the Olympic games, it is more difficult to understand than other sports and therefore attracts fewer groups.
+In addition, fencing competition time is short, fast pace, many times even professional fencer and referee will produce different understanding.
+So for this sport, the display of the game not only for ordinary enthusiasts, professionals also exist in this aspect of the demand, this has been unified in the analysis of the demand.
+In addition, fencing competition data do not have the natural structure, need to extract its structural data, and this work is a basic work for the display and analysis of the game.
+In view of the above requirements, we design a visual analysis system.
+First, we extract the original data of fencing competition in a structured way.
+After that, we show from different dimensions of time, space, statistics and so on, and on this basis to provide professionals for technical and tactical analysis of interactive exploration.
 
